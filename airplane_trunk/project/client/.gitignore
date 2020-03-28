@@ -1,0 +1,9 @@
+.laya
+.rpt2_cache
+.vscode
+bin/js
+bin/index.html
+bin/unpack.json
+bin/res/atlas./rec
+laya/styles.xml
+src/ui/layaUI.max.all.ts

@@ -1,0 +1,1 @@
+{"type":"Scene","props":{"width":1920,"height":1080},"compId":2,"child":[{"type":"Script","props":{"tapSp":"@node:23","runtime":"script/GameControl.ts"},"compId":8},{"type":"Sprite","props":{"y":-460,"x":-540,"width":3000,"name":"TapSp","height":2000,"alpha":0},"compId":23}],"loadList":[],"loadList3D":[]}
