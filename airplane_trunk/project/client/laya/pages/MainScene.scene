@@ -2,11 +2,11 @@
     "x":0,
     "type":"Scene",
     "selectedBox":2,
-    "selecteID":27,
+    "selecteID":39,
     "searchKey":"Scene",
     "props":{"width":1920,"sceneColor":"#000000","height":1080},
     "nodeParent":-1,
-    "maxID":32,
+    "maxID":40,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -21,7 +21,7 @@
             "source":"src/script/GameControl.ts",
             "searchKey":"Script,GameControl",
             "removeAble":true,
-            "props":{"y":0,"x":0,"tapSp":"@node:23","mainRoleSp":"@node:24","backgroundSp":"@node:27","background":"@node:27"},
+            "props":{"y":0,"x":0,"tapSp":"@node:23","startSp":"@node:35","startBtn":"@node:38","mainRoleSp":"@node:24","distanceText":"@node:32","backgroundSp":"@node:27","background":"@node:27"},
             "nodeParent":2,
             "label":"GameControl",
             "isDirectory":false,
@@ -38,20 +38,19 @@
             "props":{"y":0,"x":0,"width":1920,"scaleY":1,"scaleX":1,"name":"Backgroud","height":1080},
             "nodeParent":2,
             "label":"Backgroud",
-            "isOpen":true,
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":27,
             "child":[
                 {
-                    "x":30,
                     "type":"Script",
                     "switchAble":true,
                     "source":"src/script/Background.ts",
                     "searchKey":"Script,Background",
                     "removeAble":true,
-                    "props":{"y":0,"x":0,"bg2":"@node:29","bg1":"@node:28"},
+                    "props":{"y":0,"x":0,"distanceText":"@node:32","bg2":"@node:29","bg1":"@node:28","DistanceText":"@node:32"},
                     "nodeParent":27,
                     "label":"Background",
                     "isDirectory":false,
@@ -62,7 +61,6 @@
                         ]
                 },
                 {
-                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite,Bg1",
                     "props":{"y":-100,"x":0,"texture":"texture/6.png","scaleY":2.5,"scaleX":2.5,"name":"Bg1"},
@@ -77,7 +75,6 @@
                     "$HIDDEN":false
                 },
                 {
-                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite,Bg2",
                     "props":{"y":-100,"x":2560,"texture":"texture/6.png","scaleY":2.5,"scaleX":2.5,"name":"Bg2"},
@@ -97,7 +94,7 @@
             "x":15,
             "type":"Sprite",
             "searchKey":"Sprite,MainRole",
-            "props":{"y":490,"x":910,"texture":"texture/OrangePlatform.png","name":"MainRole"},
+            "props":{"y":491,"x":878,"texture":"texture/plane_1/plane_1_yellow.png","scaleY":0.2,"scaleX":0.2,"name":"MainRole"},
             "nodeParent":2,
             "label":"MainRole",
             "isOpen":false,
@@ -111,7 +108,7 @@
                     "switchAble":true,
                     "searchKey":"BoxCollider",
                     "removeAble":true,
-                    "props":{"width":16,"height":16,"enabled":true},
+                    "props":{"y":110,"x":25,"width":796,"height":315,"enabled":true},
                     "nodeParent":24,
                     "label":"BoxCollider",
                     "isDirectory":false,
@@ -135,6 +132,22 @@
                     "compId":26,
                     "child":[
                         ]
+                },
+                {
+                    "type":"Script",
+                    "switchAble":true,
+                    "source":"src/script/MainRole.ts",
+                    "searchKey":"Script,MainRole",
+                    "removeAble":true,
+                    "props":{},
+                    "nodeParent":24,
+                    "label":"MainRole",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":37,
+                    "child":[
+                        ]
                 }]
         },
         {
@@ -150,6 +163,48 @@
             "compId":23,
             "child":[
                 ]
+        },
+        {
+            "x":15,
+            "type":"Text",
+            "searchKey":"Text,DistanceText",
+            "props":{"width":300,"valign":"middle","text":"------","name":"DistanceText","height":80,"fontSize":60,"color":"#ffffff","align":"center"},
+            "nodeParent":2,
+            "label":"DistanceText",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":32,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Button",
+            "searchKey":"Button,StartBtn",
+            "props":{"y":-460,"x":-540,"width":3000,"name":"StartBtn","labelSize":200,"height":2000},
+            "nodeParent":2,
+            "label":"StartBtn",
+            "isOpen":true,
+            "isDirectory":true,
+            "isAniNode":true,
+            "hasChild":true,
+            "compId":38,
+            "child":[
+                {
+                    "x":30,
+                    "type":"Text",
+                    "searchKey":"Text",
+                    "props":{"y":1200,"x":1244,"text":"Tap to Start","fontSize":100,"color":"#ffffff"},
+                    "nodeParent":38,
+                    "label":"Text",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":39,
+                    "child":[
+                        ]
+                }]
         }],
     "animations":[
         {

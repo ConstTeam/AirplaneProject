@@ -7,21 +7,22 @@ export default class Background extends Laya.Script
 	/** @prop {name: bg2, type:Node} */
 	private bg2: Sprite;
 
-	private _bRunning: boolean = false;
+	private _iSpeed: number;
 
 	constructor() { super(); }
 
-	onUpdate(): void
+	public SetSpeed(speed: number): void
 	{
-		if(this._bRunning)
-		{
-			this.bg1.x -= 5;
-			this.bg2.x -= 5;
-		}
+		this._iSpeed = speed;
 	}
 
-	public Play(): void
+	public Update(): void
 	{
-		this._bRunning = true;
+		this.bg1.x -= this._iSpeed;
+		this.bg2.x -= this._iSpeed;
+		if(this.bg1.x <= -2560)
+			this.bg1.x = 2560;
+		else if(this.bg2.x <= -2560)
+			this.bg2.x = 2560;
 	}
 }

@@ -40,5 +40,27 @@ P DDDDFB9E vslider$bar.png
 P 01BAE7F5 vslider.png
 D texture
 R 11002D42 6.png
-R 4F008F46 background.png
-P BBC17D80 OrangePlatform.png
+D texture/plane_1
+R 9DC55CAA plane_1_blue.png
+R 934C196A plane_1_pink.png
+R 5FDF95D2 plane_1_red.png
+R C530173D plane_1_yellow.png
+D texture/plane_2
+R 7B611A21 plane_2_blue.png
+R 85E75F01 plane_2_green.png
+R EC60025B plane_2_red.png
+R 59976FFE plane_2_yellow.png
+D texture/plane_3
+R 66FE0234 plane_3_blue.png
+R 75645F3E plane_3_green.png
+R C287ED41 plane_3_red.png
+R F7FACB98 plane_3_yellow.png
+D texture/torpedo
+P F56F69BF fire_ball_1.png
+P EC535F66 fire_ball_blue.png
+P 27D4C4A6 fire_ball_pink.png
+P 6E659B96 torpedo.png
+P 775028DF torpedo_black.png
+P 43024960 torpedo_flame.png
+P 6C9A2DEE torpedo_flame_1.png
+P B9D75715 torpedo_flame_2.png
