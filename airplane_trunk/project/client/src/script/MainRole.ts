@@ -7,6 +7,11 @@ export default class MainRole extends Laya.Script
 		this._rigidbody = this.owner.getComponent(Laya.RigidBody);
 	}
 
+	onTriggerEnter(other:any, self:any, contact:any): void
+	{
+		console.log("-------------------------------");
+	}
+
 	public Init(): void
 	{
 		this.RigidBodyEnable(false);

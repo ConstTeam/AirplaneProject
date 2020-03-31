@@ -2,9 +2,14 @@ import Sprite = Laya.Sprite;
 import Event = Laya.Event;
 import Background from "./Background"
 import MainRole from "./MainRole"
+import EnemyA from "./EnemyA"
 
 export default class GameControl extends Laya.Script
 {
+	/** @prop {name: sceneRoot, type: Node} */
+	private sceneRoot: Laya.Sprite;
+	/** @prop {name: enemyRoot, type: Node} */
+	private enemyRoot: Laya.Sprite;
 	/** @prop {name: startBtn, type: Node} */
 	private startBtn: Laya.Button;
 	/** @prop {name: tapSp, type: Node} */
@@ -15,8 +20,10 @@ export default class GameControl extends Laya.Script
 	private backgroundSp: Sprite;
 	/** @prop {name: distanceText, type:Node} */
 	private distanceText: Laya.Text;
+
 	/** @prop {name: enemyPrefabA, type: Prefab} */
 	private enemyPrefabA: Laya.Prefab;
+	
 
 	private mainRole: MainRole;
 	private background: Background;
@@ -53,6 +60,7 @@ export default class GameControl extends Laya.Script
 			{
 				this.distanceText.text = (Math.floor(this._iDistance / 100)).toString();
 				this._t = 0;
+				this.ShowEnemy();
 			}
 		}
 	}
@@ -78,6 +86,17 @@ export default class GameControl extends Laya.Script
 			case Event.MOUSE_DOWN:
 				this.mainRole.Up();
 				break;
+		}
+	}
+
+	private ShowEnemy(): void
+	{
+		if(this._iDistance == 500)
+		{
+			let enemyASp: Laya.Sprite = Laya.Pool.getItemByCreateFun("enemyA", this.enemyPrefabA.create, this.enemyPrefabA) as Laya.Sprite;
+			this.enemyRoot.addChild(enemyASp);
+			let enemyA: EnemyA = enemyASp.getComponent(EnemyA);
+			enemyA.Move();
 		}
 	}
 }
