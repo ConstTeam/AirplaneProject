@@ -5,8 +5,9 @@
     "searchKey":"Sprite,BulletA",
     "props":{"y":0,"x":0,"texture":"texture/torpedo/torpedo_flame_2.png","scaleY":0.3,"scaleX":0.3,"presetID":1,"preset":"laya/pages/prefab/BulletA.prefab","name":"BulletA","isPresetRoot":true},
     "nodeParent":-1,
-    "maxID":70,
+    "maxID":72,
     "label":"BulletA",
+    "isOpen":null,
     "isDirectory":true,
     "isAniNode":true,
     "hasChild":true,
@@ -28,18 +29,33 @@
                 ]
         },
         {
+            "type":"RigidBody",
+            "switchAble":true,
+            "searchKey":"RigidBody",
+            "removeAble":true,
+            "props":{"type":"kinematic","presetID":3,"preset":"laya/pages/prefab/BulletA.prefab"},
+            "nodeParent":66,
+            "label":"RigidBody(BulletA)",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":70,
+            "child":[
+                ]
+        },
+        {
             "type":"Script",
             "switchAble":true,
             "source":"src/script/BulletA.ts",
             "searchKey":"Script,BulletA",
             "removeAble":true,
-            "props":{"presetID":3,"preset":"laya/pages/prefab/BulletA.prefab"},
+            "props":{"presetID":4,"preset":"laya/pages/prefab/BulletA.prefab"},
             "nodeParent":66,
             "label":"BulletA",
             "isDirectory":false,
             "isAniNode":true,
             "hasChild":false,
-            "compId":69,
+            "compId":71,
             "child":[
                 ]
         }],

@@ -12,6 +12,8 @@ export default class BulletA extends Laya.Script
 	onUpdate(): void
 	{
 		this._sp.x += this._iSpeed;
+		if(this._sp.x >= 3000)
+			this.Stop();
 	}
 
 	public Excute(x: number, y: number, speed: number): void
@@ -22,8 +24,9 @@ export default class BulletA extends Laya.Script
 		this.enabled = true
 	}
 
-	onTriggerEnter(other:any, self:any, contact:any): void
+	public Stop(): void
 	{
-		console.log("+++++++++++++++++++++++++++++");
+		this.enabled = false;
+		Laya.Pool.recover("bulletA", this._sp);
 	}
 }

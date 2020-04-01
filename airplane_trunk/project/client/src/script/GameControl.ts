@@ -3,6 +3,8 @@ import Event = Laya.Event;
 import Background from "./Background"
 import MainRole from "./MainRole"
 import EnemyA from "./EnemyA"
+import ConfigData from "./data/ConfigData";
+import ConfigTable from "./data/ConfigTable";
 
 export default class GameControl extends Laya.Script
 {
@@ -32,20 +34,24 @@ export default class GameControl extends Laya.Script
 	private _bRunning: boolean = false;
 	private _iDistance: number = 0;
 	private _t: number = 0;
-
-	constructor() { super(); }
+	private _enmeyTbl: ConfigTable;
 
 	onAwake(): void
 	{
+		Laya.loader.load("res/config/cfg.ms", Laya.Handler.create(this, this.OnConfigComplete), null, Laya.Loader.BUFFER);
+	}
+
+	private OnConfigComplete(buff: ArrayBuffer): void
+	{
+		ConfigData.ParseConfig(buff);
+		this._enmeyTbl = ConfigData.GetTable("Enemy_Client");
+
 		this.startBtn.clickHandler = new Laya.Handler(this, this.onStartBtnClick);
 		this.tapSp.on(Event.MOUSE_DOWN, this, this.tapSpMouseHandler);
 		this.mainRole = this.mainRoleSp.getComponent(MainRole);
 		this.background = this.backgroundSp.getComponent(Background);
-	}
 
-	onStart(): void
-	{
-		this.mainRole.Init();
+		this.mainRole.Init(new Laya.Handler(this, this.Stop));
 	}
 
 	onUpdate(): void
@@ -74,6 +80,11 @@ export default class GameControl extends Laya.Script
 		this._bRunning = true;
 	}
 
+	public Stop(): void
+	{
+		this._bRunning = false;
+	}
+
 	private onStartBtnClick(): void
 	{
 		this.Start();
@@ -91,12 +102,18 @@ export default class GameControl extends Laya.Script
 
 	private ShowEnemy(): void
 	{
-		if(this._iDistance == 500)
+		let key: string = this._iDistance.toString();
+		if(this._enmeyTbl.HasRow(key))
 		{
-			let enemyASp: Laya.Sprite = Laya.Pool.getItemByCreateFun("enemyA", this.enemyPrefabA.create, this.enemyPrefabA) as Laya.Sprite;
-			this.enemyRoot.addChild(enemyASp);
-			let enemyA: EnemyA = enemyASp.getComponent(EnemyA);
-			enemyA.Move();
+			let jsonStr: string = this._enmeyTbl.GetValue(key, "Enemy");
+			let arr: any[] = JSON.parse(jsonStr);
+			for(let i: number = 0; i < arr.length; ++i)
+			{
+				let enemyASp: Laya.Sprite = Laya.Pool.getItemByCreateFun("enemyA", this.enemyPrefabA.create, this.enemyPrefabA) as Laya.Sprite;
+				this.enemyRoot.addChild(enemyASp);
+				let enemyA: EnemyA = enemyASp.getComponent(EnemyA);
+				enemyA.Move(arr[i][1] as number, arr[i][2] as number, arr[i][3] as number, arr[i][4] as number);
+			}
 		}
 	}
 }
