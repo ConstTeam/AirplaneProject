@@ -5,6 +5,8 @@ export default class MainRole extends Laya.Script
 	private _rigidbody: Laya.RigidBody;
 	private _stopCbHandler: Laya.Handler;
 
+	constructor() { super(); }
+	
 	onAwake(): void
 	{
 		this._rigidbody = this.owner.getComponent(Laya.RigidBody);

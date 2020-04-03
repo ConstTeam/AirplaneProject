@@ -11,6 +11,8 @@ export default class BulletControl extends Laya.Script
 		return BulletControl._inst;
 	}
 
+	constructor() { super(); }
+	
 	onAwake(): void
 	{
 		BulletControl._inst = this;

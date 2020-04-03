@@ -1,8 +1,8 @@
+
+
 cd ./bin
-rd /s /q temp
+copy /y .\config\Default\cfg ..\..\..\..\project\client\bin\res\config\cfg.bin
 Excel2Txt.exe ../../../cfg ./temp
-
 PackConfig.exe ./temp ./config Default
-copy /y .\config\Default\cfg ..\..\..\..\project\client\bin\res\config\cfg.ms
-
 Pause
+rd /s /q temp

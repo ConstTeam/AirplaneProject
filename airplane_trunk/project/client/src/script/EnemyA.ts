@@ -5,6 +5,8 @@ export default class EnemyA extends Laya.Script
 {
 	private _sp: Laya.Sprite;
 
+	constructor() { super(); }
+	
 	onAwake(): void
 	{
 		this._sp = this.owner as Laya.Sprite;

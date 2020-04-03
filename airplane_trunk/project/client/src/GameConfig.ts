@@ -11,8 +11,8 @@ import EnemyA from "./script/EnemyA"
 export default class GameConfig{
     static width:number=1920;
     static height:number=1080;
-    static scaleMode:string="fixedwidth";
-    static screenMode:string="none";
+    static scaleMode:string="fixedheight";
+    static screenMode:string="horizontal";
     static alignV:string="middle";
     static alignH:string="center";
     static startScene:any="MainScene.scene";

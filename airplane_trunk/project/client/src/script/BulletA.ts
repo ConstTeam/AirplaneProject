@@ -3,6 +3,8 @@ export default class BulletA extends Laya.Script
 	private _sp: Laya.Sprite;
 	private _iSpeed: number;
 
+	constructor() { super(); }
+	
 	onAwake(): void
 	{
 		this._sp = this.owner as Laya.Sprite;

@@ -36,9 +36,11 @@ export default class GameControl extends Laya.Script
 	private _t: number = 0;
 	private _enmeyTbl: ConfigTable;
 
+	constructor() { super(); }
+
 	onAwake(): void
 	{
-		Laya.loader.load("res/config/cfg.ms", Laya.Handler.create(this, this.OnConfigComplete), null, Laya.Loader.BUFFER);
+		Laya.loader.load("cfg/cfg.bin", Laya.Handler.create(this, this.OnConfigComplete), null, Laya.Loader.BUFFER);
 	}
 
 	private OnConfigComplete(buff: ArrayBuffer): void
