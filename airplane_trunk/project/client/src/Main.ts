@@ -30,8 +30,33 @@ class Main {
 
 	onConfigLoaded(): void {
 		//加载IDE指定的场景
-		GameConfig.startScene && Laya.Scene.open(GameConfig.startScene);
+		GameConfig.startScene && Laya.Scene.open(GameConfig.startScene, true, null, Laya.Handler.create(this, (s)=>{
+			this.resize()
+		}));
+		Laya.stage.on(Laya.Event.RESIZE, this, this.resize);
+	}
+
+	//随着屏幕尺寸改变适配UI相对位置
+	resize(): void{
+		let w = GameConfig.width;
+		let h = GameConfig.height;
+		switch (GameConfig.scaleMode)
+		{
+			case "fixedwidth":
+				let screen_wh_scale = Laya.Browser.width / Laya.Browser.height;
+				h = GameConfig.width / screen_wh_scale;
+				break;
+			case "fixedheight":
+				let screen_hw_scale = Laya.Browser.height / Laya.Browser.width;
+				w = GameConfig.height / screen_hw_scale;
+				Laya.Scene.unDestroyedScenes.forEach(element => {
+					let s = element as Laya.Scene;
+					s.x = (w - GameConfig.width) / 2;
+				});
+				break;
+		}
 	}
 }
+
 //激活启动类
 new Main();

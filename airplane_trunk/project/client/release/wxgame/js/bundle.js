@@ -305,6 +305,8 @@
 	        this._t = 0;
 	    }
 	    onAwake() {
+	        Laya.stage.alignV = "middle";
+	        Laya.stage.alignH = "center";
 	        Laya.loader.load("cfg/cfg.bin", Laya.Handler.create(this, this.OnConfigComplete), null, Laya.Loader.BUFFER);
 	    }
 	    OnConfigComplete(buff) {
@@ -398,7 +400,7 @@
 	            Laya.init(GameConfig.width, GameConfig.height, Laya["WebGL"]);
 	        Laya["Physics"] && Laya["Physics"].enable();
 	        Laya["DebugPanel"] && Laya["DebugPanel"].enable();
-	        Laya.stage.scaleMode = GameConfig.scaleMode;
+	        Laya.stage.scaleMode = GameConfig.scaleMode;;
 	        Laya.stage.screenMode = GameConfig.screenMode;
 	        Laya.stage.alignV = GameConfig.alignV;
 	        Laya.stage.alignH = GameConfig.alignH;
