@@ -1,0 +1,5 @@
+<res>
+   <item name="texture/background/farground_mountains.png" type="Sprite" compress="0" pack="1" quality="80" props="" picType="0" scale="0"/>
+   <item name="texture/background/foreground_mountains.png" type="Sprite" compress="0" pack="1" quality="80" props="" picType="0" scale="0"/>
+   <item name="texture/background/mid_ground_cloud_1.png" type="Sprite" compress="0" pack="1" quality="80" props="" picType="0" scale="0"/>
+</res>

@@ -5,6 +5,7 @@ import MainRole from "./MainRole"
 import EnemyA from "./EnemyA"
 import ConfigData from "./data/ConfigData";
 import ConfigTable from "./data/ConfigTable";
+import EnemyB from "./EnemyB";
 
 export default class GameControl extends Laya.Script
 {
@@ -14,6 +15,8 @@ export default class GameControl extends Laya.Script
 	private enemyRoot: Laya.Sprite;
 	/** @prop {name: startBtn, type: Node} */
 	private startBtn: Laya.Button;
+	/** @prop {name: restartBtn, type: Node} */
+	private restartBtn: Laya.Button;
 	/** @prop {name: tapSp, type: Node} */
 	private tapSp: Sprite;
 	/** @prop {name: mainRoleSp, type: Node} */
@@ -23,8 +26,10 @@ export default class GameControl extends Laya.Script
 	/** @prop {name: distanceText, type:Node} */
 	private distanceText: Laya.Text;
 
-	/** @prop {name: enemyPrefabA, type: Prefab} */
-	private enemyPrefabA: Laya.Prefab;
+	/** @prop {name: enemyPrefA, type: Prefab} */
+	private enemyPrefA: Laya.Prefab;
+	/** @prop {name: enemyPrefB, type: Prefab} */
+	private enemyPrefB: Laya.Prefab;
 	
 
 	private mainRole: MainRole;
@@ -40,6 +45,7 @@ export default class GameControl extends Laya.Script
 
 	onAwake(): void
 	{
+		this.restartBtn.visible = false;
 		Laya.loader.load("cfg/cfg.bin", Laya.Handler.create(this, this.OnConfigComplete), null, Laya.Loader.BUFFER);
 	}
 
@@ -49,6 +55,7 @@ export default class GameControl extends Laya.Script
 		this._enmeyTbl = ConfigData.GetTable("Enemy_Client");
 
 		this.startBtn.clickHandler = new Laya.Handler(this, this.onStartBtnClick);
+		this.restartBtn.clickHandler = new Laya.Handler(this, this.onRestartBtnClick);
 		this.tapSp.on(Event.MOUSE_DOWN, this, this.tapSpMouseHandler);
 		this.mainRole = this.mainRoleSp.getComponent(MainRole);
 		this.background = this.backgroundSp.getComponent(Background);
@@ -73,9 +80,10 @@ export default class GameControl extends Laya.Script
 		}
 	}
 
-	private Start(): void
+	private Init(): void
 	{
-		this.startBtn.visible = false;
+		this.mainRole.Reset();
+		this._iDistance = 0;
 		this._iSpeed = 5;
 		this.mainRole.RigidBodyEnable(true);
 		this.background.SetSpeed(this._iSpeed);
@@ -85,11 +93,19 @@ export default class GameControl extends Laya.Script
 	public Stop(): void
 	{
 		this._bRunning = false;
+		this.restartBtn.visible = true;
 	}
 
 	private onStartBtnClick(): void
 	{
-		this.Start();
+		this.startBtn.visible = false;
+		this.Init();
+	}
+
+	private onRestartBtnClick(): void
+	{
+		this.restartBtn.visible = false;
+		this.Init();
 	}
 
 	private tapSpMouseHandler(e: Event): void
@@ -110,11 +126,22 @@ export default class GameControl extends Laya.Script
 			let jsonStr: string = this._enmeyTbl.GetValue(key, "Enemy");
 			let arr: any[] = JSON.parse(jsonStr);
 			for(let i: number = 0; i < arr.length; ++i)
-			{
-				let enemyASp: Laya.Sprite = Laya.Pool.getItemByCreateFun("enemyA", this.enemyPrefabA.create, this.enemyPrefabA) as Laya.Sprite;
-				this.enemyRoot.addChild(enemyASp);
-				let enemyA: EnemyA = enemyASp.getComponent(EnemyA);
-				enemyA.Move(arr[i][1] as number, arr[i][2] as number, arr[i][3] as number, arr[i][4] as number);
+			{	
+				if(arr[i][0] == "EnemyA")
+				{
+					let sp: Laya.Sprite = Laya.Pool.getItemByCreateFun(arr[i][0], this.enemyPrefA.create, this.enemyPrefA);
+					this.enemyRoot.addChild(sp);
+					let enemy: EnemyA = sp.getComponent(EnemyA);
+					enemy.Show(arr[i][1], arr[i][2], arr[i][3], arr[i][4], arr[i][5], arr[i][6]);
+					
+				}
+				else if(arr[i][0] == "EnemyB")
+				{
+					let sp: Laya.Sprite = Laya.Pool.getItemByCreateFun(arr[i][0], this.enemyPrefB.create, this.enemyPrefB);
+					this.enemyRoot.addChild(sp);
+					let enemy: EnemyB = sp.getComponent(EnemyB);
+					enemy.Show(arr[i][1], arr[i][2], arr[i][3], arr[i][4], arr[i][5], arr[i][6]);
+				}
 			}
 		}
 	}

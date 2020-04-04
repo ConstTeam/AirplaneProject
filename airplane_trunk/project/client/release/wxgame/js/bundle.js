@@ -5,14 +5,85 @@
 	    constructor() { super(); }
 	    SetSpeed(speed) {
 	        this._iSpeed = speed;
+	        this._iSpeed2 = speed / 5;
+	        this._iSpeed3 = speed / 25;
 	    }
 	    Update() {
-	        this.bg1.x -= this._iSpeed;
-	        this.bg2.x -= this._iSpeed;
-	        if (this.bg1.x <= -2560)
-	            this.bg1.x = 2560;
-	        else if (this.bg2.x <= -2560)
-	            this.bg2.x = 2560;
+	        this.ground1.x -= this._iSpeed;
+	        this.ground2.x -= this._iSpeed;
+	        this.ground3.x -= this._iSpeed;
+	        if (this.ground1.x <= -2040)
+	            this.ground1.x = 2460;
+	        else if (this.ground2.x <= -2040)
+	            this.ground2.x = 2460;
+	        else if (this.ground3.x <= -2040)
+	            this.ground3.x = 2460;
+	        this.mountains1.x -= this._iSpeed2;
+	        this.mountains2.x -= this._iSpeed2;
+	        this.mountains3.x -= this._iSpeed2;
+	        if (this.mountains1.x <= -3136)
+	            this.mountains1.x = 3008;
+	        else if (this.mountains2.x <= -3136)
+	            this.mountains2.x = 3008;
+	        else if (this.mountains3.x <= -3136)
+	            this.mountains3.x = 3008;
+	        this.cloud1.x -= this._iSpeed3;
+	        this.cloud2.x -= this._iSpeed3;
+	        this.cloud3.x -= this._iSpeed3;
+	        if (this.cloud1.x <= -3436)
+	            this.cloud1.x = 3158;
+	        else if (this.cloud2.x <= -3436)
+	            this.cloud2.x = 3158;
+	        else if (this.cloud3.x <= -3436)
+	            this.cloud3.x = 3158;
+	    }
+	}
+
+	class MainRole extends Laya.Script {
+	    constructor() { super(); }
+	    onAwake() {
+	        this._sp = this.owner;
+	        this._rigidbody = this.owner.getComponent(Laya.RigidBody);
+	        this.Reset();
+	    }
+	    onTriggerEnter(other, self, contact) {
+	        let sp = other.owner;
+	        if (sp.name == "Top")
+	            return;
+	        this.RigidBodyEnable(false);
+	        this._stopCbHandler.run();
+	        if (sp.name == "Bottom")
+	            return;
+	        sp.destroy();
+	    }
+	    Init(stopCbHandler) {
+	        this._stopCbHandler = stopCbHandler;
+	    }
+	    Reset() {
+	        this._sp.x = 878;
+	        this._sp.y = 491;
+	        this.RigidBodyEnable(false);
+	    }
+	    RigidBodyEnable(bEnable) {
+	        this._rigidbody.enabled = bEnable;
+	    }
+	    Up() {
+	        this._rigidbody.setVelocity({ x: 0, y: -12 });
+	    }
+	}
+
+	class BulletControl extends Laya.Script {
+	    constructor() { super(); }
+	    static GetInst() {
+	        return BulletControl._inst;
+	    }
+	    onAwake() {
+	        BulletControl._inst = this;
+	    }
+	    PopBulletA() {
+	        let bullet = Laya.Pool.getItemByCreateFun("bulletA", this.bulletPrefabA.create, this.bulletPrefabA);
+	        this.bulletRoot.addChild(bullet);
+	        return bullet;
 	    }
 	}
 
@@ -34,66 +105,55 @@
 	        this.enabled = true;
 	    }
 	    Stop() {
+	        this._sp.x = -10000;
+	        this._sp.y = 0;
 	        this.enabled = false;
 	        Laya.Pool.recover("bulletA", this._sp);
 	    }
 	}
 
-	class MainRole extends Laya.Script {
-	    constructor() { super(); }
-	    onAwake() {
-	        this._rigidbody = this.owner.getComponent(Laya.RigidBody);
-	        this.RigidBodyEnable(false);
-	    }
-	    onTriggerEnter(other, self, contact) {
-	        this.RigidBodyEnable(false);
-	        this._stopCbHandler.run();
-	        let sp = other.owner;
-	        if (sp.name == "BulletA") {
-	            sp.visible = false;
-	            sp.getComponent(BulletA).Stop();
-	        }
-	    }
-	    Init(stopCbHandler) {
-	        this._stopCbHandler = stopCbHandler;
-	    }
-	    RigidBodyEnable(bEnable) {
-	        this._rigidbody.enabled = bEnable;
-	    }
-	    Up() {
-	        this._rigidbody.setVelocity({ x: 0, y: -10 });
-	    }
-	}
-
-	class BulletControl extends Laya.Script {
-	    constructor() { super(); }
-	    static GetInst() {
-	        return BulletControl._inst;
-	    }
-	    onAwake() {
-	        BulletControl._inst = this;
-	    }
-	    PopBulletA() {
-	        let bullet = Laya.Pool.getItemByCreateFun("bulletA", this.bulletPrefabA.create, this.bulletPrefabA);
-	        this.bulletRoot.addChild(bullet);
-	        return bullet;
-	    }
-	}
-
-	class EnemyA extends Laya.Script {
+	class Enemy extends Laya.Script {
 	    constructor() { super(); }
 	    onAwake() {
 	        this._sp = this.owner;
 	    }
-	    Move(fromX, fromY, toX, toY) {
-	        this._sp.x = fromX;
-	        this._sp.y = fromY;
-	        Laya.Tween.to(this._sp, { x: toX, y: toY }, 3000, Laya.Ease.linearNone, Laya.Handler.create(this, this.MoveCompleted));
+	    Show(scaleX, fromX, fromY, toX, toY, during) {
+	        this._sp.scaleX = scaleX;
+	        this._sp.x = this._ifromX = fromX;
+	        this._sp.y = this._ifromY = fromY;
+	        Laya.Tween.to(this._sp, { x: toX, y: toY }, during, Laya.Ease.linearNone, Laya.Handler.create(this, this.ShowCompleted));
 	    }
-	    MoveCompleted() {
+	    ShowCompleted() { }
+	}
+
+	class EnemyA extends Enemy {
+	    Back() {
+	        Laya.Tween.to(this._sp, { x: this._ifromX, y: this._ifromY }, 1500, Laya.Ease.linearNone, Laya.Handler.create(this, this.BackCompleted));
+	    }
+	    BackCompleted() {
+	        Laya.Pool.recover("EnemyA", this._sp);
+	    }
+	    ShowCompleted() {
+	        this._iTimes1 = 0;
+	        this._iTimes2 = 0;
+	        Laya.timer.loop(500, this, this.Shoot);
+	    }
+	    Shoot() {
+	        Laya.timer.loop(100, this, this._Shoot);
+	        if (++this._iTimes1 > 1) {
+	            Laya.timer.clear(this, this.Shoot);
+	            this._iTimes1 = 0;
+	            this.Back();
+	        }
+	    }
+	    _Shoot() {
 	        let bulletSp = BulletControl.GetInst().PopBulletA();
 	        let bullet = bulletSp.getComponent(BulletA);
-	        bullet.Excute(this._sp.x + 153, this._sp.y + 61, 10);
+	        bullet.Excute(this._sp.x + 153, this._sp.y + 61, 20);
+	        if (++this._iTimes2 > 2) {
+	            Laya.timer.clear(this, this._Shoot);
+	            this._iTimes2 = 0;
+	        }
 	    }
 	}
 
@@ -295,6 +355,12 @@
 	    }
 	}
 
+	class EnemyB extends Enemy {
+	    ShowCompleted() {
+	        Laya.Pool.recover("EnemyB", this._sp);
+	    }
+	}
+
 	var Event = Laya.Event;
 	class GameControl extends Laya.Script {
 	    constructor() {
@@ -305,14 +371,14 @@
 	        this._t = 0;
 	    }
 	    onAwake() {
-	        Laya.stage.alignV = "middle";
-	        Laya.stage.alignH = "center";
+	        this.restartBtn.visible = false;
 	        Laya.loader.load("cfg/cfg.bin", Laya.Handler.create(this, this.OnConfigComplete), null, Laya.Loader.BUFFER);
 	    }
 	    OnConfigComplete(buff) {
 	        ConfigData.ParseConfig(buff);
 	        this._enmeyTbl = ConfigData.GetTable("Enemy_Client");
 	        this.startBtn.clickHandler = new Laya.Handler(this, this.onStartBtnClick);
+	        this.restartBtn.clickHandler = new Laya.Handler(this, this.onRestartBtnClick);
 	        this.tapSp.on(Event.MOUSE_DOWN, this, this.tapSpMouseHandler);
 	        this.mainRole = this.mainRoleSp.getComponent(MainRole);
 	        this.background = this.backgroundSp.getComponent(Background);
@@ -330,8 +396,9 @@
 	            }
 	        }
 	    }
-	    Start() {
-	        this.startBtn.visible = false;
+	    Init() {
+	        this.mainRole.Reset();
+	        this._iDistance = 0;
 	        this._iSpeed = 5;
 	        this.mainRole.RigidBodyEnable(true);
 	        this.background.SetSpeed(this._iSpeed);
@@ -339,9 +406,15 @@
 	    }
 	    Stop() {
 	        this._bRunning = false;
+	        this.restartBtn.visible = true;
 	    }
 	    onStartBtnClick() {
-	        this.Start();
+	        this.startBtn.visible = false;
+	        this.Init();
+	    }
+	    onRestartBtnClick() {
+	        this.restartBtn.visible = false;
+	        this.Init();
 	    }
 	    tapSpMouseHandler(e) {
 	        switch (e.type) {
@@ -356,10 +429,18 @@
 	            let jsonStr = this._enmeyTbl.GetValue(key, "Enemy");
 	            let arr = JSON.parse(jsonStr);
 	            for (let i = 0; i < arr.length; ++i) {
-	                let enemyASp = Laya.Pool.getItemByCreateFun("enemyA", this.enemyPrefabA.create, this.enemyPrefabA);
-	                this.enemyRoot.addChild(enemyASp);
-	                let enemyA = enemyASp.getComponent(EnemyA);
-	                enemyA.Move(arr[i][1], arr[i][2], arr[i][3], arr[i][4]);
+	                if (arr[i][0] == "EnemyA") {
+	                    let sp = Laya.Pool.getItemByCreateFun(arr[i][0], this.enemyPrefA.create, this.enemyPrefA);
+	                    this.enemyRoot.addChild(sp);
+	                    let enemy = sp.getComponent(EnemyA);
+	                    enemy.Show(arr[i][1], arr[i][2], arr[i][3], arr[i][4], arr[i][5], arr[i][6]);
+	                }
+	                else if (arr[i][0] == "EnemyB") {
+	                    let sp = Laya.Pool.getItemByCreateFun(arr[i][0], this.enemyPrefB.create, this.enemyPrefB);
+	                    this.enemyRoot.addChild(sp);
+	                    let enemy = sp.getComponent(EnemyB);
+	                    enemy.Show(arr[i][1], arr[i][2], arr[i][3], arr[i][4], arr[i][5], arr[i][6]);
+	                }
 	            }
 	        }
 	    }
@@ -376,6 +457,7 @@
 	        reg("script/MainRole.ts", MainRole);
 	        reg("script/BulletA.ts", BulletA);
 	        reg("script/EnemyA.ts", EnemyA);
+	        reg("script/EnemyB.ts", EnemyB);
 	    }
 	}
 	GameConfig.width = 1920;
@@ -386,7 +468,7 @@
 	GameConfig.alignH = "center";
 	GameConfig.startScene = "MainScene.scene";
 	GameConfig.sceneRoot = "";
-	GameConfig.debug = true;
+	GameConfig.debug = false;
 	GameConfig.stat = false;
 	GameConfig.physicsDebug = false;
 	GameConfig.exportSceneToJson = true;
@@ -400,7 +482,7 @@
 	            Laya.init(GameConfig.width, GameConfig.height, Laya["WebGL"]);
 	        Laya["Physics"] && Laya["Physics"].enable();
 	        Laya["DebugPanel"] && Laya["DebugPanel"].enable();
-	        Laya.stage.scaleMode = GameConfig.scaleMode;;
+	        Laya.stage.scaleMode = GameConfig.scaleMode;
 	        Laya.stage.screenMode = GameConfig.screenMode;
 	        Laya.stage.alignV = GameConfig.alignV;
 	        Laya.stage.alignH = GameConfig.alignH;
@@ -418,7 +500,28 @@
 	        Laya.AtlasInfoManager.enable("fileconfig.json", Laya.Handler.create(this, this.onConfigLoaded));
 	    }
 	    onConfigLoaded() {
-	        GameConfig.startScene && Laya.Scene.open(GameConfig.startScene);
+	        GameConfig.startScene && Laya.Scene.open(GameConfig.startScene, true, null, Laya.Handler.create(this, (s) => {
+	            this.resize();
+	        }));
+	        Laya.stage.on(Laya.Event.RESIZE, this, this.resize);
+	    }
+	    resize() {
+	        let w = GameConfig.width;
+	        let h = GameConfig.height;
+	        switch (GameConfig.scaleMode) {
+	            case "fixedwidth":
+	                let screen_wh_scale = Laya.Browser.width / Laya.Browser.height;
+	                h = GameConfig.width / screen_wh_scale;
+	                break;
+	            case "fixedheight":
+	                let screen_hw_scale = Laya.Browser.height / Laya.Browser.width;
+	                w = GameConfig.height / screen_hw_scale;
+	                Laya.Scene.unDestroyedScenes.forEach(element => {
+	                    let s = element;
+	                    s.x = (w - GameConfig.width) / 2;
+	                });
+	                break;
+	        }
 	    }
 	}
 	new Main();

@@ -28,6 +28,8 @@ export default class BulletA extends Laya.Script
 
 	public Stop(): void
 	{
+		this._sp.x = -10000;
+		this._sp.y = 0;
 		this.enabled = false;
 		Laya.Pool.recover("bulletA", this._sp);
 	}

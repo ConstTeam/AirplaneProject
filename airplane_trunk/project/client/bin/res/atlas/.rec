@@ -39,28 +39,33 @@ P 5FD17798 vscroll.png
 P DDDDFB9E vslider$bar.png
 P 01BAE7F5 vslider.png
 D texture
-R 11002D42 6.png
+D texture/background
+P 59276197 farground_mountains.png
+P 6AF40F01 foreground_mountains.png
+P 55DF99C8 mid_ground_cloud_1.png
+P 7B115B13 sky_color.png
+P 0C711DA0 sky_color_top.png
 D texture/plane_1
-R 9DC55CAA plane_1_blue.png
-R 934C196A plane_1_pink.png
-R 5FDF95D2 plane_1_red.png
-R C530173D plane_1_yellow.png
+P 14C764A9 plane_1_blue.png
+P E57A898F plane_1_pink.png
+P 53B54595 plane_1_red.png
+P 42AE2B86 plane_1_yellow.png
 D texture/plane_2
-R 7B611A21 plane_2_blue.png
-R 85E75F01 plane_2_green.png
-R EC60025B plane_2_red.png
-R 59976FFE plane_2_yellow.png
+P 1628DCA8 plane_2_blue.png
+P ABC997B7 plane_2_green.png
+P 902AA67C plane_2_red.png
+P 1C55B384 plane_2_yellow.png
 D texture/plane_3
-R 66FE0234 plane_3_blue.png
-R 75645F3E plane_3_green.png
-R C287ED41 plane_3_red.png
-R F7FACB98 plane_3_yellow.png
+P 32912734 plane_3_blue.png
+P 7B258C98 plane_3_green.png
+P 287DBCFD plane_3_red.png
+P ED56238A plane_3_yellow.png
 D texture/torpedo
-P F56F69BF fire_ball_1.png
-P EC535F66 fire_ball_blue.png
-P 27D4C4A6 fire_ball_pink.png
-P 6E659B96 torpedo.png
-P 775028DF torpedo_black.png
-P 43024960 torpedo_flame.png
-P 6C9A2DEE torpedo_flame_1.png
-P B9D75715 torpedo_flame_2.png
+P CE5E4287 fire_ball_1.png
+P 16634520 fire_ball_blue.png
+P 56E5DC8B fire_ball_pink.png
+P 2BAC5383 torpedo.png
+P 6FED2EB4 torpedo_black.png
+P 0B19A40B torpedo_flame.png
+P 75F567CE torpedo_flame_1.png
+P DDC62AEE torpedo_flame_2.png

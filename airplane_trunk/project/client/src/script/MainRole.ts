@@ -2,6 +2,7 @@ import BulletA from "./BulletA";
 
 export default class MainRole extends Laya.Script
 {
+	private _sp: Laya.Sprite;
 	private _rigidbody: Laya.RigidBody;
 	private _stopCbHandler: Laya.Handler;
 
@@ -9,25 +10,35 @@ export default class MainRole extends Laya.Script
 	
 	onAwake(): void
 	{
+		this._sp = this.owner as Laya.Sprite;
 		this._rigidbody = this.owner.getComponent(Laya.RigidBody);
-		this.RigidBodyEnable(false);
+		this.Reset();
 	}
 
 	onTriggerEnter(other:any, self:any, contact:any): void
 	{
+		let sp: Laya.Sprite = other.owner as Laya.Sprite;
+		if(sp.name == "Top")
+			return;
+		
 		this.RigidBodyEnable(false);
 		this._stopCbHandler.run();
-		let sp: Laya.Sprite = other.owner as Laya.Sprite;
-		if(sp.name == "BulletA")
-		{
-			sp.visible = false;
-			sp.getComponent(BulletA).Stop();
-		}
+		if(sp.name == "Bottom")
+			return;
+		
+		sp.destroy();
 	}
 
 	public Init(stopCbHandler: Laya.Handler): void
 	{
 		this._stopCbHandler = stopCbHandler;
+	}
+
+	public Reset(): void
+	{
+		this._sp.x = 878;
+		this._sp.y = 491;
+		this.RigidBodyEnable(false);
 	}
 
 	public RigidBodyEnable(bEnable: boolean): void
@@ -37,6 +48,6 @@ export default class MainRole extends Laya.Script
 
 	public Up(): void
 	{
-		this._rigidbody.setVelocity({x: 0, y: -10});
+		this._rigidbody.setVelocity({x: 0, y: -12});
 	}
 }

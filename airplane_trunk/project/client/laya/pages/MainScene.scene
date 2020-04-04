@@ -2,11 +2,11 @@
     "x":0,
     "type":"Scene",
     "selectedBox":27,
-    "selecteID":28,
+    "selecteID":100,
     "searchKey":"Scene",
     "props":{"x":0,"width":1920,"sceneColor":"#000000","height":1080},
     "nodeParent":-1,
-    "maxID":76,
+    "maxID":110,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -21,7 +21,7 @@
             "source":"src/script/GameControl.ts",
             "searchKey":"Script,GameControl",
             "removeAble":true,
-            "props":{"y":0,"x":0,"tapSp":"@node:23","startSp":"@node:35","startBtn":"@node:38","sceneRoot":"@node:42","mainRoleSp":"@node:24","enemyRoot":"@node:49","enemyPrefabA":"@Prefab:prefab/EnemyA.prefab","distanceText":"@node:32","backgroundSp":"@node:27","background":"@node:27"},
+            "props":{"y":0,"x":0,"tapSp":"@node:23","startSp":"@node:35","startBtn":"@node:38","sceneRoot":"@node:42","restartBtn":"@node:88","mainRoleSp":"@node:24","enemyRoot":"@node:49","enemyPrefabA":"@Prefab:prefab/EnemyA.prefab","enemyPrefB":"@Prefab:prefab/EnemyB.prefab","enemyPrefA":"@Prefab:prefab/EnemyA.prefab","distanceText":"@node:32","backgroundSp":"@node:27","background":"@node:27"},
             "nodeParent":2,
             "label":"GameControl",
             "isDirectory":false,
@@ -52,7 +52,7 @@
             "x":15,
             "type":"Sprite",
             "searchKey":"Sprite,SceneRoot",
-            "props":{"y":0,"x":0,"visible":true,"name":"SceneRoot"},
+            "props":{"y":0,"x":0,"width":1920,"visible":true,"name":"SceneRoot","height":1080},
             "nodeParent":2,
             "label":"SceneRoot",
             "isOpen":true,
@@ -65,7 +65,7 @@
                     "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite,Backgroud",
-                    "props":{"y":0,"x":0,"visible":true,"scaleY":1,"scaleX":1,"name":"Backgroud"},
+                    "props":{"y":0,"x":0,"width":1920,"visible":true,"scaleY":1,"scaleX":1,"name":"Backgroud","height":1080},
                     "nodeParent":42,
                     "label":"Backgroud",
                     "isOpen":true,
@@ -81,7 +81,7 @@
                             "source":"src/script/Background.ts",
                             "searchKey":"Script,Background",
                             "removeAble":true,
-                            "props":{"y":0,"x":0,"distanceText":"@node:32","bg2":"@node:29","bg1":"@node:28","DistanceText":"@node:32"},
+                            "props":{"y":0,"x":0,"mountains3":"@node:84","mountains2":"@node:83","mountains1":"@node:82","ground3":"@node:87","ground2":"@node:86","ground1":"@node:85","distanceText":"@node:32","cloud3":"@node:80","cloud2":"@node:79","cloud1":"@node:78","bg2":"@node:29","bg1":"@node:28","DistanceText":"@node:32"},
                             "nodeParent":27,
                             "label":"Background",
                             "isDirectory":false,
@@ -95,32 +95,230 @@
                         {
                             "x":45,
                             "type":"Sprite",
-                            "searchKey":"Sprite,Bg1",
-                            "props":{"y":-100,"x":-1280,"texture":"texture/6.png","scaleY":2.5,"scaleX":2.5,"name":"Bg1"},
+                            "searchKey":"Sprite,Top",
+                            "props":{"y":-290,"x":-540,"width":3000,"texture":"texture/background/sky_color.png","name":"Top","height":300,"alpha":0},
                             "nodeParent":27,
-                            "label":"Bg1",
-                            "isDirectory":false,
+                            "label":"Top",
+                            "isOpen":null,
+                            "isDirectory":true,
                             "isAniNode":true,
-                            "hasChild":false,
-                            "compId":28,
+                            "hasChild":true,
+                            "compId":100,
                             "child":[
-                                ],
-                            "$HIDDEN":false
+                                {
+                                    "type":"BoxCollider",
+                                    "switchAble":true,
+                                    "searchKey":"BoxCollider",
+                                    "removeAble":true,
+                                    "props":{"width":3000,"height":300},
+                                    "nodeParent":100,
+                                    "label":"BoxCollider",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":108,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "type":"RigidBody",
+                                    "switchAble":true,
+                                    "searchKey":"RigidBody",
+                                    "removeAble":true,
+                                    "props":{"type":"static"},
+                                    "nodeParent":100,
+                                    "label":"RigidBody",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":109,
+                                    "child":[
+                                        ]
+                                }]
                         },
                         {
                             "x":45,
                             "type":"Sprite",
-                            "searchKey":"Sprite,Bg2",
-                            "props":{"y":-100,"x":1280,"texture":"texture/6.png","scaleY":2.5,"scaleX":2.5,"name":"Bg2"},
+                            "searchKey":"Sprite,Bottom",
+                            "props":{"y":1020,"x":-540,"width":3000,"texture":"texture/background/sky_color_top.png","name":"Bottom","height":300,"alpha":0},
                             "nodeParent":27,
-                            "label":"Bg2",
+                            "label":"Bottom",
+                            "isOpen":null,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":101,
+                            "child":[
+                                {
+                                    "type":"BoxCollider",
+                                    "switchAble":true,
+                                    "searchKey":"BoxCollider",
+                                    "removeAble":true,
+                                    "props":{"width":3000,"height":300},
+                                    "nodeParent":101,
+                                    "label":"BoxCollider",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":106,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "type":"RigidBody",
+                                    "switchAble":true,
+                                    "searchKey":"RigidBody",
+                                    "removeAble":true,
+                                    "props":{"type":"static"},
+                                    "nodeParent":101,
+                                    "label":"RigidBody",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":107,
+                                    "child":[
+                                        ]
+                                }]
+                        },
+                        {
+                            "x":45,
+                            "type":"Sprite",
+                            "searchKey":"Sprite,Sky",
+                            "props":{"y":0,"x":-540,"width":3000,"texture":"texture/background/sky_color.png","name":"Sky","height":960},
+                            "nodeParent":27,
+                            "label":"Sky",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
-                            "compId":29,
+                            "compId":76,
                             "child":[
-                                ],
-                            "$HIDDEN":false
+                                ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Sprite",
+                            "searchKey":"Sprite,FarCloud1",
+                            "props":{"y":80,"x":-1238,"width":2198,"texture":"texture/background/mid_ground_cloud_1.png","name":"FarCloud1","height":1024},
+                            "nodeParent":27,
+                            "label":"FarCloud1",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":78,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Sprite",
+                            "searchKey":"Sprite,FarCloud2",
+                            "props":{"y":80,"x":960,"width":2198,"texture":"texture/background/mid_ground_cloud_1.png","name":"FarCloud2","height":1024},
+                            "nodeParent":27,
+                            "label":"FarCloud2",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":79,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Sprite",
+                            "searchKey":"Sprite,FarCloud3",
+                            "props":{"y":80,"x":3158,"width":2198,"texture":"texture/background/mid_ground_cloud_1.png","name":"FarCloud3","height":1024},
+                            "nodeParent":27,
+                            "label":"FarCloud3",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":80,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Sprite",
+                            "searchKey":"Sprite,FarMountains1",
+                            "props":{"y":750,"x":-1088,"width":2048,"texture":"texture/background/farground_mountains.png","name":"FarMountains1","height":330},
+                            "nodeParent":27,
+                            "label":"FarMountains1",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":82,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Sprite",
+                            "searchKey":"Sprite,FarMountains2",
+                            "props":{"y":750,"x":960,"width":2048,"texture":"texture/background/farground_mountains.png","name":"FarMountains2","height":330},
+                            "nodeParent":27,
+                            "label":"FarMountains2",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":83,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Sprite",
+                            "searchKey":"Sprite,FarMountains3",
+                            "props":{"y":750,"x":3008,"width":2048,"texture":"texture/background/farground_mountains.png","name":"FarMountains3","height":330},
+                            "nodeParent":27,
+                            "label":"FarMountains3",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":84,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Sprite",
+                            "searchKey":"Sprite,Ground1",
+                            "props":{"y":999,"x":-540,"width":1500,"texture":"texture/background/foreground_mountains.png","name":"Ground1","height":81},
+                            "nodeParent":27,
+                            "label":"Ground1",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":85,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Sprite",
+                            "searchKey":"Sprite,Ground2",
+                            "props":{"y":999,"x":960,"width":1500,"texture":"texture/background/foreground_mountains.png","name":"Ground2","height":81},
+                            "nodeParent":27,
+                            "label":"Ground2",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":86,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Sprite",
+                            "searchKey":"Sprite,Ground3",
+                            "props":{"y":999,"x":2460,"width":1500,"texture":"texture/background/foreground_mountains.png","name":"Ground3","height":81},
+                            "nodeParent":27,
+                            "label":"Ground3",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":87,
+                            "child":[
+                                ]
                         }],
                     "$HIDDEN":false
                 },
@@ -128,21 +326,22 @@
                     "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite,MainRole",
-                    "props":{"y":491,"x":878,"texture":"texture/plane_1/plane_1_yellow.png","scaleY":0.2,"scaleX":0.2,"name":"MainRole"},
+                    "props":{"y":491,"x":878,"texture":"texture/plane_1/plane_1_yellow.png","name":"MainRole"},
                     "nodeParent":42,
                     "label":"MainRole",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":24,
                     "child":[
                         {
+                            "x":45,
                             "type":"BoxCollider",
                             "switchAble":true,
                             "searchKey":"BoxCollider",
                             "removeAble":true,
-                            "props":{"y":0,"x":0,"width":817,"isSensor":true,"height":483,"enabled":true},
+                            "props":{"y":12,"x":12,"width":137,"height":76,"enabled":true},
                             "nodeParent":24,
                             "label":"BoxCollider",
                             "isDirectory":false,
@@ -153,6 +352,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"RigidBody",
                             "switchAble":true,
                             "searchKey":"RigidBody",
@@ -168,6 +368,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Script",
                             "switchAble":true,
                             "source":"src/script/MainRole.ts",
@@ -215,43 +416,27 @@
                     "child":[
                         ],
                     "$HIDDEN":false
-                },
-                {
-                    "x":30,
-                    "type":"Sprite",
-                    "searchKey":"Sprite,TapSp",
-                    "props":{"y":-460,"x":-540,"width":3000,"name":"TapSp","height":2000,"alpha":0},
-                    "nodeParent":42,
-                    "label":"TapSp",
-                    "isDirectory":false,
-                    "isAniNode":true,
-                    "hasChild":false,
-                    "compId":23,
-                    "child":[
-                        ],
-                    "$HIDDEN":false
                 }],
             "$HIDDEN":false
         },
         {
             "x":15,
-            "type":"Sprite",
-            "searchKey":"Sprite,UIRoot",
-            "props":{"name":"UIRoot","alpha":1},
+            "type":"Panel",
+            "searchKey":"Panel,UIRoot",
+            "props":{"top":0,"right":0,"name":"UIRoot","left":0,"bottom":0},
             "nodeParent":2,
             "label":"UIRoot",
-            "isOpen":true,
+            "isOpen":false,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
-            "compId":43,
+            "compId":81,
             "child":[
                 {
-                    "x":30,
                     "type":"Text",
                     "searchKey":"Text,DistanceText",
                     "props":{"y":0,"x":0,"width":300,"valign":"middle","text":"------","name":"DistanceText","height":80,"fontSize":60,"color":"#ffffff","align":"center"},
-                    "nodeParent":43,
+                    "nodeParent":81,
                     "label":"DistanceText",
                     "isDirectory":false,
                     "isAniNode":true,
@@ -261,13 +446,39 @@
                         ]
                 },
                 {
-                    "x":30,
+                    "type":"Sprite",
+                    "searchKey":"Sprite,TapSp",
+                    "props":{"y":-460,"x":-540,"width":3000,"name":"TapSp","height":2000,"alpha":0},
+                    "nodeParent":81,
+                    "label":"TapSp",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":23,
+                    "child":[
+                        ],
+                    "$HIDDEN":false
+                },
+                {
+                    "type":"Button",
+                    "searchKey":"Button,RestartBtn",
+                    "props":{"y":780,"x":835,"width":280,"skin":"comp/button.png","name":"RestartBtn","labelSize":60,"labelColors":"#ffffff","label":"Restart","height":100},
+                    "nodeParent":81,
+                    "label":"RestartBtn",
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":88,
+                    "child":[
+                        ]
+                },
+                {
                     "type":"Button",
                     "searchKey":"Button,StartBtn",
                     "props":{"y":-460,"x":-540,"width":3000,"name":"StartBtn","labelSize":200,"height":2000},
-                    "nodeParent":43,
+                    "nodeParent":81,
                     "label":"StartBtn",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
@@ -286,8 +497,7 @@
                             "child":[
                                 ]
                         }]
-                }],
-            "$HIDDEN":false
+                }]
         }],
     "animations":[
         {

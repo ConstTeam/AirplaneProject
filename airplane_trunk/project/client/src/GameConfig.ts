@@ -5,6 +5,7 @@ import Background from "./script/Background"
 import MainRole from "./script/MainRole"
 import BulletA from "./script/BulletA"
 import EnemyA from "./script/EnemyA"
+import EnemyB from "./script/EnemyB"
 /*
 * 游戏初始化配置;
 */
@@ -30,6 +31,7 @@ export default class GameConfig{
         reg("script/MainRole.ts",MainRole);
         reg("script/BulletA.ts",BulletA);
         reg("script/EnemyA.ts",EnemyA);
+        reg("script/EnemyB.ts",EnemyB);
     }
 }
 GameConfig.init();
