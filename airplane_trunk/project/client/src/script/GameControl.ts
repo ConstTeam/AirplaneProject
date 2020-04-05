@@ -47,6 +47,7 @@ export default class GameControl extends Laya.Script
 	onAwake(): void
 	{
 		this.restartBtn.visible = false;
+		this._enemyDict = {};
 		this._enemyDict["EnemyA"] = this.enemyPrefA;
 		this._enemyDict["EnemyB"] = this.enemyPrefB;
 		this._enemyDict["EnemyC"] = this.enemyPrefC;
@@ -136,6 +137,10 @@ export default class GameControl extends Laya.Script
 			for(let i: number = 0; i < arr.length; ++i)
 			{	
 				enemyName = arr[i][0];
+				if(enemyName == "EnemyC")
+				{
+					let a = 1;
+				}
 				sp = Laya.Pool.getItemByCreateFun(enemyName, this._enemyDict[enemyName].create, this._enemyDict[enemyName]);	
 				this.enemyRoot.addChild(sp);
 				enemy = sp.getComponent(Enemy);

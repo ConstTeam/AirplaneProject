@@ -6,6 +6,8 @@ export default class BulletControl extends Laya.Script
 	private bulletPrefabA: Laya.Prefab;
 	/** @prop {name: bulletPrefabB, type: Prefab} */
 	private bulletPrefabB: Laya.Prefab;
+	/** @prop {name: bulletPrefabC, type: Prefab} */
+	private bulletPrefabC: Laya.Prefab;
 
 	private _bulletDict: { [key: string]: Laya.Prefab; };
 
@@ -20,8 +22,10 @@ export default class BulletControl extends Laya.Script
 	onAwake(): void
 	{
 		BulletControl._inst = this;
+		this._bulletDict = {};
 		this._bulletDict["BulletA"] = this.bulletPrefabA;
 		this._bulletDict["BulletB"] = this.bulletPrefabB;
+		this._bulletDict["BulletC"] = this.bulletPrefabC;
 	}
 
 	public PopBullet(bulletName: string): Laya.Sprite
