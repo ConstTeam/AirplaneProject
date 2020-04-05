@@ -1,4 +1,4 @@
-import BulletA from "./BulletA";
+import BulletA from "./bullet/BulletA";
 
 export default class MainRole extends Laya.Script
 {

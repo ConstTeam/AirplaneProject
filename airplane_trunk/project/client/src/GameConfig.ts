@@ -3,9 +3,12 @@ import GameControl from "./script/GameControl"
 import BulletControl from "./script/BulletControl"
 import Background from "./script/Background"
 import MainRole from "./script/MainRole"
-import BulletA from "./script/BulletA"
-import EnemyA from "./script/EnemyA"
-import EnemyB from "./script/EnemyB"
+import BulletA from "./script/bullet/BulletA"
+import BulletB from "./script/bullet/BulletB"
+import BulletC from "./script/bullet/BulletC"
+import EnemyA from "./script/enemy/EnemyA"
+import EnemyB from "./script/enemy/EnemyB"
+import EnemyC from "./script/enemy/EnemyC"
 /*
 * 游戏初始化配置;
 */
@@ -29,9 +32,12 @@ export default class GameConfig{
         reg("script/BulletControl.ts",BulletControl);
         reg("script/Background.ts",Background);
         reg("script/MainRole.ts",MainRole);
-        reg("script/BulletA.ts",BulletA);
-        reg("script/EnemyA.ts",EnemyA);
-        reg("script/EnemyB.ts",EnemyB);
+        reg("script/bullet/BulletA.ts",BulletA);
+        reg("script/bullet/BulletB.ts",BulletB);
+        reg("script/bullet/BulletC.ts",BulletC);
+        reg("script/enemy/EnemyA.ts",EnemyA);
+        reg("script/enemy/EnemyB.ts",EnemyB);
+        reg("script/enemy/EnemyC.ts",EnemyC);
     }
 }
 GameConfig.init();

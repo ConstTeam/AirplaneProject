@@ -1,11 +1,10 @@
 import Sprite = Laya.Sprite;
 import Event = Laya.Event;
-import Background from "./Background"
-import MainRole from "./MainRole"
-import EnemyA from "./EnemyA"
 import ConfigData from "./data/ConfigData";
 import ConfigTable from "./data/ConfigTable";
-import EnemyB from "./EnemyB";
+import Background from "./Background";
+import MainRole from "./MainRole";
+import Enemy from "./enemy/Enemy";
 
 export default class GameControl extends Laya.Script
 {
@@ -30,7 +29,8 @@ export default class GameControl extends Laya.Script
 	private enemyPrefA: Laya.Prefab;
 	/** @prop {name: enemyPrefB, type: Prefab} */
 	private enemyPrefB: Laya.Prefab;
-	
+	/** @prop {name: enemyPrefC, type: Prefab} */
+	private enemyPrefC: Laya.Prefab;	
 
 	private mainRole: MainRole;
 	private background: Background;
@@ -40,12 +40,17 @@ export default class GameControl extends Laya.Script
 	private _iDistance: number = 0;
 	private _t: number = 0;
 	private _enmeyTbl: ConfigTable;
+	private _enemyDict: { [key: string]: Laya.Prefab; };
 
 	constructor() { super(); }
 
 	onAwake(): void
 	{
 		this.restartBtn.visible = false;
+		this._enemyDict["EnemyA"] = this.enemyPrefA;
+		this._enemyDict["EnemyB"] = this.enemyPrefB;
+		this._enemyDict["EnemyC"] = this.enemyPrefC;
+
 		Laya.loader.load("cfg/cfg.bin", Laya.Handler.create(this, this.OnConfigComplete), null, Laya.Loader.BUFFER);
 	}
 
@@ -125,23 +130,16 @@ export default class GameControl extends Laya.Script
 		{
 			let jsonStr: string = this._enmeyTbl.GetValue(key, "Enemy");
 			let arr: any[] = JSON.parse(jsonStr);
+			let sp: Laya.Sprite;
+			let enemyName: string;
+			let enemy: Enemy;
 			for(let i: number = 0; i < arr.length; ++i)
 			{	
-				if(arr[i][0] == "EnemyA")
-				{
-					let sp: Laya.Sprite = Laya.Pool.getItemByCreateFun(arr[i][0], this.enemyPrefA.create, this.enemyPrefA);
-					this.enemyRoot.addChild(sp);
-					let enemy: EnemyA = sp.getComponent(EnemyA);
-					enemy.Show(arr[i][1], arr[i][2], arr[i][3], arr[i][4], arr[i][5], arr[i][6]);
-					
-				}
-				else if(arr[i][0] == "EnemyB")
-				{
-					let sp: Laya.Sprite = Laya.Pool.getItemByCreateFun(arr[i][0], this.enemyPrefB.create, this.enemyPrefB);
-					this.enemyRoot.addChild(sp);
-					let enemy: EnemyB = sp.getComponent(EnemyB);
-					enemy.Show(arr[i][1], arr[i][2], arr[i][3], arr[i][4], arr[i][5], arr[i][6]);
-				}
+				enemyName = arr[i][0];
+				sp = Laya.Pool.getItemByCreateFun(enemyName, this._enemyDict[enemyName].create, this._enemyDict[enemyName]);	
+				this.enemyRoot.addChild(sp);
+				enemy = sp.getComponent(Enemy);
+				enemy.Show(arr[i]);
 			}
 		}
 	}

@@ -1,17 +1,13 @@
-import BulletControl from "./BulletControl";
-import BulletA from "./BulletA";
+import BulletControl from "../BulletControl";
+import BulletA from "../bullet/BulletA";
 import Enemy from "./Enemy";
+import Bullet from "../bullet/Bullet";
 
 export default class EnemyA extends Enemy
 {
 	private Back(): void
 	{
 		Laya.Tween.to(this._sp, {x: this._ifromX, y: this._ifromY}, 1500, Laya.Ease.linearNone, Laya.Handler.create(this, this.BackCompleted));
-	}
-
-	private BackCompleted(): void
-	{
-		Laya.Pool.recover("EnemyA", this._sp);
 	}
 
 	private _iTimes1: number;
@@ -37,9 +33,9 @@ export default class EnemyA extends Enemy
 
 	private _Shoot(): void
 	{
-		let bulletSp: Laya.Sprite = BulletControl.GetInst().PopBulletA();
-		let bullet: BulletA = bulletSp.getComponent(BulletA) as BulletA;
-		bullet.Excute(this._sp.x + 153, this._sp.y + 61, 20);
+		let bulletSp: Laya.Sprite = BulletControl.GetInst().PopBullet("BulletA");
+		let bullet: Bullet = bulletSp.getComponent(Bullet);
+		bullet.Excute("BulletA", this._sp.x + 153, this._sp.y + 61);
 		if(++this._iTimes2 > 2)
 		{
 			Laya.timer.clear(this, this._Shoot);
