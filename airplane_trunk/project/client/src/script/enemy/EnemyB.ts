@@ -20,6 +20,6 @@ export default class EnemyB extends Enemy
 
 	private Back(): void
 	{
-		Laya.Tween.to(this._sp, {x: this._ifromX, y: this._ifromY}, 1500, Laya.Ease.linearNone, Laya.Handler.create(this, this.BackCompleted));
+		Laya.Tween.to(this._sp, {x: this._iFromX, y: this._iFromY}, 1500, Laya.Ease.linearNone, Laya.Handler.create(this, this.BackCompleted));
 	}
 }

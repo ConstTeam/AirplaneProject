@@ -6,8 +6,9 @@ export default class BulletC extends Bullet
 
 	constructor() { super(); }
 
-	onStart(): void
+	onAwake(): void
 	{
+		super.onAwake();
 		this._rigidBody = this.owner.getComponent(Laya.RigidBody);
 		this._rigidBody.enabled = false;
 	}
@@ -16,7 +17,7 @@ export default class BulletC extends Bullet
 	{
 		super.Excute(bulletName, fromX, fromY);
 		this._rigidBody.enabled = true;
-		this._rigidBody.setVelocity({x: 50, y: 0});
+		this._rigidBody.setVelocity({x: 20, y: 0});
 	}
 
 	onTriggerEnter(other:any, self:any, contact:any): void
