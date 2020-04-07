@@ -216,7 +216,7 @@ export default class GameControl extends Laya.Script
 			let groupKey: string = (this._iDistance - this._curGroupDis).toString(); 
 			if(this._curGroupTbl.HasRow(groupKey))
 			{
-				let jsonStr: string = this._curGroupTbl.GetValue(key, "Enemy");
+				let jsonStr: string = this._curGroupTbl.GetValue(groupKey, "Enemy");
 				let arr: any[] = JSON.parse(jsonStr);
 				let sp: Laya.Sprite;
 				let enemyName: string;

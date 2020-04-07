@@ -61,6 +61,7 @@ export default class ConfigData
 					let valueNPos = sConfig.indexOf('\n', this._valuePos);
 					let a: number = 0;
 					let rowData: ConfigRow = new ConfigRow();
+					rowData.AddValue(rowName);
 					this._bFlagEx = true;
 					while(this._bFlagEx)
 					{
