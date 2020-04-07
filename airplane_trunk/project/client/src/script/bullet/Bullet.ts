@@ -1,6 +1,7 @@
 export default class Bullet extends Laya.Script
 {
 	protected _bulletName: string
+	protected _iDirection: number;
 	protected _sp: Laya.Sprite;
 
 	constructor() { super(); }
@@ -10,9 +11,10 @@ export default class Bullet extends Laya.Script
 		this._sp = this.owner as Laya.Sprite;
 	}
 
-	public Excute(bulletName: string, fromX: number, fromY: number): void
+	public Excute(bulletName: string, fromX: number, fromY: number, direction: number): void
 	{
 		this._bulletName = bulletName;
+		this._iDirection = direction;
 		this._sp.x = fromX;
 		this._sp.y = fromY;
 	}

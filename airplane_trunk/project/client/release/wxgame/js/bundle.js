@@ -47,113 +47,43 @@
 	        this.Reset();
 	    }
 	    onTriggerEnter(other, self, contact) {
-	        let sp = other.owner;
-	        if (sp.name == "Top")
+	        if (this._bInvincible)
+	            return;
+	        let otherSp = other.owner;
+	        if (otherSp.name == "Top")
 	            return;
 	        this.RigidBodyEnable(false);
 	        this._stopCbHandler.run();
-	        if (sp.name == "Bottom")
+	        this._explosionSP.x = this._sp.x;
+	        this._explosionSP.y = this._sp.y;
+	        this._explosionAni.play(0, false);
+	        this._sp.x = -10000;
+	        if (otherSp.name == "Bottom")
 	            return;
-	        sp.destroy();
+	        otherSp.destroy();
 	    }
-	    Init(stopCbHandler) {
+	    Init(stopCbHandler, explosionSP, expolsionAni) {
 	        this._stopCbHandler = stopCbHandler;
+	        this._explosionSP = explosionSP;
+	        this._explosionAni = expolsionAni;
 	    }
 	    Reset() {
-	        this._sp.x = 878;
-	        this._sp.y = 491;
+	        this._sp.x = 959;
+	        this._sp.y = 539;
 	        this.RigidBodyEnable(false);
 	    }
 	    RigidBodyEnable(bEnable) {
+	        if (bEnable) {
+	            this._bInvincible = true;
+	            Laya.timer.once(3000, this, this.ClearInvincible);
+	        }
 	        this._rigidbody.enabled = bEnable;
+	    }
+	    ClearInvincible() {
+	        this._bInvincible = false;
 	    }
 	    Up() {
 	        this._rigidbody.setVelocity({ x: 0, y: -12 });
-	    }
-	}
-
-	class BulletControl extends Laya.Script {
-	    constructor() { super(); }
-	    static GetInst() {
-	        return BulletControl._inst;
-	    }
-	    onAwake() {
-	        BulletControl._inst = this;
-	    }
-	    PopBulletA() {
-	        let bullet = Laya.Pool.getItemByCreateFun("bulletA", this.bulletPrefabA.create, this.bulletPrefabA);
-	        this.bulletRoot.addChild(bullet);
-	        return bullet;
-	    }
-	}
-
-	class BulletA extends Laya.Script {
-	    constructor() { super(); }
-	    onAwake() {
-	        this._sp = this.owner;
-	        this.enabled = false;
-	    }
-	    onUpdate() {
-	        this._sp.x += this._iSpeed;
-	        if (this._sp.x >= 3000)
-	            this.Stop();
-	    }
-	    Excute(x, y, speed) {
-	        this._sp.x = x;
-	        this._sp.y = y;
-	        this._iSpeed = speed;
-	        this.enabled = true;
-	    }
-	    Stop() {
-	        this._sp.x = -10000;
-	        this._sp.y = 0;
-	        this.enabled = false;
-	        Laya.Pool.recover("bulletA", this._sp);
-	    }
-	}
-
-	class Enemy extends Laya.Script {
-	    constructor() { super(); }
-	    onAwake() {
-	        this._sp = this.owner;
-	    }
-	    Show(scaleX, fromX, fromY, toX, toY, during) {
-	        this._sp.scaleX = scaleX;
-	        this._sp.x = this._ifromX = fromX;
-	        this._sp.y = this._ifromY = fromY;
-	        Laya.Tween.to(this._sp, { x: toX, y: toY }, during, Laya.Ease.linearNone, Laya.Handler.create(this, this.ShowCompleted));
-	    }
-	    ShowCompleted() { }
-	}
-
-	class EnemyA extends Enemy {
-	    Back() {
-	        Laya.Tween.to(this._sp, { x: this._ifromX, y: this._ifromY }, 1500, Laya.Ease.linearNone, Laya.Handler.create(this, this.BackCompleted));
-	    }
-	    BackCompleted() {
-	        Laya.Pool.recover("EnemyA", this._sp);
-	    }
-	    ShowCompleted() {
-	        this._iTimes1 = 0;
-	        this._iTimes2 = 0;
-	        Laya.timer.loop(500, this, this.Shoot);
-	    }
-	    Shoot() {
-	        Laya.timer.loop(100, this, this._Shoot);
-	        if (++this._iTimes1 > 1) {
-	            Laya.timer.clear(this, this.Shoot);
-	            this._iTimes1 = 0;
-	            this.Back();
-	        }
-	    }
-	    _Shoot() {
-	        let bulletSp = BulletControl.GetInst().PopBulletA();
-	        let bullet = bulletSp.getComponent(BulletA);
-	        bullet.Excute(this._sp.x + 153, this._sp.y + 61, 20);
-	        if (++this._iTimes2 > 2) {
-	            Laya.timer.clear(this, this._Shoot);
-	            this._iTimes2 = 0;
-	        }
 	    }
 	}
 
@@ -355,9 +285,74 @@
 	    }
 	}
 
-	class EnemyB extends Enemy {
+	class PositionMgr {
+	}
+	PositionMgr.LeftX = -500;
+	PositionMgr.RightX = 2420;
+
+	class BulletControl extends Laya.Script {
+	    constructor() { super(); }
+	    static GetInst() {
+	        return BulletControl._inst;
+	    }
+	    onAwake() {
+	        BulletControl._inst = this;
+	        this._bulletDict = {};
+	        this._bulletDict["BulletAL"] = this.bulletPrefabAL;
+	        this._bulletDict["BulletBL"] = this.bulletPrefabBL;
+	        this._bulletDict["BulletCL"] = this.bulletPrefabCL;
+	    }
+	    PopBullet(bulletName) {
+	        let bullet = Laya.Pool.getItemByCreateFun(bulletName, this._bulletDict[bulletName].create, this._bulletDict[bulletName]);
+	        this.bulletRoot.addChild(bullet);
+	        return bullet;
+	    }
+	}
+
+	class Bullet extends Laya.Script {
+	    constructor() { super(); }
+	    onAwake() {
+	        this._sp = this.owner;
+	    }
+	    Excute(bulletName, fromX, fromY, direction) {
+	        this._bulletName = bulletName;
+	        this._iDirection = direction;
+	        this._sp.x = fromX;
+	        this._sp.y = fromY;
+	    }
+	    Stop() {
+	        Laya.Tween.clearAll(this._sp);
+	        this._sp.x = -10000;
+	        this._sp.y = 0;
+	        Laya.Pool.recover(this._bulletName, this._sp);
+	    }
+	}
+
+	class Enemy extends Laya.Script {
+	    constructor() { super(); }
+	    onAwake() {
+	        this._sp = this.owner;
+	    }
+	    Show(info) {
+	        this._enemyName = info[0];
+	        this._iDirection = info[1];
+	        this._sp.x = this._iFromX = this._iDirection == 1 ? PositionMgr.LeftX : PositionMgr.RightX;
+	        this._sp.y = this._iFromY = info[2];
+	        Laya.Tween.to(this._sp, { x: info[3] }, info[4], Laya.Ease.linearNone, Laya.Handler.create(this, this.ShowCompleted));
+	    }
 	    ShowCompleted() {
-	        Laya.Pool.recover("EnemyB", this._sp);
+	        this.BackCompleted();
+	    }
+	    BackCompleted() {
+	        Laya.Tween.clearAll(this._sp);
+	        this._sp.x = -10000;
+	        this._sp.y = 0;
+	        Laya.Pool.recover(this._enemyName, this._sp);
+	    }
+	    BulletExcute(bulletName) {
+	        let bulletSp = BulletControl.GetInst().PopBullet(bulletName);
+	        let bullet = bulletSp.getComponent(Bullet);
+	        bullet.Excute(bulletName, this._sp.x, this._sp.y, this._iDirection);
 	    }
 	}
 
@@ -371,8 +366,36 @@
 	        this._t = 0;
 	    }
 	    onAwake() {
+	        this.startBtn.visible = false;
 	        this.restartBtn.visible = false;
+	        this._enemyDict = {};
+	        this._enemyDict["EnemyAL"] = this.enemyPrefAL;
+	        this._enemyDict["EnemyBL"] = this.enemyPrefBL;
+	        this._enemyDict["EnemyCL"] = this.enemyPrefCL;
+	        this._enemyDict["EnemyZL"] = this.enemyPrefZL;
+	        this._enemyDict["EnemyZR"] = this.enemyPrefZR;
 	        Laya.loader.load("cfg/cfg.bin", Laya.Handler.create(this, this.OnConfigComplete), null, Laya.Loader.BUFFER);
+	        this._bAuto = false;
+	        if (this._bAuto) {
+	            this._clickIndex = 0;
+	            this.setAutoClick();
+	        }
+	    }
+	    setAutoClick() {
+	        this._clickArr =
+	            [
+	                984,
+	                2206,
+	                3165,
+	                3793,
+	                4848,
+	                6100,
+	                6995,
+	                7508,
+	                8130,
+	                9594,
+	                10962
+	            ];
 	    }
 	    OnConfigComplete(buff) {
 	        ConfigData.ParseConfig(buff);
@@ -382,7 +405,17 @@
 	        this.tapSp.on(Event.MOUSE_DOWN, this, this.tapSpMouseHandler);
 	        this.mainRole = this.mainRoleSp.getComponent(MainRole);
 	        this.background = this.backgroundSp.getComponent(Background);
-	        this.mainRole.Init(new Laya.Handler(this, this.Stop));
+	        this.explosionSp.x = -10000;
+	        this.explosionAni = new Laya.Animation();
+	        this.explosionAni.loadAtlas("res/atlas/explosion.atlas", Laya.Handler.create(this, this.ExplosionLoaded));
+	    }
+	    ExplosionLoaded() {
+	        this.explosionSp.addChild(this.explosionAni);
+	        this.explosionSp.scaleX = 2;
+	        this.explosionSp.scaleY = 2;
+	        this.explosionAni.interval = 100;
+	        this.startBtn.visible = true;
+	        this.mainRole.Init(new Laya.Handler(this, this.Stop), this.explosionSp, this.explosionAni);
 	    }
 	    onUpdate() {
 	        if (this._bRunning) {
@@ -393,6 +426,12 @@
 	                this.distanceText.text = (Math.floor(this._iDistance / 100)).toString();
 	                this._t = 0;
 	                this.ShowEnemy();
+	            }
+	            if (this._bAuto) {
+	                if ((new Date().getTime() - this._startTime) >= this._clickArr[this._clickIndex] + 300) {
+	                    this.mainRole.Up();
+	                    ++this._clickIndex;
+	                }
 	            }
 	        }
 	    }
@@ -406,43 +445,152 @@
 	    }
 	    Stop() {
 	        this._bRunning = false;
+	        Laya.timer.once(2000, this, this.ShowRestartBtn);
+	    }
+	    ShowRestartBtn() {
 	        this.restartBtn.visible = true;
 	    }
 	    onStartBtnClick() {
 	        this.startBtn.visible = false;
 	        this.Init();
+	        this._startTime = new Date().getTime();
 	    }
 	    onRestartBtnClick() {
 	        this.restartBtn.visible = false;
 	        this.Init();
 	    }
 	    tapSpMouseHandler(e) {
+	        if (!this._bRunning)
+	            return;
 	        switch (e.type) {
 	            case Event.MOUSE_DOWN:
+	                let t2 = new Date();
+	                console.log(t2.getTime() - this._startTime);
 	                this.mainRole.Up();
 	                break;
 	        }
 	    }
 	    ShowEnemy() {
+	        if (this._iDistance % 800 == 0)
+	            this.ShowEnemyZ();
 	        let key = this._iDistance.toString();
 	        if (this._enmeyTbl.HasRow(key)) {
 	            let jsonStr = this._enmeyTbl.GetValue(key, "Enemy");
 	            let arr = JSON.parse(jsonStr);
+	            let sp;
+	            let enemyName;
+	            let enemy;
 	            for (let i = 0; i < arr.length; ++i) {
-	                if (arr[i][0] == "EnemyA") {
-	                    let sp = Laya.Pool.getItemByCreateFun(arr[i][0], this.enemyPrefA.create, this.enemyPrefA);
-	                    this.enemyRoot.addChild(sp);
-	                    let enemy = sp.getComponent(EnemyA);
-	                    enemy.Show(arr[i][1], arr[i][2], arr[i][3], arr[i][4], arr[i][5], arr[i][6]);
-	                }
-	                else if (arr[i][0] == "EnemyB") {
-	                    let sp = Laya.Pool.getItemByCreateFun(arr[i][0], this.enemyPrefB.create, this.enemyPrefB);
-	                    this.enemyRoot.addChild(sp);
-	                    let enemy = sp.getComponent(EnemyB);
-	                    enemy.Show(arr[i][1], arr[i][2], arr[i][3], arr[i][4], arr[i][5], arr[i][6]);
-	                }
+	                enemyName = arr[i][0];
+	                sp = Laya.Pool.getItemByCreateFun(enemyName, this._enemyDict[enemyName].create, this._enemyDict[enemyName]);
+	                this.enemyRoot.addChild(sp);
+	                enemy = sp.getComponent(Enemy);
+	                enemy.Show(arr[i]);
 	            }
 	        }
+	    }
+	    ShowEnemyZ() {
+	        let enemyName = "EnemyZR";
+	        let sp = Laya.Pool.getItemByCreateFun(enemyName, this._enemyDict[enemyName].create, this._enemyDict[enemyName]);
+	        this.enemyRoot.addChild(sp);
+	        let enemy = sp.getComponent(Enemy);
+	        enemy.Show([enemyName, -1, 0, PositionMgr.LeftX, 3000]);
+	    }
+	}
+
+	class BulletA extends Bullet {
+	    constructor() { super(); }
+	    Excute(bulletName, fromX, fromY, direction) {
+	        super.Excute(bulletName, fromX, fromY, direction);
+	        Laya.Tween.to(this._sp, { x: direction == 1 ? PositionMgr.RightX : PositionMgr.LeftX }, 2000, Laya.Ease.linearNone, Laya.Handler.create(this, this.Stop));
+	    }
+	}
+
+	class BulletB extends Bullet {
+	    constructor() { super(); }
+	    Excute(bulletName, fromX, fromY, direction) {
+	        super.Excute(bulletName, fromX, fromY, direction);
+	        Laya.Tween.to(this._sp, { y: fromY + 100 }, 500, Laya.Ease.linearNone, Laya.Handler.create(this, this.DropCompleted));
+	    }
+	    DropCompleted() {
+	        Laya.timer.once(1000, this, this.Shoot);
+	    }
+	    Shoot() {
+	        Laya.Tween.to(this._sp, { x: this._iDirection == 1 ? PositionMgr.RightX : PositionMgr.LeftX }, 2000, Laya.Ease.linearNone, Laya.Handler.create(this, this.Stop));
+	    }
+	}
+
+	class BulletC extends Bullet {
+	    constructor() { super(); }
+	    onAwake() {
+	        super.onAwake();
+	        this._rigidBody = this.owner.getComponent(Laya.RigidBody);
+	        this._rigidBody.enabled = false;
+	    }
+	    Excute(bulletName, fromX, fromY, direction) {
+	        super.Excute(bulletName, fromX, fromY, direction);
+	        this._rigidBody.enabled = true;
+	        this._rigidBody.setVelocity({ x: direction ? 15 : -15, y: 0 });
+	    }
+	    onTriggerEnter(other, self, contact) {
+	        let sp = other.owner;
+	        if (sp.name == "Bottom") {
+	            this._rigidBody.enabled = false;
+	            this.Stop();
+	        }
+	    }
+	}
+
+	class EnemyA extends Enemy {
+	    Back() {
+	        Laya.Tween.to(this._sp, { x: this._iFromX, y: this._iFromY }, 1500, Laya.Ease.linearNone, Laya.Handler.create(this, this.BackCompleted));
+	    }
+	    ShowCompleted() {
+	        this._iTimes1 = 0;
+	        this._iTimes2 = 0;
+	        Laya.timer.loop(800, this, this.Shoot);
+	    }
+	    Shoot() {
+	        Laya.timer.loop(100, this, this._Shoot);
+	        if (++this._iTimes1 > 1) {
+	            Laya.timer.clear(this, this.Shoot);
+	            this._iTimes1 = 0;
+	            this.Back();
+	        }
+	    }
+	    _Shoot() {
+	        super.BulletExcute(this._iDirection == 1 ? "BulletAL" : "BulletAR");
+	        if (++this._iTimes2 > 2) {
+	            Laya.timer.clear(this, this._Shoot);
+	            this._iTimes2 = 0;
+	        }
+	    }
+	}
+
+	class EnemyB extends Enemy {
+	    ShowCompleted() {
+	        this.Shoot();
+	    }
+	    Shoot() {
+	        super.BulletExcute(this._iDirection == 1 ? "BulletBL" : "BulletBR");
+	        Laya.timer.once(2000, this, this.Back);
+	    }
+	    Back() {
+	        Laya.Tween.to(this._sp, { x: this._iFromX, y: this._iFromY }, 1500, Laya.Ease.linearNone, Laya.Handler.create(this, this.BackCompleted));
+	    }
+	}
+
+	class EnemyC extends Enemy {
+	    ShowCompleted() {
+	        this.Shoot();
+	    }
+	    Shoot() {
+	        super.BulletExcute(this._iDirection == 1 ? "BulletCL" : "BulletCR");
+	        this.Back();
+	    }
+	    Back() {
+	        let toX = this._sp.scaleX == 1 ? PositionMgr.RightX : PositionMgr.LeftX;
+	        Laya.Tween.to(this._sp, { x: toX, y: this._iFromY }, 1500, Laya.Ease.linearNone, Laya.Handler.create(this, this.BackCompleted));
 	    }
 	}
 
@@ -451,13 +599,17 @@
 	    }
 	    static init() {
 	        var reg = Laya.ClassUtils.regClass;
-	        reg("script/GameControl.ts", GameControl);
-	        reg("script/BulletControl.ts", BulletControl);
 	        reg("script/Background.ts", Background);
 	        reg("script/MainRole.ts", MainRole);
-	        reg("script/BulletA.ts", BulletA);
-	        reg("script/EnemyA.ts", EnemyA);
-	        reg("script/EnemyB.ts", EnemyB);
+	        reg("script/GameControl.ts", GameControl);
+	        reg("script/BulletControl.ts", BulletControl);
+	        reg("script/bullet/BulletA.ts", BulletA);
+	        reg("script/bullet/BulletB.ts", BulletB);
+	        reg("script/bullet/BulletC.ts", BulletC);
+	        reg("script/enemy/EnemyA.ts", EnemyA);
+	        reg("script/enemy/EnemyB.ts", EnemyB);
+	        reg("script/enemy/EnemyC.ts", EnemyC);
+	        reg("script/enemy/Enemy.ts", Enemy);
 	    }
 	}
 	GameConfig.width = 1920;
@@ -468,7 +620,7 @@
 	GameConfig.alignH = "center";
 	GameConfig.startScene = "MainScene.scene";
 	GameConfig.sceneRoot = "";
-	GameConfig.debug = false;
+	GameConfig.debug = true;
 	GameConfig.stat = false;
 	GameConfig.physicsDebug = false;
 	GameConfig.exportSceneToJson = true;

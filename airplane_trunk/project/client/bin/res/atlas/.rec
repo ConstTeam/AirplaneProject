@@ -38,6 +38,16 @@ P 0587871F vscroll$up.png
 P 5FD17798 vscroll.png
 P DDDDFB9E vslider$bar.png
 P 01BAE7F5 vslider.png
+D explosion
+P A8CA8BB0 explosion0.png
+P 22DF34F5 explosion1.png
+P 39FB5EE5 explosion2.png
+P 1BD35FFE explosion3.png
+P EC7351D0 explosion4.png
+P F44A751A explosion5.png
+P E565CD1C explosion6.png
+P ADDA694A explosion7.png
+P E299DD07 explosion8.png
 D texture
 D texture/background
 P 59276197 farground_mountains.png
@@ -65,7 +75,9 @@ P CE5E4287 fire_ball_1.png
 P 16634520 fire_ball_blue.png
 P 56E5DC8B fire_ball_pink.png
 P 2BAC5383 torpedo.png
+P 4ADD4076 torpedo_1.png
 P 6FED2EB4 torpedo_black.png
+P C1BDECF0 torpedo_black_1.png
 P 0B19A40B torpedo_flame.png
 P 75F567CE torpedo_flame_1.png
 P DDC62AEE torpedo_flame_2.png

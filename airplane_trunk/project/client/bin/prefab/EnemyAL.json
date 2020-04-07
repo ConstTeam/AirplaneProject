@@ -1,0 +1,1 @@
+{"type":"Sprite","props":{"y":0,"x":0,"texture":"texture/plane_3/plane_3_green.png","presetID":1,"pivotY":60,"pivotX":170,"name":"EnemyAL","isPresetRoot":true},"compId":111,"child":[{"type":"Script","props":{"presetID":4,"runtime":"script/enemy/EnemyA.ts"},"compId":115}],"loadList":["texture/plane_3/plane_3_green.png"],"loadList3D":[]}

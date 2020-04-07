@@ -1,1 +1,0 @@
-{"type":"Sprite","props":{"y":0,"x":0,"texture":"texture/plane_3/plane_3_blue.png","presetID":1,"name":"EnemyB","isPresetRoot":true},"compId":116,"child":[{"type":"Script","props":{"presetID":4,"runtime":"script/enemy/EnemyB.ts"},"compId":119}],"loadList":["texture/plane_3/plane_3_blue.png"],"loadList3D":[]}

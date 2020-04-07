@@ -13,11 +13,11 @@ export default class BulletC extends Bullet
 		this._rigidBody.enabled = false;
 	}
 
-	public Excute(bulletName: string, fromX: number, fromY: number): void
+	public Excute(bulletName: string, fromX: number, fromY: number, direction: number): void
 	{
-		super.Excute(bulletName, fromX, fromY);
+		super.Excute(bulletName, fromX, fromY, direction);
 		this._rigidBody.enabled = true;
-		this._rigidBody.setVelocity({x: 20, y: 0});
+		this._rigidBody.setVelocity({x: direction ? 15 : -15, y: 0});
 	}
 
 	onTriggerEnter(other:any, self:any, contact:any): void

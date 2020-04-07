@@ -1,7 +1,4 @@
 import Enemy from "./Enemy";
-import BulletControl from "../BulletControl";
-import BulletB from "../bullet/BulletB";
-import Bullet from "../bullet/Bullet";
 
 export default class EnemyB extends Enemy
 {
@@ -12,9 +9,7 @@ export default class EnemyB extends Enemy
 
 	private Shoot(): void
 	{
-		let bulletSp: Laya.Sprite = BulletControl.GetInst().PopBullet("BulletB");
-		let bullet: Bullet = bulletSp.getComponent(Bullet);
-		bullet.Excute("BulletB", this._sp.x + 30, this._sp.y + 61);
+		super.BulletExcute(this._iDirection == 1 ? "BulletBL" : "BulletBR");
 		Laya.timer.once(2000, this, this.Back);
 	}
 

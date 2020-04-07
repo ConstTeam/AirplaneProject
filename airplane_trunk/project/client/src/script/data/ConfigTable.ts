@@ -21,7 +21,7 @@ export default class ConfigTable
 
 	public AddColKey(colKey: string): void
 	{
-		this.m_dicColKeys[colKey] = this._iColLength;
+		this.m_dicColKeys[colKey] = this._iColLength++;
 	}
 
 	public GetValue(rowKey: string, colKey: string)

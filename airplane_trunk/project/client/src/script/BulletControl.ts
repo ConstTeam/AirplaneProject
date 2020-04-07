@@ -2,12 +2,12 @@ export default class BulletControl extends Laya.Script
 {
 	/** @prop {name: bulletRoot, type: Node} */
 	private bulletRoot: Laya.Sprite;
-	/** @prop {name: bulletPrefabA, type: Prefab} */
-	private bulletPrefabA: Laya.Prefab;
-	/** @prop {name: bulletPrefabB, type: Prefab} */
-	private bulletPrefabB: Laya.Prefab;
-	/** @prop {name: bulletPrefabC, type: Prefab} */
-	private bulletPrefabC: Laya.Prefab;
+	/** @prop {name: bulletPrefabAL, type: Prefab} */
+	private bulletPrefabAL: Laya.Prefab;
+	/** @prop {name: bulletPrefabBL, type: Prefab} */
+	private bulletPrefabBL: Laya.Prefab;
+	/** @prop {name: bulletPrefabCL, type: Prefab} */
+	private bulletPrefabCL: Laya.Prefab;
 
 	private _bulletDict: { [key: string]: Laya.Prefab; };
 
@@ -23,9 +23,9 @@ export default class BulletControl extends Laya.Script
 	{
 		BulletControl._inst = this;
 		this._bulletDict = {};
-		this._bulletDict["BulletA"] = this.bulletPrefabA;
-		this._bulletDict["BulletB"] = this.bulletPrefabB;
-		this._bulletDict["BulletC"] = this.bulletPrefabC;
+		this._bulletDict["BulletAL"] = this.bulletPrefabAL;
+		this._bulletDict["BulletBL"] = this.bulletPrefabBL;
+		this._bulletDict["BulletCL"] = this.bulletPrefabCL;
 	}
 
 	public PopBullet(bulletName: string): Laya.Sprite

@@ -5,13 +5,14 @@ import ConfigTable from "./data/ConfigTable";
 import Background from "./Background";
 import MainRole from "./MainRole";
 import Enemy from "./enemy/Enemy";
+import PositionMgr from "./common/PositionMgr";
 
 export default class GameControl extends Laya.Script
 {
-	/** @prop {name: sceneRoot, type: Node} */
-	private sceneRoot: Laya.Sprite;
 	/** @prop {name: enemyRoot, type: Node} */
 	private enemyRoot: Laya.Sprite;
+	/** @prop {name: explosionSp, type: Node} */
+	private explosionSp: Laya.Sprite;
 	/** @prop {name: startBtn, type: Node} */
 	private startBtn: Laya.Button;
 	/** @prop {name: restartBtn, type: Node} */
@@ -25,15 +26,20 @@ export default class GameControl extends Laya.Script
 	/** @prop {name: distanceText, type:Node} */
 	private distanceText: Laya.Text;
 
-	/** @prop {name: enemyPrefA, type: Prefab} */
-	private enemyPrefA: Laya.Prefab;
-	/** @prop {name: enemyPrefB, type: Prefab} */
-	private enemyPrefB: Laya.Prefab;
-	/** @prop {name: enemyPrefC, type: Prefab} */
-	private enemyPrefC: Laya.Prefab;	
+	/** @prop {name: enemyPrefAL, type: Prefab} */
+	private enemyPrefAL: Laya.Prefab;
+	/** @prop {name: enemyPrefBL, type: Prefab} */
+	private enemyPrefBL: Laya.Prefab;
+	/** @prop {name: enemyPrefCL, type: Prefab} */
+	private enemyPrefCL: Laya.Prefab;
+	/** @prop {name: enemyPrefZL, type: Prefab} */
+	private enemyPrefZL: Laya.Prefab;
+	/** @prop {name: enemyPrefZR, type: Prefab} */
+	private enemyPrefZR: Laya.Prefab;
 
 	private mainRole: MainRole;
 	private background: Background;
+	private explosionAni: Laya.Animation;
 
 	private _iSpeed: number = 0;
 	private _bRunning: boolean = false;
@@ -42,17 +48,50 @@ export default class GameControl extends Laya.Script
 	private _enmeyTbl: ConfigTable;
 	private _enemyDict: { [key: string]: Laya.Prefab; };
 
+	private _startTime: number;
+	private _clickArr: number[];
+	private _clickIndex: number;
+	private _bAuto: boolean;
+
 	constructor() { super(); }
 
 	onAwake(): void
 	{
+		this.startBtn.visible = false;
 		this.restartBtn.visible = false;
 		this._enemyDict = {};
-		this._enemyDict["EnemyA"] = this.enemyPrefA;
-		this._enemyDict["EnemyB"] = this.enemyPrefB;
-		this._enemyDict["EnemyC"] = this.enemyPrefC;
+		this._enemyDict["EnemyAL"] = this.enemyPrefAL;
+		this._enemyDict["EnemyBL"] = this.enemyPrefBL;
+		this._enemyDict["EnemyCL"] = this.enemyPrefCL;
+		this._enemyDict["EnemyZL"] = this.enemyPrefZL;
+		this._enemyDict["EnemyZR"] = this.enemyPrefZR;
 
 		Laya.loader.load("cfg/cfg.bin", Laya.Handler.create(this, this.OnConfigComplete), null, Laya.Loader.BUFFER);
+
+		this._bAuto = false;
+		if(this._bAuto)
+		{
+			this._clickIndex = 0;
+			this.setAutoClick();
+		}
+	}
+
+	private setAutoClick(): void
+	{
+		this._clickArr =
+		[
+			984,
+			2206,
+			3165,
+			3793,
+			4848,
+			6100,
+			6995,
+			7508,
+			8130,
+			9594,
+			10962
+		];
 	}
 
 	private OnConfigComplete(buff: ArrayBuffer): void
@@ -65,8 +104,20 @@ export default class GameControl extends Laya.Script
 		this.tapSp.on(Event.MOUSE_DOWN, this, this.tapSpMouseHandler);
 		this.mainRole = this.mainRoleSp.getComponent(MainRole);
 		this.background = this.backgroundSp.getComponent(Background);
+		
+		this.explosionSp.x = -10000;
+		this.explosionAni = new Laya.Animation();
+		this.explosionAni.loadAtlas("res/atlas/explosion.atlas",Laya.Handler.create(this,this.ExplosionLoaded));
+	}
 
-		this.mainRole.Init(new Laya.Handler(this, this.Stop));
+	private ExplosionLoaded(): void
+	{
+		this.explosionSp.addChild(this.explosionAni);
+		this.explosionSp.scaleX = 2;
+		this.explosionSp.scaleY = 2;
+		this.explosionAni.interval = 100;
+		this.startBtn.visible = true;
+		this.mainRole.Init(new Laya.Handler(this, this.Stop), this.explosionSp, this.explosionAni);
 	}
 
 	onUpdate(): void
@@ -83,6 +134,15 @@ export default class GameControl extends Laya.Script
 				this._t = 0;
 				this.ShowEnemy();
 			}
+
+			if(this._bAuto)
+			{
+				if((new Date().getTime() - this._startTime) >= this._clickArr[this._clickIndex] + 300)
+				{
+					this.mainRole.Up();
+					++this._clickIndex;
+				}
+			}	
 		}
 	}
 
@@ -99,6 +159,11 @@ export default class GameControl extends Laya.Script
 	public Stop(): void
 	{
 		this._bRunning = false;
+		Laya.timer.once(2000, this, this.ShowRestartBtn);
+	}
+
+	private ShowRestartBtn(): void
+	{
 		this.restartBtn.visible = true;
 	}
 
@@ -106,6 +171,7 @@ export default class GameControl extends Laya.Script
 	{
 		this.startBtn.visible = false;
 		this.Init();
+		this._startTime = new Date().getTime();
 	}
 
 	private onRestartBtnClick(): void
@@ -116,36 +182,63 @@ export default class GameControl extends Laya.Script
 
 	private tapSpMouseHandler(e: Event): void
 	{
+		if(!this._bRunning)
+			return;
+
 		switch (e.type)
 		{
 			case Event.MOUSE_DOWN:
+				let t2: Date = new Date();
+				console.log(t2.getTime() - this._startTime);
 				this.mainRole.Up();
 				break;
 		}
 	}
 
+	private _curGroupDis: number = 0;
+	private _curGroupTbl: ConfigTable = null;
+
 	private ShowEnemy(): void
 	{
+		if(this._iDistance % 800 == 0)
+			this.ShowEnemyZ();
+
 		let key: string = this._iDistance.toString();
 		if(this._enmeyTbl.HasRow(key))
 		{
-			let jsonStr: string = this._enmeyTbl.GetValue(key, "Enemy");
-			let arr: any[] = JSON.parse(jsonStr);
-			let sp: Laya.Sprite;
-			let enemyName: string;
-			let enemy: Enemy;
-			for(let i: number = 0; i < arr.length; ++i)
-			{	
-				enemyName = arr[i][0];
-				if(enemyName == "EnemyC")
-				{
-					let a = 1;
+			let group: string = this._enmeyTbl.GetValue(key, "Group");
+			this._curGroupTbl = ConfigData.GetTable(group);
+			this._curGroupDis = this._iDistance;
+		}
+
+		if(this._curGroupDis != 0)
+		{
+			let groupKey: string = (this._iDistance - this._curGroupDis).toString(); 
+			if(this._curGroupTbl.HasRow(groupKey))
+			{
+				let jsonStr: string = this._curGroupTbl.GetValue(key, "Enemy");
+				let arr: any[] = JSON.parse(jsonStr);
+				let sp: Laya.Sprite;
+				let enemyName: string;
+				let enemy: Enemy;
+				for(let i: number = 0; i < arr.length; ++i)
+				{	
+					enemyName = arr[i][0];
+					sp = Laya.Pool.getItemByCreateFun(enemyName, this._enemyDict[enemyName].create, this._enemyDict[enemyName]);	
+					this.enemyRoot.addChild(sp);
+					enemy = sp.getComponent(Enemy);
+					enemy.Show(arr[i]);
 				}
-				sp = Laya.Pool.getItemByCreateFun(enemyName, this._enemyDict[enemyName].create, this._enemyDict[enemyName]);	
-				this.enemyRoot.addChild(sp);
-				enemy = sp.getComponent(Enemy);
-				enemy.Show(arr[i]);
 			}
 		}
+	}
+
+	private ShowEnemyZ(): void
+	{
+		let enemyName: string = "EnemyZR";
+		let sp = Laya.Pool.getItemByCreateFun(enemyName, this._enemyDict[enemyName].create, this._enemyDict[enemyName]);	
+		this.enemyRoot.addChild(sp);
+		let enemy: Enemy = sp.getComponent(Enemy);
+		enemy.Show([enemyName, -1, 0, PositionMgr.LeftX, 3000]);
 	}
 }

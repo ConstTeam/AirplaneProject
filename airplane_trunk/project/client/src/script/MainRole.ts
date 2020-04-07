@@ -1,10 +1,11 @@
-import BulletA from "./bullet/BulletA";
-
 export default class MainRole extends Laya.Script
 {
 	private _sp: Laya.Sprite;
 	private _rigidbody: Laya.RigidBody;
 	private _stopCbHandler: Laya.Handler;
+	private _explosionSP: Laya.Sprite;
+	private _explosionAni: Laya.Animation;
+	private _bInvincible: boolean;
 
 	constructor() { super(); }
 	
@@ -17,33 +18,52 @@ export default class MainRole extends Laya.Script
 
 	onTriggerEnter(other:any, self:any, contact:any): void
 	{
-		let sp: Laya.Sprite = other.owner as Laya.Sprite;
-		if(sp.name == "Top")
+		if(this._bInvincible)
+			return;
+		
+			let otherSp: Laya.Sprite = other.owner as Laya.Sprite;
+		if(otherSp.name == "Top")
 			return;
 		
 		this.RigidBodyEnable(false);
 		this._stopCbHandler.run();
-		if(sp.name == "Bottom")
+		this._explosionSP.x = this._sp.x;
+		this._explosionSP.y = this._sp.y;
+		this._explosionAni.play(0, false);
+		this._sp.x = -10000;
+		if(otherSp.name == "Bottom")
 			return;
 		
-		sp.destroy();
+		otherSp.destroy();
 	}
 
-	public Init(stopCbHandler: Laya.Handler): void
+	public Init(stopCbHandler: Laya.Handler, explosionSP: Laya.Sprite, expolsionAni: Laya.Animation): void
 	{
 		this._stopCbHandler = stopCbHandler;
+		this._explosionSP = explosionSP;
+		this._explosionAni = expolsionAni;
 	}
 
 	public Reset(): void
 	{
-		this._sp.x = 878;
-		this._sp.y = 491;
+		this._sp.x = 959;
+		this._sp.y = 539;
 		this.RigidBodyEnable(false);
 	}
 
 	public RigidBodyEnable(bEnable: boolean): void
 	{
+		if(bEnable)
+		{
+			this._bInvincible = true;
+			Laya.timer.once(3000, this, this.ClearInvincible);
+		}
 		this._rigidbody.enabled = bEnable;
+	}
+
+	protected ClearInvincible(): void
+	{
+		this._bInvincible = false;
 	}
 
 	public Up(): void
