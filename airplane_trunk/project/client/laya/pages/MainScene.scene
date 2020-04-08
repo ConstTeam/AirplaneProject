@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":42,
-    "selecteID":24,
+    "selectedBox":38,
+    "selecteID":39,
     "searchKey":"Scene",
     "props":{"x":0,"width":1920,"sceneColor":"#000000","height":1080,"enemyPref":"@arr:,,"},
     "nodeParent":-1,
-    "maxID":144,
+    "maxID":147,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -390,13 +390,14 @@
             "props":{"top":0,"right":0,"name":"UIRoot","left":0,"bottom":0},
             "nodeParent":2,
             "label":"UIRoot",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":81,
             "child":[
                 {
+                    "x":30,
                     "type":"Text",
                     "searchKey":"Text,DistanceText",
                     "props":{"y":0,"x":0,"width":300,"valign":"middle","text":"------","name":"DistanceText","height":80,"fontSize":60,"color":"#ffffff","align":"center"},
@@ -410,6 +411,7 @@
                         ]
                 },
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite,TapSp",
                     "props":{"y":-460,"x":-540,"width":3000,"name":"TapSp","height":2000,"alpha":0},
@@ -424,19 +426,47 @@
                     "$HIDDEN":false
                 },
                 {
-                    "type":"Button",
-                    "searchKey":"Button,RestartBtn",
-                    "props":{"y":780,"x":835,"width":280,"skin":"comp/button.png","name":"RestartBtn","labelSize":60,"labelColors":"#ffffff","label":"Restart","height":100},
+                    "x":30,
+                    "type":"Panel",
+                    "searchKey":"Panel,ResultPanel",
+                    "props":{"y":0,"x":0,"width":1920,"name":"ResultPanel","height":1080},
                     "nodeParent":81,
-                    "label":"RestartBtn",
-                    "isDirectory":false,
+                    "label":"ResultPanel",
+                    "isOpen":false,
+                    "isDirectory":true,
                     "isAniNode":true,
-                    "hasChild":false,
-                    "compId":88,
+                    "hasChild":true,
+                    "compId":146,
                     "child":[
-                        ]
+                        {
+                            "type":"Button",
+                            "searchKey":"Button,RestartBtn",
+                            "props":{"y":870,"x":820,"width":280,"skin":"comp/button.png","sizeGrid":"10,10,10,10","name":"RestartBtn","labelSize":50,"labelColors":"#ffffff","label":"重新开始","height":100},
+                            "nodeParent":146,
+                            "label":"RestartBtn",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":88,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "type":"Button",
+                            "searchKey":"Button,ContinueBtn",
+                            "props":{"y":700,"x":820,"width":280,"skin":"comp/button.png","sizeGrid":"10,10,10,10","name":"ContinueBtn","labelSize":50,"labelColors":"#ffffff","label":"继续","height":100},
+                            "nodeParent":146,
+                            "label":"ContinueBtn",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":144,
+                            "child":[
+                                ]
+                        }]
                 },
                 {
+                    "x":30,
                     "type":"Button",
                     "searchKey":"Button,StartBtn",
                     "props":{"y":-460,"x":-540,"width":3000,"name":"StartBtn","labelSize":200,"height":2000},
@@ -449,9 +479,10 @@
                     "compId":38,
                     "child":[
                         {
+                            "x":45,
                             "type":"Text",
                             "searchKey":"Text",
-                            "props":{"y":1200,"x":1244,"text":"Tap to Start","fontSize":100,"color":"#ffffff"},
+                            "props":{"y":1200,"x":1100,"valign":"middle","text":"点击任意位置开始游戏","fontSize":80,"color":"#ffa300","align":"center"},
                             "nodeParent":38,
                             "label":"Text",
                             "isDirectory":false,
@@ -470,7 +501,7 @@
             "source":"src/script/GameControl.ts",
             "searchKey":"Script,GameControl",
             "removeAble":true,
-            "props":{"tapSp":"@node:23","startBtn":"@node:38","sceneRoot":"@node:42","restartBtn":"@node:88","mainRoleSp":"@node:24","explosionSp":"@node:143","enemyRoot":"@node:49","enemyPrefZR":"@Prefab:prefab/EnemyZR.prefab","enemyPrefZL":"@Prefab:prefab/EnemyZL.prefab","enemyPrefCL":"@Prefab:prefab/EnemyCL.prefab","enemyPrefBL":"@Prefab:prefab/EnemyBL.prefab","enemyPrefAL":"@Prefab:prefab/EnemyAL.prefab","distanceText":"@node:32","backgroundSp":"@node:27"},
+            "props":{"tapSp":"@node:23","startBtn":"@node:38","sceneRoot":"@node:42","resultPanel":"@node:146","restartBtn":"@node:88","resaultPanel":"@node:146","mainRoleSp":"@node:24","explosionSp":"@node:143","enemyRoot":"@node:49","enemyPrefZR":"@Prefab:prefab/EnemyZR.prefab","enemyPrefZL":"@Prefab:prefab/EnemyZL.prefab","enemyPrefCL":"@Prefab:prefab/EnemyCL.prefab","enemyPrefBL":"@Prefab:prefab/EnemyBL.prefab","enemyPrefAL":"@Prefab:prefab/EnemyAL.prefab","distanceText":"@node:32","continueBtn":"@node:144","backgroundSp":"@node:27"},
             "nodeParent":2,
             "label":"GameControl",
             "isDirectory":false,

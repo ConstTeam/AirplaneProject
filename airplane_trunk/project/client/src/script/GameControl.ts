@@ -13,10 +13,14 @@ export default class GameControl extends Laya.Script
 	private enemyRoot: Laya.Sprite;
 	/** @prop {name: explosionSp, type: Node} */
 	private explosionSp: Laya.Sprite;
+	/** @prop {name: resultPanel, type: Node} */
+	private resultPanel: Laya.Panel;
 	/** @prop {name: startBtn, type: Node} */
 	private startBtn: Laya.Button;
 	/** @prop {name: restartBtn, type: Node} */
 	private restartBtn: Laya.Button;
+	/** @prop {name: continueBtn, type: Node} */
+	private continueBtn: Laya.Button;
 	/** @prop {name: tapSp, type: Node} */
 	private tapSp: Sprite;
 	/** @prop {name: mainRoleSp, type: Node} */
@@ -58,7 +62,7 @@ export default class GameControl extends Laya.Script
 	onAwake(): void
 	{
 		this.startBtn.visible = false;
-		this.restartBtn.visible = false;
+		this.resultPanel.visible = false;
 		this._enemyDict = {};
 		this._enemyDict["EnemyAL"] = this.enemyPrefAL;
 		this._enemyDict["EnemyBL"] = this.enemyPrefBL;
@@ -101,6 +105,7 @@ export default class GameControl extends Laya.Script
 
 		this.startBtn.clickHandler = new Laya.Handler(this, this.onStartBtnClick);
 		this.restartBtn.clickHandler = new Laya.Handler(this, this.onRestartBtnClick);
+		this.continueBtn.clickHandler = new Laya.Handler(this, this.onContinueBtnClick)
 		this.tapSp.on(Event.MOUSE_DOWN, this, this.tapSpMouseHandler);
 		this.mainRole = this.mainRoleSp.getComponent(MainRole);
 		this.background = this.backgroundSp.getComponent(Background);
@@ -149,7 +154,6 @@ export default class GameControl extends Laya.Script
 	private Init(): void
 	{
 		this.mainRole.Reset();
-		this._iDistance = 0;
 		this._iSpeed = 5;
 		this.mainRole.RigidBodyEnable(true);
 		this.background.SetSpeed(this._iSpeed);
@@ -159,25 +163,44 @@ export default class GameControl extends Laya.Script
 	public Stop(): void
 	{
 		this._bRunning = false;
-		Laya.timer.once(2000, this, this.ShowRestartBtn);
+		Laya.timer.once(2000, this, this.ShowResultPanel);
+
+		var arr = new Array();
+		arr.push({key: "score", value: (this._iDistance / 100).toString() })
+		//let info: JSON = {"wxgame":{"score":16,"update_time": 1513080573}};
+		wx.setUserCloudStorage({
+			KVDataList: arr,//[{ key: 'wxgame', value: { key: 'score', value: this._iDistance / 100 } }],
+			success: function (res) {console.log("success" + res);},
+			fail: function (res) {console.log("fail" + res);}
+		})
 	}
 
-	private ShowRestartBtn(): void
+	private ShowResultPanel(): void
 	{
-		this.restartBtn.visible = true;
+		this.resultPanel.visible = true;
 	}
 
 	private onStartBtnClick(): void
 	{
 		this.startBtn.visible = false;
+		this._iDistance = 0;
 		this.Init();
 		this._startTime = new Date().getTime();
 	}
 
 	private onRestartBtnClick(): void
 	{
-		this.restartBtn.visible = false;
+		this.resultPanel.visible = false;
+		this._iDistance = 0;
 		this.Init();
+		this.mainRole.SetInvincible();
+	}
+
+	private onContinueBtnClick(): void
+	{
+		this.resultPanel.visible = false;
+		this.Init();
+		this.mainRole.SetInvincible();
 	}
 
 	private tapSpMouseHandler(e: Event): void

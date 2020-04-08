@@ -47,9 +47,10 @@
 	        this.Reset();
 	    }
 	    onTriggerEnter(other, self, contact) {
-	        if (this._bInvincible)
-	            return;
 	        let otherSp = other.owner;
+	        let bBottom = otherSp.name == "Bottom";
+	        if (this._bInvincible && !bBottom)
+	            return;
 	        if (otherSp.name == "Top")
 	            return;
 	        this.RigidBodyEnable(false);
@@ -57,10 +58,13 @@
 	        this._explosionSP.x = this._sp.x;
 	        this._explosionSP.y = this._sp.y;
 	        this._explosionAni.play(0, false);
+	        Laya.timer.once(10000, this, this.HideExplosion);
 	        this._sp.x = -10000;
-	        if (otherSp.name == "Bottom")
-	            return;
-	        otherSp.destroy();
+	        if (!bBottom)
+	            otherSp.destroy();
+	    }
+	    HideExplosion() {
+	        this._explosionSP.x = -10000;
 	    }
 	    Init(stopCbHandler, explosionSP, expolsionAni) {
 	        this._stopCbHandler = stopCbHandler;
@@ -73,13 +77,19 @@
 	        this.RigidBodyEnable(false);
 	    }
 	    RigidBodyEnable(bEnable) {
-	        if (bEnable) {
-	            this._bInvincible = true;
-	            Laya.timer.once(3000, this, this.ClearInvincible);
-	        }
 	        this._rigidbody.enabled = bEnable;
 	    }
+	    SetInvincible() {
+	        this._bInvincible = true;
+	        Laya.timer.loop(100, this, this.InvincibleEffect);
+	        Laya.timer.once(3000, this, this.ClearInvincible);
+	    }
+	    InvincibleEffect() {
+	        this._sp.visible = !this._sp.visible;
+	    }
 	    ClearInvincible() {
+	        Laya.timer.clear(this, this.InvincibleEffect);
+	        this._sp.visible = true;
 	        this._bInvincible = false;
 	    }
 	    Up() {
@@ -117,7 +127,7 @@
 	        this.m_Data[rowKey] = rowData;
 	    }
 	    AddColKey(colKey) {
-	        this.m_dicColKeys[colKey] = this._iColLength;
+	        this.m_dicColKeys[colKey] = this._iColLength++;
 	    }
 	    GetValue(rowKey, colKey) {
 	        var row = this.m_Data[rowKey];
@@ -233,6 +243,7 @@
 	                    let valueNPos = sConfig.indexOf('\n', this._valuePos);
 	                    let a = 0;
 	                    let rowData = new ConfigRow();
+	                    rowData.AddValue(rowName);
 	                    this._bFlagEx = true;
 	                    while (this._bFlagEx) {
 	                        let value = this.GetNextValueEx(valueNPos, sConfig);
@@ -364,10 +375,12 @@
 	        this._bRunning = false;
 	        this._iDistance = 0;
 	        this._t = 0;
+	        this._curGroupDis = 0;
+	        this._curGroupTbl = null;
 	    }
 	    onAwake() {
 	        this.startBtn.visible = false;
-	        this.restartBtn.visible = false;
+	        this.resultPanel.visible = false;
 	        this._enemyDict = {};
 	        this._enemyDict["EnemyAL"] = this.enemyPrefAL;
 	        this._enemyDict["EnemyBL"] = this.enemyPrefBL;
@@ -402,6 +415,7 @@
 	        this._enmeyTbl = ConfigData.GetTable("Enemy_Client");
 	        this.startBtn.clickHandler = new Laya.Handler(this, this.onStartBtnClick);
 	        this.restartBtn.clickHandler = new Laya.Handler(this, this.onRestartBtnClick);
+	        this.continueBtn.clickHandler = new Laya.Handler(this, this.onContinueBtnClick);
 	        this.tapSp.on(Event.MOUSE_DOWN, this, this.tapSpMouseHandler);
 	        this.mainRole = this.mainRoleSp.getComponent(MainRole);
 	        this.background = this.backgroundSp.getComponent(Background);
@@ -437,7 +451,6 @@
 	    }
 	    Init() {
 	        this.mainRole.Reset();
-	        this._iDistance = 0;
 	        this._iSpeed = 5;
 	        this.mainRole.RigidBodyEnable(true);
 	        this.background.SetSpeed(this._iSpeed);
@@ -445,19 +458,34 @@
 	    }
 	    Stop() {
 	        this._bRunning = false;
-	        Laya.timer.once(2000, this, this.ShowRestartBtn);
+	        Laya.timer.once(2000, this, this.ShowResultPanel);
+	        var arr = new Array();
+	        arr.push({ key: "score", value: (this._iDistance / 100).toString() });
+	        wx.setUserCloudStorage({
+	            KVDataList: arr,
+	            success: function (res) { console.log("success" + res); },
+	            fail: function (res) { console.log("fail" + res); }
+	        });
 	    }
-	    ShowRestartBtn() {
-	        this.restartBtn.visible = true;
+	    ShowResultPanel() {
+	        this.resultPanel.visible = true;
 	    }
 	    onStartBtnClick() {
 	        this.startBtn.visible = false;
+	        this._iDistance = 0;
 	        this.Init();
 	        this._startTime = new Date().getTime();
 	    }
 	    onRestartBtnClick() {
-	        this.restartBtn.visible = false;
+	        this.resultPanel.visible = false;
+	        this._iDistance = 0;
 	        this.Init();
+	        this.mainRole.SetInvincible();
+	    }
+	    onContinueBtnClick() {
+	        this.resultPanel.visible = false;
+	        this.Init();
+	        this.mainRole.SetInvincible();
 	    }
 	    tapSpMouseHandler(e) {
 	        if (!this._bRunning)
@@ -475,17 +503,25 @@
 	            this.ShowEnemyZ();
 	        let key = this._iDistance.toString();
 	        if (this._enmeyTbl.HasRow(key)) {
-	            let jsonStr = this._enmeyTbl.GetValue(key, "Enemy");
-	            let arr = JSON.parse(jsonStr);
-	            let sp;
-	            let enemyName;
-	            let enemy;
-	            for (let i = 0; i < arr.length; ++i) {
-	                enemyName = arr[i][0];
-	                sp = Laya.Pool.getItemByCreateFun(enemyName, this._enemyDict[enemyName].create, this._enemyDict[enemyName]);
-	                this.enemyRoot.addChild(sp);
-	                enemy = sp.getComponent(Enemy);
-	                enemy.Show(arr[i]);
+	            let group = this._enmeyTbl.GetValue(key, "Group");
+	            this._curGroupTbl = ConfigData.GetTable(group);
+	            this._curGroupDis = this._iDistance;
+	        }
+	        if (this._curGroupDis != 0) {
+	            let groupKey = (this._iDistance - this._curGroupDis).toString();
+	            if (this._curGroupTbl.HasRow(groupKey)) {
+	                let jsonStr = this._curGroupTbl.GetValue(groupKey, "Enemy");
+	                let arr = JSON.parse(jsonStr);
+	                let sp;
+	                let enemyName;
+	                let enemy;
+	                for (let i = 0; i < arr.length; ++i) {
+	                    enemyName = arr[i][0];
+	                    sp = Laya.Pool.getItemByCreateFun(enemyName, this._enemyDict[enemyName].create, this._enemyDict[enemyName]);
+	                    this.enemyRoot.addChild(sp);
+	                    enemy = sp.getComponent(Enemy);
+	                    enemy.Show(arr[i]);
+	                }
 	            }
 	        }
 	    }

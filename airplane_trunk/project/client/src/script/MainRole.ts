@@ -18,10 +18,12 @@ export default class MainRole extends Laya.Script
 
 	onTriggerEnter(other:any, self:any, contact:any): void
 	{
-		if(this._bInvincible)
+		let otherSp: Laya.Sprite = other.owner as Laya.Sprite;
+		let bBottom: boolean = otherSp.name == "Bottom"
+		if(this._bInvincible && !bBottom)
 			return;
 		
-			let otherSp: Laya.Sprite = other.owner as Laya.Sprite;
+			
 		if(otherSp.name == "Top")
 			return;
 		
@@ -30,11 +32,16 @@ export default class MainRole extends Laya.Script
 		this._explosionSP.x = this._sp.x;
 		this._explosionSP.y = this._sp.y;
 		this._explosionAni.play(0, false);
+		Laya.timer.once(10000, this, this.HideExplosion)
 		this._sp.x = -10000;
-		if(otherSp.name == "Bottom")
-			return;
-		
-		otherSp.destroy();
+
+		if(!bBottom)
+			otherSp.destroy();	
+	}
+
+	private HideExplosion(): void
+	{
+		this._explosionSP.x = -10000;
 	}
 
 	public Init(stopCbHandler: Laya.Handler, explosionSP: Laya.Sprite, expolsionAni: Laya.Animation): void
@@ -53,16 +60,25 @@ export default class MainRole extends Laya.Script
 
 	public RigidBodyEnable(bEnable: boolean): void
 	{
-		if(bEnable)
-		{
-			this._bInvincible = true;
-			Laya.timer.once(3000, this, this.ClearInvincible);
-		}
 		this._rigidbody.enabled = bEnable;
 	}
 
-	protected ClearInvincible(): void
+	public SetInvincible(): void
 	{
+		this._bInvincible = true;
+		Laya.timer.loop(100, this, this.InvincibleEffect);
+		Laya.timer.once(3000, this, this.ClearInvincible);
+	}
+
+	private InvincibleEffect(): void
+	{
+		this._sp.visible = !this._sp.visible;
+	}
+
+	private ClearInvincible(): void
+	{
+		Laya.timer.clear(this, this.InvincibleEffect);
+		this._sp.visible = true;
 		this._bInvincible = false;
 	}
 

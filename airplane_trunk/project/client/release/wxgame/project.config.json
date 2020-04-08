@@ -9,8 +9,10 @@
 	},
 	"compileType": "game",
 	"libVersion": "game",
-	"appid": "wx9170ca1ff6f31088",
-	"projectname": "layaWXTest",
+	"appid": "wx3e53e81343fef057",
+	"projectname": "Airplane",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,
