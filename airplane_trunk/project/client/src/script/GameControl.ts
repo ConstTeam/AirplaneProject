@@ -13,14 +13,8 @@ export default class GameControl extends Laya.Script
 	private enemyRoot: Laya.Sprite;
 	/** @prop {name: explosionSp, type: Node} */
 	private explosionSp: Laya.Sprite;
-	/** @prop {name: resultPanel, type: Node} */
-	private resultPanel: Laya.Panel;
 	/** @prop {name: startBtn, type: Node} */
 	private startBtn: Laya.Button;
-	/** @prop {name: restartBtn, type: Node} */
-	private restartBtn: Laya.Button;
-	/** @prop {name: continueBtn, type: Node} */
-	private continueBtn: Laya.Button;
 	/** @prop {name: tapSp, type: Node} */
 	private tapSp: Sprite;
 	/** @prop {name: mainRoleSp, type: Node} */
@@ -29,6 +23,26 @@ export default class GameControl extends Laya.Script
 	private backgroundSp: Sprite;
 	/** @prop {name: distanceText, type:Node} */
 	private distanceText: Laya.Text;
+
+	//--ResultPanel--------------------------------------------------
+	/** @prop {name: resultPanel, type: Node} */
+	private resultPanel: Laya.Panel;
+	/** @prop {name: restartBtn, type: Node} */
+	private restartBtn: Laya.Button;
+	/** @prop {name: continueBtn, type: Node} */
+	private continueBtn: Laya.Button;
+	/** @prop {name: rankPanel, type: Node} */
+	private rankPanel: Laya.Sprite;
+	/** @prop {name: rankBtn, type: Node} */
+	private rankBtn: Laya.Button;
+	/** @prop {name: openDataViewer, type: Node} */
+	private openDataViewer: Laya.WXOpenDataViewer;
+	/** @prop {name: curText, type: Node} */
+	private curText: Laya.Label;
+	/** @prop {name: maxText, type: Node} */
+	private maxText: Laya.Label;
+	
+	//---------------------------------------------------------------
 
 	/** @prop {name: enemyPrefAL, type: Prefab} */
 	private enemyPrefAL: Laya.Prefab;
@@ -52,17 +66,18 @@ export default class GameControl extends Laya.Script
 	private _enmeyTbl: ConfigTable;
 	private _enemyDict: { [key: string]: Laya.Prefab; };
 
-	private _startTime: number;
-	private _clickArr: number[];
-	private _clickIndex: number;
-	private _bAuto: boolean;
+	private _iHighestScore: number;
+	private _scoreKey: string;
 
 	constructor() { super(); }
 
 	onAwake(): void
 	{
+		this._scoreKey = "airplaneScore"
 		this.startBtn.visible = false;
 		this.resultPanel.visible = false;
+		this.rankPanel.visible = false;
+		this.openDataViewer.visible = false;
 		this._enemyDict = {};
 		this._enemyDict["EnemyAL"] = this.enemyPrefAL;
 		this._enemyDict["EnemyBL"] = this.enemyPrefBL;
@@ -71,31 +86,6 @@ export default class GameControl extends Laya.Script
 		this._enemyDict["EnemyZR"] = this.enemyPrefZR;
 
 		Laya.loader.load("cfg/cfg.bin", Laya.Handler.create(this, this.OnConfigComplete), null, Laya.Loader.BUFFER);
-
-		this._bAuto = false;
-		if(this._bAuto)
-		{
-			this._clickIndex = 0;
-			this.setAutoClick();
-		}
-	}
-
-	private setAutoClick(): void
-	{
-		this._clickArr =
-		[
-			984,
-			2206,
-			3165,
-			3793,
-			4848,
-			6100,
-			6995,
-			7508,
-			8130,
-			9594,
-			10962
-		];
 	}
 
 	private OnConfigComplete(buff: ArrayBuffer): void
@@ -105,14 +95,20 @@ export default class GameControl extends Laya.Script
 
 		this.startBtn.clickHandler = new Laya.Handler(this, this.onStartBtnClick);
 		this.restartBtn.clickHandler = new Laya.Handler(this, this.onRestartBtnClick);
-		this.continueBtn.clickHandler = new Laya.Handler(this, this.onContinueBtnClick)
+		this.continueBtn.clickHandler = new Laya.Handler(this, this.onContinueBtnClick);
+		this.rankBtn.clickHandler = new Laya.Handler(this, this.onRankBtnClick);
 		this.tapSp.on(Event.MOUSE_DOWN, this, this.tapSpMouseHandler);
 		this.mainRole = this.mainRoleSp.getComponent(MainRole);
 		this.background = this.backgroundSp.getComponent(Background);
+
+		let score: string = Laya.LocalStorage.getItem("score");
+		this._iHighestScore = score == null ? 0 : Number(Laya.LocalStorage.getItem("score"));
+
+		Laya.loader.load(["res/atlas/rank.atlas"], Laya.Handler.create(this, () => { Laya.MiniAdpter.sendAtlasToOpenDataContext("res/atlas/rank.atlas"); }));
 		
 		this.explosionSp.x = -10000;
 		this.explosionAni = new Laya.Animation();
-		this.explosionAni.loadAtlas("res/atlas/explosion.atlas",Laya.Handler.create(this,this.ExplosionLoaded));
+		this.explosionAni.loadAtlas("res/atlas/explosion.atlas", Laya.Handler.create(this,this.ExplosionLoaded));
 	}
 
 	private ExplosionLoaded(): void
@@ -139,15 +135,6 @@ export default class GameControl extends Laya.Script
 				this._t = 0;
 				this.ShowEnemy();
 			}
-
-			if(this._bAuto)
-			{
-				if((new Date().getTime() - this._startTime) >= this._clickArr[this._clickIndex] + 300)
-				{
-					this.mainRole.Up();
-					++this._clickIndex;
-				}
-			}	
 		}
 	}
 
@@ -165,19 +152,42 @@ export default class GameControl extends Laya.Script
 		this._bRunning = false;
 		Laya.timer.once(2000, this, this.ShowResultPanel);
 
-		var arr = new Array();
-		arr.push({key: "score", value: (this._iDistance / 100).toString() })
-		//let info: JSON = {"wxgame":{"score":16,"update_time": 1513080573}};
+		let score: number = this._iDistance / 100;
+		if(score > this._iHighestScore)
+		{
+			this._iHighestScore = score;
+			Laya.LocalStorage.setItem("score", score.toString());
+			this.SetUserCloudStorage(score.toString());
+		}
+	}
+
+	private SetUserCloudStorage(data:String): void
+	{
+		var kvDataList = [];
+		var obj: any = {};
+		obj.wxgame = {};
+		obj.wxgame.score = data;
+		obj.wxgame.update_time = Laya.Browser.now();
+		kvDataList.push({"key": this._scoreKey, "value": JSON.stringify(obj)});
 		wx.setUserCloudStorage({
-			KVDataList: arr,//[{ key: 'wxgame', value: { key: 'score', value: this._iDistance / 100 } }],
-			success: function (res) {console.log("success" + res);},
-			fail: function (res) {console.log("fail" + res);}
-		})
+			KVDataList:kvDataList,
+			success:function(e):void{
+				console.log('-----success:' + JSON.stringify(e));
+			},
+			fail:function(e):void{
+				console.log('-----fail:' + JSON.stringify(e));
+			},
+			complete:function(e):void{
+				console.log('-----complete:' + JSON.stringify(e));
+			}
+		});
 	}
 
 	private ShowResultPanel(): void
 	{
 		this.resultPanel.visible = true;
+		this.curText.text = (this._iDistance / 100).toString();
+		this.maxText.text = Laya.LocalStorage.getItem("score");
 	}
 
 	private onStartBtnClick(): void
@@ -185,7 +195,6 @@ export default class GameControl extends Laya.Script
 		this.startBtn.visible = false;
 		this._iDistance = 0;
 		this.Init();
-		this._startTime = new Date().getTime();
 	}
 
 	private onRestartBtnClick(): void
@@ -203,6 +212,17 @@ export default class GameControl extends Laya.Script
 		this.mainRole.SetInvincible();
 	}
 
+	private onRankBtnClick(): void
+	{
+		let bShow: boolean = !this.rankPanel.visible;
+		this.rankPanel.visible = bShow;
+		this.openDataViewer.visible = bShow;
+		if(bShow)
+			this.openDataViewer.postMsg({ type: "RankOpen"});
+		else
+			this.openDataViewer.postMsg({ type: "RankClose"});
+	}
+
 	private tapSpMouseHandler(e: Event): void
 	{
 		if(!this._bRunning)
@@ -211,8 +231,6 @@ export default class GameControl extends Laya.Script
 		switch (e.type)
 		{
 			case Event.MOUSE_DOWN:
-				let t2: Date = new Date();
-				console.log(t2.getTime() - this._startTime);
 				this.mainRole.Up();
 				break;
 		}

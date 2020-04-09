@@ -1,4 +1,8 @@
 D .
+D common
+P D171CB5C ButtonNo.png
+P 817B49A5 ButtonYes.png
+P DD1FD125 Paper.png
 D comp
 P 316AD948 btn_close.png
 P 5B258D17 button.png
@@ -48,6 +52,10 @@ P F44A751A explosion5.png
 P E565CD1C explosion6.png
 P ADDA694A explosion7.png
 P E299DD07 explosion8.png
+D rank
+P 6EA3C4B6 c1.png
+P C8F93D08 Separator.png
+P 0C711DA0 sky_color_top.png
 D texture
 D texture/background
 P 59276197 farground_mountains.png
@@ -55,6 +63,7 @@ P 6AF40F01 foreground_mountains.png
 P 55DF99C8 mid_ground_cloud_1.png
 P 7B115B13 sky_color.png
 P 0C711DA0 sky_color_top.png
+D texture/common
 D texture/plane_1
 P 14C764A9 plane_1_blue.png
 P E57A898F plane_1_pink.png

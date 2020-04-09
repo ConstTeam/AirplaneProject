@@ -1,3 +1,11 @@
+if ((typeof swan !== 'undefined') && (typeof swanGlobal !== 'undefined')) {
+	require("swan-game-adapter.js");
+	require("libs/laya.bdmini.js");
+} else if (typeof wx!=="undefined") {
+	require("weapp-adapter.js");
+	require("libs/laya.wxmini.js");
+}
+window.loadLib = require;
 /**
  * 设置LayaNative屏幕方向，可设置以下值
  * landscape           横屏
@@ -14,3 +22,4 @@ loadLib("libs/laya.physics.js")
 loadLib("libs/gunzip.min.js")
 //-----libs-end-------
 loadLib("js/bundle.js");
+;
