@@ -18,6 +18,9 @@ export default class MainRole extends Laya.Script
 
 	onTriggerEnter(other:any, self:any, contact:any): void
 	{
+		if(this._sp.x == -10000)
+			return;
+
 		let otherSp: Laya.Sprite = other.owner as Laya.Sprite;
 		let bBottom: boolean = otherSp.name == "Bottom"
 		if(this._bInvincible && !bBottom)
@@ -32,7 +35,7 @@ export default class MainRole extends Laya.Script
 		this._explosionSP.y = this._sp.y;
 		this._explosionAni.play(0, false);
 		Laya.SoundManager.playSound("sound/explosion.wav");
-		Laya.timer.once(10000, this, this.HideExplosion)
+		Laya.timer.once(1000, this, this.HideExplosion)
 		this._sp.x = -10000;
 
 		if(!bBottom)

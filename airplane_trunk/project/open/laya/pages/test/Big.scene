@@ -18,7 +18,7 @@
             "x":15,
             "type":"List",
             "searchKey":"List,_list",
-            "props":{"y":50,"x":10,"width":480,"var":"_list","vScrollBarSkin":" ","spaceY":0,"selectEnable":false,"repeatX":1,"height":600},
+            "props":{"y":50,"x":5,"width":490,"var":"_list","vScrollBarSkin":" ","spaceY":0,"selectEnable":false,"repeatX":1,"height":600},
             "nodeParent":2,
             "label":"_list",
             "isOpen":true,

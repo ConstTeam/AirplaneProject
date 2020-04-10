@@ -44,12 +44,19 @@ export default class GameControl extends Laya.Script
 	
 	//---------------------------------------------------------------
 
-	/** @prop {name: enemyPrefAL, type: Prefab} */
-	private enemyPrefAL: Laya.Prefab;
-	/** @prop {name: enemyPrefBL, type: Prefab} */
-	private enemyPrefBL: Laya.Prefab;
-	/** @prop {name: enemyPrefCL, type: Prefab} */
-	private enemyPrefCL: Laya.Prefab;
+	/** @prop {name: enemyPrefAL1, type: Prefab} */
+	private enemyPrefAL1: Laya.Prefab;
+	/** @prop {name: enemyPrefAL2, type: Prefab} */
+	private enemyPrefAL2: Laya.Prefab;
+	/** @prop {name: enemyPrefBL1, type: Prefab} */
+	private enemyPrefBL1: Laya.Prefab;
+	/** @prop {name: enemyPrefBL2, type: Prefab} */
+	private enemyPrefBL2: Laya.Prefab;
+	/** @prop {name: enemyPrefCL1, type: Prefab} */
+	private enemyPrefCL1: Laya.Prefab;
+	/** @prop {name: enemyPrefCL2, type: Prefab} */
+	private enemyPrefCL2: Laya.Prefab;
+	
 	/** @prop {name: enemyPrefZL, type: Prefab} */
 	private enemyPrefZL: Laya.Prefab;
 	/** @prop {name: enemyPrefZR, type: Prefab} */
@@ -78,10 +85,14 @@ export default class GameControl extends Laya.Script
 		this.resultPanel.visible = false;
 		this.rankPanel.visible = false;
 		this.openDataViewer.visible = false;
+		//this.continueBtn.visible = false;
 		this._enemyDict = {};
-		this._enemyDict["EnemyAL"] = this.enemyPrefAL;
-		this._enemyDict["EnemyBL"] = this.enemyPrefBL;
-		this._enemyDict["EnemyCL"] = this.enemyPrefCL;
+		this._enemyDict["EnemyAL1"] = this.enemyPrefAL1;
+		this._enemyDict["EnemyAL2"] = this.enemyPrefAL2;
+		this._enemyDict["EnemyBL1"] = this.enemyPrefBL1;
+		this._enemyDict["EnemyBL2"] = this.enemyPrefBL2;
+		this._enemyDict["EnemyCL1"] = this.enemyPrefCL1;
+		this._enemyDict["EnemyCL2"] = this.enemyPrefCL2;
 		this._enemyDict["EnemyZL"] = this.enemyPrefZL;
 		this._enemyDict["EnemyZR"] = this.enemyPrefZR;
 

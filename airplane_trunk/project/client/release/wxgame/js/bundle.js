@@ -47,6 +47,8 @@
 	        this.Reset();
 	    }
 	    onTriggerEnter(other, self, contact) {
+	        if (this._sp.x == -10000)
+	            return;
 	        let otherSp = other.owner;
 	        let bBottom = otherSp.name == "Bottom";
 	        if (this._bInvincible && !bBottom)
@@ -59,7 +61,7 @@
 	        this._explosionSP.y = this._sp.y;
 	        this._explosionAni.play(0, false);
 	        Laya.SoundManager.playSound("sound/explosion.wav");
-	        Laya.timer.once(10000, this, this.HideExplosion);
+	        Laya.timer.once(1000, this, this.HideExplosion);
 	        this._sp.x = -10000;
 	        if (!bBottom)
 	            otherSp.destroy();
@@ -94,7 +96,6 @@
 	        this._bInvincible = false;
 	    }
 	    Up() {
-	        Laya.SoundManager.playSound("sound/up.mp3", 1);
 	        this._rigidbody.setVelocity({ x: 0, y: -12 });
 	    }
 	}
@@ -387,9 +388,12 @@
 	        this.rankPanel.visible = false;
 	        this.openDataViewer.visible = false;
 	        this._enemyDict = {};
-	        this._enemyDict["EnemyAL"] = this.enemyPrefAL;
-	        this._enemyDict["EnemyBL"] = this.enemyPrefBL;
-	        this._enemyDict["EnemyCL"] = this.enemyPrefCL;
+	        this._enemyDict["EnemyAL1"] = this.enemyPrefAL1;
+	        this._enemyDict["EnemyAL2"] = this.enemyPrefAL2;
+	        this._enemyDict["EnemyBL1"] = this.enemyPrefBL1;
+	        this._enemyDict["EnemyBL2"] = this.enemyPrefBL2;
+	        this._enemyDict["EnemyCL1"] = this.enemyPrefCL1;
+	        this._enemyDict["EnemyCL2"] = this.enemyPrefCL2;
 	        this._enemyDict["EnemyZL"] = this.enemyPrefZL;
 	        this._enemyDict["EnemyZR"] = this.enemyPrefZR;
 	        Laya.loader.load("cfg/cfg.bin", Laya.Handler.create(this, this.OnConfigComplete), null, Laya.Loader.BUFFER);
@@ -597,24 +601,34 @@
 	        Laya.Tween.to(this._sp, { x: this._iFromX, y: this._iFromY }, 1500, Laya.Ease.linearNone, Laya.Handler.create(this, this.BackCompleted));
 	    }
 	    ShowCompleted() {
-	        this._iTimes1 = 0;
-	        this._iTimes2 = 0;
-	        Laya.timer.loop(800, this, this.Shoot);
+	        this._iBulletCount = 0;
+	        this._iTimes = 0;
+	        this.Shoot();
 	    }
 	    Shoot() {
 	        Laya.timer.loop(100, this, this._Shoot);
-	        if (++this._iTimes1 > 1) {
-	            Laya.timer.clear(this, this.Shoot);
-	            this._iTimes1 = 0;
-	            this.Back();
-	        }
 	    }
 	    _Shoot() {
 	        super.BulletExcute(this._iDirection == 1 ? "BulletAL" : "BulletAR");
-	        if (++this._iTimes2 > 2) {
+	        if (++this._iBulletCount > 2) {
 	            Laya.timer.clear(this, this._Shoot);
-	            this._iTimes2 = 0;
+	            this._iBulletCount = 0;
+	            if (this._iTimes == 0)
+	                this.Back();
 	        }
+	    }
+	}
+
+	class EnemyA2 extends EnemyA {
+	    Shoot() {
+	        Laya.timer.loop(800, this, this.__Shoot);
+	    }
+	    __Shoot() {
+	        if (++this._iTimes > 1) {
+	            Laya.timer.clear(this, this.__Shoot);
+	            this._iTimes = 0;
+	        }
+	        Laya.timer.loop(100, this, this._Shoot);
 	    }
 	}
 
@@ -658,6 +672,7 @@
 	        reg("script/bullet/BulletB.ts", BulletB);
 	        reg("script/bullet/BulletC.ts", BulletC);
 	        reg("script/enemy/EnemyA.ts", EnemyA);
+	        reg("script/enemy/EnemyA2.ts", EnemyA2);
 	        reg("script/enemy/EnemyB.ts", EnemyB);
 	        reg("script/enemy/EnemyC.ts", EnemyC);
 	        reg("script/enemy/Enemy.ts", Enemy);

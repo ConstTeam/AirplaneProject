@@ -54,12 +54,11 @@ P ADDA694A explosion7.png
 P E299DD07 explosion8.png
 D rank
 P 6EA3C4B6 c1.png
-P C8F93D08 Separator.png
-P 0C711DA0 sky_color_top.png
+P 1A0ED974 cube.png
+P 9583021B Separator.png
 D sound
 R C85ED474 bgm.mp3
 R 982295C9 explosion.wav
-R 2AA92DAF up.mp3
 D texture
 D texture/background
 P 59276197 farground_mountains.png
