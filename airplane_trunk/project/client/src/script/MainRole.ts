@@ -23,7 +23,6 @@ export default class MainRole extends Laya.Script
 		if(this._bInvincible && !bBottom)
 			return;
 		
-			
 		if(otherSp.name == "Top")
 			return;
 		
@@ -32,6 +31,7 @@ export default class MainRole extends Laya.Script
 		this._explosionSP.x = this._sp.x;
 		this._explosionSP.y = this._sp.y;
 		this._explosionAni.play(0, false);
+		Laya.SoundManager.playSound("sound/explosion.wav");
 		Laya.timer.once(10000, this, this.HideExplosion)
 		this._sp.x = -10000;
 

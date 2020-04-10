@@ -6,7 +6,7 @@ var REG: Function = Laya.ClassUtils.regClass;
 export module ui.test {
     export class BigUI extends Laya.Scene {
 		public _list:Laya.List;
-        public static  uiView:any ={"type":"Scene","props":{"width":500,"height":700},"compId":2,"child":[{"type":"List","props":{"y":50,"x":10,"width":480,"var":"_list","vScrollBarSkin":" ","spaceY":0,"selectEnable":false,"repeatX":1,"height":600},"compId":3,"child":[{"type":"bigItem","props":{"width":480,"runtime":"view/bigItem.ts","renderType":"render","height":600},"compId":5}]}],"loadList":[],"loadList3D":[]};
+        public static  uiView:any ={"type":"Scene","props":{"width":500,"height":700},"compId":2,"child":[{"type":"List","props":{"y":50,"x":10,"width":480,"var":"_list","vScrollBarSkin":" ","spaceY":0,"selectEnable":false,"repeatX":1,"height":600},"compId":3,"child":[{"type":"bigItem","props":{"runtime":"view/bigItem.ts","renderType":"render"},"compId":5}]}],"loadList":[],"loadList3D":[]};
         constructor(){ super()}
         createChildren():void {
             super.createChildren();

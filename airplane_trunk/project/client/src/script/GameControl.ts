@@ -145,10 +145,12 @@ export default class GameControl extends Laya.Script
 		this.mainRole.RigidBodyEnable(true);
 		this.background.SetSpeed(this._iSpeed);
 		this._bRunning = true;
+		Laya.SoundManager.playMusic("sound/bgm.mp3", 0);
 	}
 
 	public Stop(): void
 	{
+		Laya.SoundManager.stopMusic();
 		this._bRunning = false;
 		Laya.timer.once(2000, this, this.ShowResultPanel);
 
@@ -200,6 +202,7 @@ export default class GameControl extends Laya.Script
 	private onRestartBtnClick(): void
 	{
 		this.resultPanel.visible = false;
+		this.ShowRankPanel(false);
 		this._iDistance = 0;
 		this.Init();
 		this.mainRole.SetInvincible();
@@ -208,13 +211,18 @@ export default class GameControl extends Laya.Script
 	private onContinueBtnClick(): void
 	{
 		this.resultPanel.visible = false;
+		this.ShowRankPanel(false);
 		this.Init();
 		this.mainRole.SetInvincible();
 	}
 
 	private onRankBtnClick(): void
 	{
-		let bShow: boolean = !this.rankPanel.visible;
+		this.ShowRankPanel(!this.rankPanel.visible);
+	}
+
+	private ShowRankPanel(bShow: boolean): void
+	{
 		this.rankPanel.visible = bShow;
 		this.openDataViewer.visible = bShow;
 		if(bShow)

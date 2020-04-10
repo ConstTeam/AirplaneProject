@@ -58,6 +58,7 @@
 	        this._explosionSP.x = this._sp.x;
 	        this._explosionSP.y = this._sp.y;
 	        this._explosionAni.play(0, false);
+	        Laya.SoundManager.playSound("sound/explosion.wav");
 	        Laya.timer.once(10000, this, this.HideExplosion);
 	        this._sp.x = -10000;
 	        if (!bBottom)
@@ -93,6 +94,7 @@
 	        this._bInvincible = false;
 	    }
 	    Up() {
+	        Laya.SoundManager.playSound("sound/up.mp3", 1);
 	        this._rigidbody.setVelocity({ x: 0, y: -12 });
 	    }
 	}
@@ -435,8 +437,10 @@
 	        this.mainRole.RigidBodyEnable(true);
 	        this.background.SetSpeed(this._iSpeed);
 	        this._bRunning = true;
+	        Laya.SoundManager.playMusic("sound/bgm.mp3", 0);
 	    }
 	    Stop() {
+	        Laya.SoundManager.stopMusic();
 	        this._bRunning = false;
 	        Laya.timer.once(2000, this, this.ShowResultPanel);
 	        let score = this._iDistance / 100;
@@ -478,17 +482,21 @@
 	    }
 	    onRestartBtnClick() {
 	        this.resultPanel.visible = false;
+	        this.ShowRankPanel(false);
 	        this._iDistance = 0;
 	        this.Init();
 	        this.mainRole.SetInvincible();
 	    }
 	    onContinueBtnClick() {
 	        this.resultPanel.visible = false;
+	        this.ShowRankPanel(false);
 	        this.Init();
 	        this.mainRole.SetInvincible();
 	    }
 	    onRankBtnClick() {
-	        let bShow = !this.rankPanel.visible;
+	        this.ShowRankPanel(!this.rankPanel.visible);
+	    }
+	    ShowRankPanel(bShow) {
 	        this.rankPanel.visible = bShow;
 	        this.openDataViewer.visible = bShow;
 	        if (bShow)
