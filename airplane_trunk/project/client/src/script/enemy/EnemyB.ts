@@ -4,16 +4,22 @@ export default class EnemyB extends Enemy
 {
 	protected ShowCompleted(): void
 	{
+		this._iTimes = 0;
 		this.Shoot();
 	}
 
-	private Shoot(): void
+	protected Shoot(): void
 	{
-		super.BulletExcute(this._iDirection == 1 ? "BulletBL" : "BulletBR");
+		this._Shoot();
 		Laya.timer.once(2000, this, this.Back);
 	}
 
-	private Back(): void
+	protected _Shoot(): void
+	{
+		super.BulletExcute(this._iDirection == 1 ? "BulletBL" : "BulletBR");
+	}
+
+	protected Back(): void
 	{
 		Laya.Tween.to(this._sp, {x: this._iFromX, y: this._iFromY}, 1500, Laya.Ease.linearNone, Laya.Handler.create(this, this.BackCompleted));
 	}

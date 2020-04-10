@@ -1,10 +1,11 @@
-import EnemyA from "./EnemyA";
+import EnemyB from "./EnemyB";
 
-export default class EnemyA2 extends EnemyA
+export default class EnemyB2 extends EnemyB
 {
 	protected Shoot(): void
 	{
 		Laya.timer.loop(700, this, this.__Shoot);
+		Laya.timer.once(2700, this, this.Back);
 	}
 
 	protected __Shoot(): void
@@ -14,6 +15,6 @@ export default class EnemyA2 extends EnemyA
 			Laya.timer.clear(this, this.__Shoot);
 			this._iTimes = 0;
 		}
-		Laya.timer.loop(100, this, this._Shoot);
+		this._Shoot();
 	}
 }

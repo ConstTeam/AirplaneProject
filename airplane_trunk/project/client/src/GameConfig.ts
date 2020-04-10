@@ -9,6 +9,7 @@ import BulletC from "./script/bullet/BulletC"
 import EnemyA from "./script/enemy/EnemyA"
 import EnemyA2 from "./script/enemy/EnemyA2"
 import EnemyB from "./script/enemy/EnemyB"
+import EnemyB2 from "./script/enemy/EnemyB2"
 import EnemyC from "./script/enemy/EnemyC"
 import Enemy from "./script/enemy/Enemy"
 /*
@@ -40,6 +41,7 @@ export default class GameConfig{
         reg("script/enemy/EnemyA.ts",EnemyA);
         reg("script/enemy/EnemyA2.ts",EnemyA2);
         reg("script/enemy/EnemyB.ts",EnemyB);
+        reg("script/enemy/EnemyB2.ts",EnemyB2);
         reg("script/enemy/EnemyC.ts",EnemyC);
         reg("script/enemy/Enemy.ts",Enemy);
     }

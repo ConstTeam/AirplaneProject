@@ -10,6 +10,9 @@ export default class Enemy extends Laya.Script
 	protected _iFromY: number;
 	protected _iDirection: number;
 
+	protected _iBulletCount: number;
+	protected _iTimes: number;
+
 	constructor() { super(); }
 	
 	onAwake(): void

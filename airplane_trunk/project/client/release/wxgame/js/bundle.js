@@ -621,7 +621,7 @@
 
 	class EnemyA2 extends EnemyA {
 	    Shoot() {
-	        Laya.timer.loop(800, this, this.__Shoot);
+	        Laya.timer.loop(700, this, this.__Shoot);
 	    }
 	    __Shoot() {
 	        if (++this._iTimes > 1) {
@@ -634,14 +634,32 @@
 
 	class EnemyB extends Enemy {
 	    ShowCompleted() {
+	        this._iTimes = 0;
 	        this.Shoot();
 	    }
 	    Shoot() {
-	        super.BulletExcute(this._iDirection == 1 ? "BulletBL" : "BulletBR");
+	        this._Shoot();
 	        Laya.timer.once(2000, this, this.Back);
+	    }
+	    _Shoot() {
+	        super.BulletExcute(this._iDirection == 1 ? "BulletBL" : "BulletBR");
 	    }
 	    Back() {
 	        Laya.Tween.to(this._sp, { x: this._iFromX, y: this._iFromY }, 1500, Laya.Ease.linearNone, Laya.Handler.create(this, this.BackCompleted));
+	    }
+	}
+
+	class EnemyB2 extends EnemyB {
+	    Shoot() {
+	        Laya.timer.loop(700, this, this.__Shoot);
+	        Laya.timer.once(2700, this, this.Back);
+	    }
+	    __Shoot() {
+	        if (++this._iTimes > 1) {
+	            Laya.timer.clear(this, this.__Shoot);
+	            this._iTimes = 0;
+	        }
+	        Laya.timer.loop(100, this, this._Shoot);
 	    }
 	}
 
@@ -674,6 +692,7 @@
 	        reg("script/enemy/EnemyA.ts", EnemyA);
 	        reg("script/enemy/EnemyA2.ts", EnemyA2);
 	        reg("script/enemy/EnemyB.ts", EnemyB);
+	        reg("script/enemy/EnemyB2.ts", EnemyB2);
 	        reg("script/enemy/EnemyC.ts", EnemyC);
 	        reg("script/enemy/Enemy.ts", Enemy);
 	    }

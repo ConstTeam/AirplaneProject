@@ -2,9 +2,6 @@ import Enemy from "./Enemy";
 
 export default class EnemyA extends Enemy
 {
-	protected _iBulletCount: number;
-	protected _iTimes: number;
-
 	protected Back(): void
 	{
 		Laya.Tween.to(this._sp, {x: this._iFromX, y: this._iFromY}, 1500, Laya.Ease.linearNone, Laya.Handler.create(this, this.BackCompleted));
