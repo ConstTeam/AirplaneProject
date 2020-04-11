@@ -2,7 +2,7 @@
     "type":"Sprite",
     "selectedBox":116,
     "searchKey":"Sprite,EnemyBL1",
-    "props":{"texture":"texture/role/plane_3_blue.png","presetID":1,"preset":"laya/pages/prefab/EnemyBL1.prefab","pivotY":71,"pivotX":93,"name":"EnemyBL1","isPresetRoot":true},
+    "props":{"texture":"role/plane_3_blue.png","presetID":1,"preset":"laya/pages/prefab/EnemyBL1.prefab","pivotY":71,"pivotX":93,"name":"EnemyBL1","isPresetRoot":true},
     "nodeParent":-1,
     "maxID":120,
     "label":"EnemyBL1",

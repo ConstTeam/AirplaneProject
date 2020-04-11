@@ -3,7 +3,7 @@
     "type":"Sprite",
     "selectedBox":110,
     "searchKey":"Sprite,BulletBL",
-    "props":{"texture":"texture/role/torpedo.png","presetID":1,"preset":"laya/pages/prefab/BulletBL.prefab","pivotY":34,"pivotX":63,"name":"BulletBL","isPresetRoot":true},
+    "props":{"texture":"role/torpedo.png","presetID":1,"preset":"laya/pages/prefab/BulletBL.prefab","pivotY":34,"pivotX":63,"name":"BulletBL","isPresetRoot":true},
     "nodeParent":-1,
     "maxID":114,
     "label":"BulletBL",

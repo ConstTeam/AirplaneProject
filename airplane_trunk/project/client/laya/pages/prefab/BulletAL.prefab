@@ -2,7 +2,7 @@
     "type":"Sprite",
     "selectedBox":93,
     "searchKey":"Sprite,BulletAL",
-    "props":{"texture":"texture/role/fire_ball_1.png","presetID":1,"preset":"laya/pages/prefab/BulletAL.prefab","pivotY":11,"pivotX":35,"name":"BulletAL","isPresetRoot":true},
+    "props":{"texture":"role/fire_ball_1.png","presetID":1,"preset":"laya/pages/prefab/BulletAL.prefab","pivotY":11,"pivotX":35,"name":"BulletAL","isPresetRoot":true},
     "nodeParent":-1,
     "maxID":99,
     "label":"BulletAL",

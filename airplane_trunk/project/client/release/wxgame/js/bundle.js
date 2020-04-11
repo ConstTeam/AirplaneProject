@@ -44,16 +44,14 @@
 	    onAwake() {
 	        this._sp = this.owner;
 	        this._rigidbody = this.owner.getComponent(Laya.RigidBody);
-	        this.Reset();
+	        this._Reset();
 	    }
 	    onTriggerEnter(other, self, contact) {
 	        if (this._sp.x == -10000)
 	            return;
 	        let otherSp = other.owner;
 	        let bBottom = otherSp.name == "Bottom";
-	        if (this._bInvincible && !bBottom)
-	            return;
-	        if (otherSp.name == "Top")
+	        if (otherSp.name == "Top" || this._bInvincible)
 	            return;
 	        this.RigidBodyEnable(false);
 	        this._stopCbHandler.run();
@@ -69,12 +67,21 @@
 	    HideExplosion() {
 	        this._explosionSP.x = -10000;
 	    }
-	    Init(stopCbHandler, explosionSP, expolsionAni) {
+	    Init(stopCbHandler, explosionSP, expolsionAni, bottom, bottom2) {
 	        this._stopCbHandler = stopCbHandler;
 	        this._explosionSP = explosionSP;
 	        this._explosionAni = expolsionAni;
+	        this._bottomBox = bottom.getComponent(Laya.BoxCollider);
+	        this._bottomBox2 = bottom2.getComponent(Laya.BoxCollider);
+	        this._bottomBox.enabled = true;
+	        this._bottomBox2.enabled = false;
 	    }
 	    Reset() {
+	        this._Reset();
+	        this._bottomBox.enabled = true;
+	        this._bottomBox2.enabled = false;
+	    }
+	    _Reset() {
 	        this._sp.x = 959;
 	        this._sp.y = 539;
 	        this.RigidBodyEnable(false);
@@ -84,6 +91,8 @@
 	    }
 	    SetInvincible() {
 	        this._bInvincible = true;
+	        this._bottomBox.enabled = false;
+	        this._bottomBox2.enabled = true;
 	        Laya.timer.loop(100, this, this.InvincibleEffect);
 	        Laya.timer.once(3000, this, this.ClearInvincible);
 	    }
@@ -94,6 +103,8 @@
 	        Laya.timer.clear(this, this.InvincibleEffect);
 	        this._sp.visible = true;
 	        this._bInvincible = false;
+	        this._bottomBox.enabled = true;
+	        this._bottomBox2.enabled = false;
 	    }
 	    Up() {
 	        this._rigidbody.setVelocity({ x: 0, y: -12 });
@@ -407,6 +418,7 @@
 	        this.restartBtn.clickHandler = new Laya.Handler(this, this.onRestartBtnClick);
 	        this.continueBtn.clickHandler = new Laya.Handler(this, this.onContinueBtnClick);
 	        this.rankBtn.clickHandler = new Laya.Handler(this, this.onRankBtnClick);
+	        this.rankXBtn.clickHandler = new Laya.Handler(this, this.onRankXBtnClick);
 	        this.tapSp.on(Event.MOUSE_DOWN, this, this.tapSpMouseHandler);
 	        this.mainRole = this.mainRoleSp.getComponent(MainRole);
 	        this.background = this.backgroundSp.getComponent(Background);
@@ -423,7 +435,7 @@
 	        this.explosionSp.scaleY = 2;
 	        this.explosionAni.interval = 100;
 	        this.startBtn.visible = true;
-	        this.mainRole.Init(new Laya.Handler(this, this.Stop), this.explosionSp, this.explosionAni);
+	        this.mainRole.Init(new Laya.Handler(this, this.Stop), this.explosionSp, this.explosionAni, this.bottomSp, this.bottomSp2);
 	    }
 	    onUpdate() {
 	        if (this._bRunning) {
@@ -500,7 +512,10 @@
 	        this.mainRole.SetInvincible();
 	    }
 	    onRankBtnClick() {
-	        this.ShowRankPanel(!this.rankPanel.visible);
+	        this.ShowRankPanel(true);
+	    }
+	    onRankXBtnClick() {
+	        this.ShowRankPanel(false);
 	    }
 	    ShowRankPanel(bShow) {
 	        this.rankPanel.visible = bShow;

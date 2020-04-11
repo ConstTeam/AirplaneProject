@@ -23,6 +23,10 @@ export default class GameControl extends Laya.Script
 	private backgroundSp: Sprite;
 	/** @prop {name: distanceText, type:Node} */
 	private distanceText: Laya.Text;
+	/** @prop {name: bottomSp, type: Node} */
+	private bottomSp: Sprite;
+	/** @prop {name: bottomSp2, type: Node} */
+	private bottomSp2: Sprite;
 
 	//--ResultPanel--------------------------------------------------
 	/** @prop {name: resultPanel, type: Node} */
@@ -132,7 +136,7 @@ export default class GameControl extends Laya.Script
 		this.explosionSp.scaleY = 2;
 		this.explosionAni.interval = 100;
 		this.startBtn.visible = true;
-		this.mainRole.Init(new Laya.Handler(this, this.Stop), this.explosionSp, this.explosionAni);
+		this.mainRole.Init(new Laya.Handler(this, this.Stop), this.explosionSp, this.explosionAni, this.bottomSp, this.bottomSp2);
 	}
 
 	onUpdate(): void

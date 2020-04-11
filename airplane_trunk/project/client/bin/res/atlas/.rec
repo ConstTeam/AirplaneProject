@@ -1,7 +1,14 @@
 D .
+D background
+P 59276197 farground_mountains.png
+P 6AF40F01 foreground_mountains.png
+P 55DF99C8 mid_ground_cloud_1.png
+P 7B115B13 sky_color.png
+P 0C711DA0 sky_color_top.png
 D common
 P D171CB5C ButtonNo.png
 P B69CEAA7 ButtonX.png
+P 1322F11B ButtonYellow.png
 P 817B49A5 ButtonYes.png
 P DD1FD125 Paper.png
 D comp
@@ -57,20 +64,11 @@ D rank
 P 6EA3C4B6 c1.png
 P 1A0ED974 cube.png
 P 9583021B Separator.png
-D sound
-R C85ED474 bgm.mp3
-R 982295C9 explosion.wav
-D texture
-D texture/background
-P 59276197 farground_mountains.png
-P 6AF40F01 foreground_mountains.png
-P 55DF99C8 mid_ground_cloud_1.png
-P 7B115B13 sky_color.png
-P 0C711DA0 sky_color_top.png
-D texture/role
+D role
 P CE5E4287 fire_ball_1.png
 P 16634520 fire_ball_blue.png
 P 56E5DC8B fire_ball_pink.png
+P 6EB18D83 life.png
 P 14C764A9 plane_1_blue.png
 P E57A898F plane_1_pink.png
 P 53B54595 plane_1_red.png
@@ -90,3 +88,7 @@ P C1BDECF0 torpedo_black_1.png
 P 0B19A40B torpedo_flame.png
 P 75F567CE torpedo_flame_1.png
 P DDC62AEE torpedo_flame_2.png
+D sound
+R C85ED474 bgm.mp3
+R 982295C9 explosion.wav
+D texture

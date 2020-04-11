@@ -4,7 +4,7 @@
     "selectedBox":139,
     "selecteID":140,
     "searchKey":"Sprite,EnemyZR",
-    "props":{"y":0,"x":0,"texture":"texture/role/torpedo_1.png","presetID":1,"preset":"laya/pages/prefab/EnemyZR.prefab","name":"EnemyZR","isPresetRoot":true},
+    "props":{"y":0,"x":0,"texture":"role/torpedo_1.png","presetID":1,"preset":"laya/pages/prefab/EnemyZR.prefab","name":"EnemyZR","isPresetRoot":true},
     "nodeParent":-1,
     "maxID":143,
     "label":"EnemyZR",

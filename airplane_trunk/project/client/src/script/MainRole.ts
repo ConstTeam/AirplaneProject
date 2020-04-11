@@ -6,6 +6,9 @@ export default class MainRole extends Laya.Script
 	private _explosionSP: Laya.Sprite;
 	private _explosionAni: Laya.Animation;
 	private _bInvincible: boolean;
+	private _iLife: number;
+	private _bottomBox: Laya.BoxCollider;
+	private _bottomBox2: Laya.BoxCollider;
 
 	constructor() { super(); }
 	
@@ -13,21 +16,18 @@ export default class MainRole extends Laya.Script
 	{
 		this._sp = this.owner as Laya.Sprite;
 		this._rigidbody = this.owner.getComponent(Laya.RigidBody);
-		this.Reset();
+		this._Reset();
 	}
 
 	onTriggerEnter(other:any, self:any, contact:any): void
 	{
-\]
-2		if(this._sp.x == -10000)
+		if(this._sp.x == -10000)
 			return;
 
 		let otherSp: Laya.Sprite = other.owner as Laya.Sprite;
-		let bBottom: boolean = otherSp.name == "Bottom"
-		if(this._bInvincible && !bBottom)
-			return;
+		let bBottom = otherSp.name == "Bottom";
 		
-		if(otherSp.name == "Top")
+		if(otherSp.name == "Top" || this._bInvincible)
 			return;
 		
 		this.RigidBodyEnable(false);
@@ -48,14 +48,25 @@ export default class MainRole extends Laya.Script
 		this._explosionSP.x = -10000;
 	}
 
-	public Init(stopCbHandler: Laya.Handler, explosionSP: Laya.Sprite, expolsionAni: Laya.Animation): void
+	public Init(stopCbHandler: Laya.Handler, explosionSP: Laya.Sprite, expolsionAni: Laya.Animation, bottom: Laya.Sprite, bottom2: Laya.Sprite): void
 	{
 		this._stopCbHandler = stopCbHandler;
 		this._explosionSP = explosionSP;
 		this._explosionAni = expolsionAni;
+		this._bottomBox = bottom.getComponent(Laya.BoxCollider) as Laya.BoxCollider;
+		this._bottomBox2 = bottom2.getComponent(Laya.BoxCollider) as Laya.BoxCollider;
+		this._bottomBox.enabled = true;
+		this._bottomBox2.enabled = false;
 	}
 
 	public Reset(): void
+	{
+		this._Reset();
+		this._bottomBox.enabled = true;
+		this._bottomBox2.enabled = false;
+	}
+
+	private _Reset(): void
 	{
 		this._sp.x = 959;
 		this._sp.y = 539;
@@ -70,6 +81,8 @@ export default class MainRole extends Laya.Script
 	public SetInvincible(): void
 	{
 		this._bInvincible = true;
+		this._bottomBox.enabled = false;
+		this._bottomBox2.enabled = true;
 		Laya.timer.loop(100, this, this.InvincibleEffect);
 		Laya.timer.once(3000, this, this.ClearInvincible);
 	}
@@ -84,10 +97,12 @@ export default class MainRole extends Laya.Script
 		Laya.timer.clear(this, this.InvincibleEffect);
 		this._sp.visible = true;
 		this._bInvincible = false;
+		this._bottomBox.enabled = true;
+		this._bottomBox2.enabled = false;
 	}
 
 	public Up(): void
 	{
-		this._rigidbody.setVelocity({x: 0, y: -1});
+		this._rigidbody.setVelocity({x: 0, y: -12});
 	}
 }

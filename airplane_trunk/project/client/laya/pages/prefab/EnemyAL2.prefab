@@ -2,7 +2,7 @@
     "type":"Sprite",
     "selectedBox":111,
     "searchKey":"Sprite,EnemyAL2",
-    "props":{"y":0,"x":0,"texture":"texture/role/plane_1_red.png","presetID":1,"preset":"laya/pages/prefab/EnemyAL2.prefab","pivotY":50,"pivotX":140,"name":"EnemyAL2","isPresetRoot":true},
+    "props":{"y":0,"x":0,"texture":"role/plane_1_red.png","presetID":1,"preset":"laya/pages/prefab/EnemyAL2.prefab","pivotY":50,"pivotX":140,"name":"EnemyAL2","isPresetRoot":true},
     "nodeParent":-1,
     "maxID":117,
     "label":"EnemyAL2",
