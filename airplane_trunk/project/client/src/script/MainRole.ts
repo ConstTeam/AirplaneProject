@@ -18,7 +18,8 @@ export default class MainRole extends Laya.Script
 
 	onTriggerEnter(other:any, self:any, contact:any): void
 	{
-		if(this._sp.x == -10000)
+\]
+2		if(this._sp.x == -10000)
 			return;
 
 		let otherSp: Laya.Sprite = other.owner as Laya.Sprite;
@@ -87,6 +88,6 @@ export default class MainRole extends Laya.Script
 
 	public Up(): void
 	{
-		this._rigidbody.setVelocity({x: 0, y: -12});
+		this._rigidbody.setVelocity({x: 0, y: -1});
 	}
 }

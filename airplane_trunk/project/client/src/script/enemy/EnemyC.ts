@@ -8,13 +8,18 @@ export default class EnemyC extends Enemy
 		this.Shoot();
 	}
 
-	private Shoot(): void
+	protected Shoot(): void
 	{
-		super.BulletExcute(this._iDirection == 1 ? "BulletCL" : "BulletCR");
+		this._Shoot();
 		this.Back();
 	}
 
-	private Back(): void
+	protected _Shoot(): void
+	{
+		super.BulletExcute(this._iDirection == 1 ? "BulletCL" : "BulletCR");
+	}
+
+	protected Back(): void
 	{
 		let toX: number = this._sp.scaleX == 1 ? PositionMgr.RightX : PositionMgr.LeftX;
 		Laya.Tween.to(this._sp, {x: toX, y: this._iFromY}, 1500, Laya.Ease.linearNone, Laya.Handler.create(this, this.BackCompleted));

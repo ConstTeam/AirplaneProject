@@ -1,11 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
+    "selectedBox":81,
+    "selecteID":146,
     "searchKey":"Scene",
     "props":{"x":0,"width":1920,"sceneColor":"#000000","height":1080,"enemyPref":"@arr:,,"},
     "nodeParent":-1,
-    "maxID":158,
+    "maxID":159,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -276,7 +277,7 @@
                 {
                     "type":"Sprite",
                     "searchKey":"Sprite,MainRole",
-                    "props":{"y":539,"x":959,"width":162,"texture":"texture/plane_1/plane_1_yellow.png","pivotY":48,"pivotX":81,"name":"MainRole","height":96},
+                    "props":{"y":539,"x":959,"width":162,"texture":"texture/role/plane_1_yellow.png","pivotY":48,"pivotX":81,"name":"MainRole","height":96},
                     "nodeParent":42,
                     "label":"MainRole",
                     "isOpen":false,
@@ -436,7 +437,7 @@
                             "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite,Bg",
-                            "props":{"y":294,"x":524,"width":872,"texture":"common/Paper.png","name":"Bg","height":491},
+                            "props":{"y":294,"x":460,"width":1000,"texture":"common/Paper.png","name":"Bg","height":491},
                             "nodeParent":146,
                             "label":"Bg",
                             "isOpen":true,
@@ -449,7 +450,7 @@
                                     "x":60,
                                     "type":"Button",
                                     "searchKey":"Button,RestartBtn",
-                                    "props":{"y":391,"x":296,"width":280,"skin":"common/ButtonNo.png","sizeGrid":"0,0,0,0","name":"RestartBtn","labelSize":50,"labelPadding":"5","labelColors":"#ffffff","labelBold":true,"label":"重新开始","height":100},
+                                    "props":{"y":401,"x":50,"width":250,"skin":"common/ButtonNo.png","name":"RestartBtn","labelSize":45,"labelPadding":"5","labelColors":"#ffffff","labelBold":true,"label":"重新开始","height":90},
                                     "nodeParent":151,
                                     "label":"RestartBtn",
                                     "isDirectory":false,
@@ -463,7 +464,7 @@
                                     "x":60,
                                     "type":"Button",
                                     "searchKey":"Button,ContinueBtn",
-                                    "props":{"y":391,"x":502,"width":280,"skin":"common/ButtonYes.png","sizeGrid":"0,0,0,0","name":"ContinueBtn","labelSize":50,"labelPadding":"5","labelColors":"#ffffff","labelBold":true,"label":"继续","height":100},
+                                    "props":{"y":401,"x":375,"width":250,"skin":"common/ButtonYes.png","name":"ContinueBtn","labelSize":45,"labelPadding":"5","labelColors":"#ffffff","labelBold":true,"label":"继续","height":90},
                                     "nodeParent":151,
                                     "label":"ContinueBtn",
                                     "isDirectory":false,
@@ -471,13 +472,29 @@
                                     "hasChild":false,
                                     "compId":144,
                                     "child":[
-                                        ]
+                                        ],
+                                    "$HIDDEN":false
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Button",
+                                    "searchKey":"Button,RankBtn",
+                                    "props":{"y":401,"x":699,"width":250,"skin":"common/ButtonYellow.png","name":"RankBtn","labelSize":45,"labelPadding":"5","labelColors":"#ffffff","labelBold":true,"label":"好友排行","height":90},
+                                    "nodeParent":151,
+                                    "label":"RankBtn",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":149,
+                                    "child":[
+                                        ],
+                                    "$HIDDEN":false
                                 },
                                 {
                                     "x":60,
                                     "type":"Label",
                                     "searchKey":"Label",
-                                    "props":{"y":129,"x":114,"width":343,"valign":"middle","text":"本次飞行距离：","height":80,"fontSize":50,"color":"#4e2623","bold":true,"align":"center"},
+                                    "props":{"y":131,"x":114,"width":343,"valign":"middle","text":"本次飞行距离：","height":80,"fontSize":50,"color":"#4e2623","bold":true,"align":"center"},
                                     "nodeParent":151,
                                     "label":"Label",
                                     "isDirectory":false,
@@ -491,7 +508,7 @@
                                     "x":60,
                                     "type":"Label",
                                     "searchKey":"Label",
-                                    "props":{"y":240,"x":116,"width":343,"valign":"middle","text":"最远飞行距离：","height":80,"fontSize":50,"color":"#4e2623","bold":true,"align":"center"},
+                                    "props":{"y":242,"x":114,"width":343,"valign":"middle","text":"最远飞行距离：","height":80,"fontSize":50,"color":"#4e2623","bold":true,"align":"center"},
                                     "nodeParent":151,
                                     "label":"Label",
                                     "isDirectory":false,
@@ -505,7 +522,7 @@
                                     "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,CurText",
-                                    "props":{"y":129,"x":470.5,"width":343,"valign":"middle","text":"123.456","name":"CurText","height":80,"fontSize":50,"color":"#4e2623","bold":true,"align":"center"},
+                                    "props":{"y":131,"x":471,"width":470,"valign":"middle","text":"123.456","name":"CurText","height":80,"fontSize":50,"color":"#4e2623","bold":true,"align":"center"},
                                     "nodeParent":151,
                                     "label":"CurText",
                                     "isDirectory":false,
@@ -519,7 +536,7 @@
                                     "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,MaxText",
-                                    "props":{"y":240,"x":474,"width":343,"valign":"middle","text":"456.789","name":"MaxText","height":80,"fontSize":50,"color":"#4e2623","bold":true,"align":"center"},
+                                    "props":{"y":242,"x":471,"width":468,"valign":"middle","text":"456.789","name":"MaxText","height":80,"fontSize":50,"color":"#4e2623","bold":true,"align":"center"},
                                     "nodeParent":151,
                                     "label":"MaxText",
                                     "isDirectory":false,
@@ -528,27 +545,13 @@
                                     "compId":157,
                                     "child":[
                                         ]
-                                },
-                                {
-                                    "x":60,
-                                    "type":"Button",
-                                    "searchKey":"Button,RankBtn",
-                                    "props":{"y":15,"x":614,"width":258,"name":"RankBtn","labelSize":30,"labelColors":"#4e2623","labelBold":true,"label":"查看好友排行->","height":72},
-                                    "nodeParent":151,
-                                    "label":"RankBtn",
-                                    "isDirectory":false,
-                                    "isAniNode":true,
-                                    "hasChild":false,
-                                    "compId":149,
-                                    "child":[
-                                        ]
                                 }]
                         },
                         {
                             "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite,RankBg",
-                            "props":{"y":190,"x":1397,"width":500,"texture":"common/Paper.png","name":"RankBg","height":700},
+                            "props":{"y":190,"x":460,"width":1000,"texture":"common/Paper.png","name":"RankBg","height":700},
                             "nodeParent":146,
                             "label":"RankBg",
                             "isOpen":true,
@@ -561,7 +564,7 @@
                                     "x":60,
                                     "type":"WXOpenDataViewer",
                                     "searchKey":"WXOpenDataViewer",
-                                    "props":{"y":0,"x":0,"width":460,"visible":false,"iconSign":"wx","height":600},
+                                    "props":{"y":0,"x":0,"width":1000,"visible":false,"iconSign":"wx","height":700},
                                     "nodeParent":153,
                                     "label":"WXOpenDataViewer",
                                     "isDirectory":false,
@@ -571,8 +574,22 @@
                                     "child":[
                                         ],
                                     "$HIDDEN":true
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Button",
+                                    "searchKey":"Button,XBtn",
+                                    "props":{"y":0,"x":896,"skin":"common/ButtonX.png","scaleY":1.2,"scaleX":1.2,"name":"XBtn"},
+                                    "nodeParent":153,
+                                    "label":"XBtn",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":158,
+                                    "child":[
+                                        ]
                                 }],
-                            "$HIDDEN":false
+                            "$HIDDEN":true
                         }]
                 },
                 {
@@ -611,7 +628,7 @@
             "source":"src/script/GameControl.ts",
             "searchKey":"Script,GameControl",
             "removeAble":true,
-            "props":{"tapSp":"@node:23","startBtn":"@node:38","sceneRoot":"@node:42","resultPanel":"@node:146","restartBtn":"@node:88","resaultPanel":"@node:146","rankPanel":"@node:153","rankBtn":"@node:149","openDataViewer":"@node:148","maxText":"@node:157","mainRoleSp":"@node:24","explosionSp":"@node:143","enemyRoot":"@node:49","enemyPrefZR":"@Prefab:prefab/EnemyZR.prefab","enemyPrefZL":"@Prefab:prefab/EnemyZL.prefab","enemyPrefCL2":"@Prefab:prefab/EnemyCL1.prefab","enemyPrefCL1":"@Prefab:prefab/EnemyCL1.prefab","enemyPrefCL":"@Prefab:prefab/EnemyCL.prefab","enemyPrefBL2":"@Prefab:prefab/EnemyBL2.prefab","enemyPrefBL1":"@Prefab:prefab/EnemyBL1.prefab","enemyPrefBL":"@Prefab:prefab/EnemyBL.prefab","enemyPrefAL2":"@Prefab:prefab/EnemyAL2.prefab","enemyPrefAL1":"@Prefab:prefab/EnemyAL1.prefab","enemyPrefAL":"@Prefab:prefab/EnemyAL.prefab","distanceText":"@node:32","curText":"@node:156","continueBtn":"@node:144","backgroundSp":"@node:27"},
+            "props":{"tapSp":"@node:23","startBtn":"@node:38","sceneRoot":"@node:42","resultPanel":"@node:146","restartBtn":"@node:88","resaultPanel":"@node:146","rankXBtn":"@node:158","rankPanel":"@node:153","rankBtn":"@node:149","openDataViewer":"@node:148","maxText":"@node:157","mainRoleSp":"@node:24","explosionSp":"@node:143","enemyRoot":"@node:49","enemyPrefZR":"@Prefab:prefab/EnemyZR.prefab","enemyPrefZL":"@Prefab:prefab/EnemyZL.prefab","enemyPrefCL2":"@Prefab:prefab/EnemyCL2.prefab","enemyPrefCL1":"@Prefab:prefab/EnemyCL1.prefab","enemyPrefCL":"@Prefab:prefab/EnemyCL.prefab","enemyPrefBL2":"@Prefab:prefab/EnemyBL2.prefab","enemyPrefBL1":"@Prefab:prefab/EnemyBL1.prefab","enemyPrefBL":"@Prefab:prefab/EnemyBL.prefab","enemyPrefAL2":"@Prefab:prefab/EnemyAL2.prefab","enemyPrefAL1":"@Prefab:prefab/EnemyAL1.prefab","enemyPrefAL":"@Prefab:prefab/EnemyAL.prefab","distanceText":"@node:32","curText":"@node:156","continueBtn":"@node:144","backgroundSp":"@node:27"},
             "nodeParent":2,
             "label":"GameControl",
             "isDirectory":false,

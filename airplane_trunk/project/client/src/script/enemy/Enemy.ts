@@ -11,7 +11,6 @@ export default class Enemy extends Laya.Script
 	protected _iDirection: number;
 
 	protected _iBulletCount: number;
-	protected _iTimes: number;
 
 	constructor() { super(); }
 	
@@ -20,13 +19,13 @@ export default class Enemy extends Laya.Script
 		this._sp = this.owner as Laya.Sprite;
 	}
 
-	public Show(info: any[]): void
+	public Show(info: any[], during: number): void
 	{
 		this._enemyName = info[0];
 		this._iDirection = info[1];
 		this._sp.x = this._iFromX = this._iDirection == 1 ? PositionMgr.LeftX : PositionMgr.RightX;
 		this._sp.y = this._iFromY = info[2];
-		Laya.Tween.to(this._sp, {x: info[3]}, info[4], Laya.Ease.linearNone, Laya.Handler.create(this, this.ShowCompleted));
+		Laya.Tween.to(this._sp, {x: info[3]}, during, Laya.Ease.linearNone, Laya.Handler.create(this, this.ShowCompleted));
 	}
 
 	protected ShowCompleted(): void

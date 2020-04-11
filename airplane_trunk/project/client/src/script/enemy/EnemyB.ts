@@ -4,7 +4,6 @@ export default class EnemyB extends Enemy
 {
 	protected ShowCompleted(): void
 	{
-		this._iTimes = 0;
 		this.Shoot();
 	}
 

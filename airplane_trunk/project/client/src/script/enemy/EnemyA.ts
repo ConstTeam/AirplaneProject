@@ -10,13 +10,13 @@ export default class EnemyA extends Enemy
 	protected ShowCompleted(): void
 	{
 		this._iBulletCount = 0;
-		this._iTimes = 0;
 		this.Shoot();
 	}
 
 	protected Shoot(): void
 	{
-		Laya.timer.loop(100, this, this._Shoot);
+		Laya.timer.loop(150, this, this._Shoot, [true]);
+		Laya.timer.once(500, this, this.Back);
 	}
 
 	protected _Shoot(): void
@@ -25,9 +25,7 @@ export default class EnemyA extends Enemy
 		if(++this._iBulletCount > 2)
 		{
 			Laya.timer.clear(this, this._Shoot);
-			this._iBulletCount = 0;
-			if(this._iTimes == 0)
-				this.Back();
+			this._iBulletCount = 0;	
 		}	
 	}
 }

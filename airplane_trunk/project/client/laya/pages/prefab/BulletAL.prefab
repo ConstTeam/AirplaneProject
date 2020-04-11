@@ -1,9 +1,8 @@
 {
-    "x":0,
     "type":"Sprite",
     "selectedBox":93,
     "searchKey":"Sprite,BulletAL",
-    "props":{"texture":"texture/torpedo/fire_ball_1.png","presetID":1,"preset":"laya/pages/prefab/BulletAL.prefab","pivotY":11,"pivotX":35,"name":"BulletAL","isPresetRoot":true},
+    "props":{"texture":"texture/role/fire_ball_1.png","presetID":1,"preset":"laya/pages/prefab/BulletAL.prefab","pivotY":11,"pivotX":35,"name":"BulletAL","isPresetRoot":true},
     "nodeParent":-1,
     "maxID":99,
     "label":"BulletAL",
@@ -14,7 +13,6 @@
     "compId":93,
     "child":[
         {
-            "x":15,
             "type":"BoxCollider",
             "switchAble":true,
             "searchKey":"BoxCollider",
@@ -31,7 +29,6 @@
                 ]
         },
         {
-            "x":15,
             "type":"RigidBody",
             "switchAble":true,
             "searchKey":"RigidBody",
@@ -48,7 +45,6 @@
                 ]
         },
         {
-            "x":15,
             "type":"Script",
             "switchAble":true,
             "source":"src/script/bullet/BulletA.ts",

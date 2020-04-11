@@ -41,6 +41,8 @@ export default class GameControl extends Laya.Script
 	private curText: Laya.Label;
 	/** @prop {name: maxText, type: Node} */
 	private maxText: Laya.Label;
+	/** @prop {name: rankXBtn, type: Node} */
+	private rankXBtn: Laya.Button;
 	
 	//---------------------------------------------------------------
 
@@ -108,6 +110,7 @@ export default class GameControl extends Laya.Script
 		this.restartBtn.clickHandler = new Laya.Handler(this, this.onRestartBtnClick);
 		this.continueBtn.clickHandler = new Laya.Handler(this, this.onContinueBtnClick);
 		this.rankBtn.clickHandler = new Laya.Handler(this, this.onRankBtnClick);
+		this.rankXBtn.clickHandler = new Laya.Handler(this, this.onRankXBtnClick);
 		this.tapSp.on(Event.MOUSE_DOWN, this, this.tapSpMouseHandler);
 		this.mainRole = this.mainRoleSp.getComponent(MainRole);
 		this.background = this.backgroundSp.getComponent(Background);
@@ -229,7 +232,12 @@ export default class GameControl extends Laya.Script
 
 	private onRankBtnClick(): void
 	{
-		this.ShowRankPanel(!this.rankPanel.visible);
+		this.ShowRankPanel(true);
+	}
+
+	private onRankXBtnClick(): void
+	{
+		this.ShowRankPanel(false);
 	}
 
 	private ShowRankPanel(bShow: boolean): void
@@ -287,18 +295,19 @@ export default class GameControl extends Laya.Script
 					sp = Laya.Pool.getItemByCreateFun(enemyName, this._enemyDict[enemyName].create, this._enemyDict[enemyName]);	
 					this.enemyRoot.addChild(sp);
 					enemy = sp.getComponent(Enemy);
-					enemy.Show(arr[i]);
+					enemy.Show(arr[i], 1000);
 				}
 			}
 		}
 	}
 
+	private _enemyZName: string = "EnemyZR";
+	private _enemyZInfo: any[] = [this._enemyZName, -1, 0, PositionMgr.LeftX];
 	private ShowEnemyZ(): void
 	{
-		let enemyName: string = "EnemyZR";
-		let sp = Laya.Pool.getItemByCreateFun(enemyName, this._enemyDict[enemyName].create, this._enemyDict[enemyName]);	
+		let sp = Laya.Pool.getItemByCreateFun(this._enemyZName, this._enemyDict[this._enemyZName].create, this._enemyDict[this._enemyZName]);	
 		this.enemyRoot.addChild(sp);
 		let enemy: Enemy = sp.getComponent(Enemy);
-		enemy.Show([enemyName, -1, 0, PositionMgr.LeftX, 3000]);
+		enemy.Show(this._enemyZInfo, 3000);
 	}
 }

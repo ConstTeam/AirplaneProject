@@ -4,16 +4,13 @@ export default class EnemyA2 extends EnemyA
 {
 	protected Shoot(): void
 	{
-		Laya.timer.loop(700, this, this.__Shoot);
+		this.__Shoot();
+		Laya.timer.once(700, this, this.__Shoot);
+		Laya.timer.once(1200, this, this.Back);
 	}
 
 	protected __Shoot(): void
 	{
-		if(++this._iTimes > 1)
-		{
-			Laya.timer.clear(this, this.__Shoot);
-			this._iTimes = 0;
-		}
-		Laya.timer.loop(100, this, this._Shoot);
+		Laya.timer.loop(150, this, this._Shoot);
 	}
 }

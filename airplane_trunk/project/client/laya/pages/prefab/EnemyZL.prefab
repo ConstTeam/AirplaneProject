@@ -3,7 +3,7 @@
     "type":"Sprite",
     "selectedBox":126,
     "searchKey":"Sprite,EnemyZL",
-    "props":{"y":0,"x":0,"texture":"texture/torpedo/torpedo.png","presetID":1,"preset":"laya/pages/prefab/EnemyZL.prefab","name":"EnemyZL","isPresetRoot":true},
+    "props":{"y":0,"x":0,"texture":"texture/role/torpedo.png","presetID":1,"preset":"laya/pages/prefab/EnemyZL.prefab","name":"EnemyZL","isPresetRoot":true},
     "nodeParent":-1,
     "maxID":130,
     "label":"EnemyZL",
