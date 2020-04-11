@@ -25,7 +25,8 @@ export default class Enemy extends Laya.Script
 		this._iDirection = info[1];
 		this._sp.x = this._iFromX = this._iDirection == 1 ? PositionMgr.LeftX : PositionMgr.RightX;
 		this._sp.y = this._iFromY = info[2];
-		Laya.Tween.to(this._sp, {x: info[3]}, during, Laya.Ease.linearNone, Laya.Handler.create(this, this.ShowCompleted));
+		let t: number = info.length > 4 ? info[4] : during;
+		Laya.Tween.to(this._sp, {x: info[3]}, t, Laya.Ease.linearNone, Laya.Handler.create(this, this.ShowCompleted));
 	}
 
 	protected ShowCompleted(): void

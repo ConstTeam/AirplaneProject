@@ -2,6 +2,7 @@ export default class MainRole extends Laya.Script
 {
 	private _sp: Laya.Sprite;
 	private _rigidbody: Laya.RigidBody;
+	private _setHpHandler: Laya.Handler;
 	private _stopCbHandler: Laya.Handler;
 	private _explosionSP: Laya.Sprite;
 	private _explosionAni: Laya.Animation;
@@ -25,11 +26,29 @@ export default class MainRole extends Laya.Script
 			return;
 
 		let otherSp: Laya.Sprite = other.owner as Laya.Sprite;
-		let bBottom = otherSp.name == "Bottom";
-		
-		if(otherSp.name == "Top" || this._bInvincible)
+
+		if(otherSp.name == "Top")
 			return;
-		
+
+		if(otherSp.name == "Life")
+		{
+			if(this._iLife < 5)
+			{
+				this._setHpHandler.runWith(++this._iLife);
+				otherSp.destroy();
+			}
+			return;
+		}
+
+		if(this._bInvincible)
+			return;
+
+		if(this._iLife > 0)
+		{
+			this._setHpHandler.runWith(--this._iLife);
+			this.SetInvincible();
+		}	
+
 		this.RigidBodyEnable(false);
 		this._stopCbHandler.run();
 		this._explosionSP.x = this._sp.x;
@@ -39,8 +58,8 @@ export default class MainRole extends Laya.Script
 		Laya.timer.once(1000, this, this.HideExplosion)
 		this._sp.x = -10000;
 
-		if(!bBottom)
-			otherSp.destroy();	
+		if(otherSp.name != "Bottom")
+			otherSp.destroy();
 	}
 
 	private HideExplosion(): void
@@ -48,8 +67,9 @@ export default class MainRole extends Laya.Script
 		this._explosionSP.x = -10000;
 	}
 
-	public Init(stopCbHandler: Laya.Handler, explosionSP: Laya.Sprite, expolsionAni: Laya.Animation, bottom: Laya.Sprite, bottom2: Laya.Sprite): void
+	public Init(setHpHander: Laya.Handler, stopCbHandler: Laya.Handler, explosionSP: Laya.Sprite, expolsionAni: Laya.Animation, bottom: Laya.Sprite, bottom2: Laya.Sprite): void
 	{
+		this._setHpHandler = setHpHander;
 		this._stopCbHandler = stopCbHandler;
 		this._explosionSP = explosionSP;
 		this._explosionAni = expolsionAni;
@@ -68,6 +88,7 @@ export default class MainRole extends Laya.Script
 
 	private _Reset(): void
 	{
+		this._iLife = 0;
 		this._sp.x = 959;
 		this._sp.y = 539;
 		this.RigidBodyEnable(false);

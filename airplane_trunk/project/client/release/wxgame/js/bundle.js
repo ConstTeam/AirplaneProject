@@ -50,9 +50,21 @@
 	        if (this._sp.x == -10000)
 	            return;
 	        let otherSp = other.owner;
-	        let bBottom = otherSp.name == "Bottom";
-	        if (otherSp.name == "Top" || this._bInvincible)
+	        if (otherSp.name == "Top")
 	            return;
+	        if (otherSp.name == "Life") {
+	            if (this._iLife < 5) {
+	                this._setHpHandler.runWith(++this._iLife);
+	                otherSp.destroy();
+	            }
+	            return;
+	        }
+	        if (this._bInvincible)
+	            return;
+	        if (this._iLife > 0) {
+	            this._setHpHandler.runWith(--this._iLife);
+	            this.SetInvincible();
+	        }
 	        this.RigidBodyEnable(false);
 	        this._stopCbHandler.run();
 	        this._explosionSP.x = this._sp.x;
@@ -61,13 +73,14 @@
 	        Laya.SoundManager.playSound("sound/explosion.wav");
 	        Laya.timer.once(1000, this, this.HideExplosion);
 	        this._sp.x = -10000;
-	        if (!bBottom)
+	        if (otherSp.name != "Bottom")
 	            otherSp.destroy();
 	    }
 	    HideExplosion() {
 	        this._explosionSP.x = -10000;
 	    }
-	    Init(stopCbHandler, explosionSP, expolsionAni, bottom, bottom2) {
+	    Init(setHpHander, stopCbHandler, explosionSP, expolsionAni, bottom, bottom2) {
+	        this._setHpHandler = setHpHander;
 	        this._stopCbHandler = stopCbHandler;
 	        this._explosionSP = explosionSP;
 	        this._explosionAni = expolsionAni;
@@ -82,6 +95,7 @@
 	        this._bottomBox2.enabled = false;
 	    }
 	    _Reset() {
+	        this._iLife = 0;
 	        this._sp.x = 959;
 	        this._sp.y = 539;
 	        this.RigidBodyEnable(false);
@@ -363,7 +377,8 @@
 	        this._iDirection = info[1];
 	        this._sp.x = this._iFromX = this._iDirection == 1 ? PositionMgr.LeftX : PositionMgr.RightX;
 	        this._sp.y = this._iFromY = info[2];
-	        Laya.Tween.to(this._sp, { x: info[3] }, during, Laya.Ease.linearNone, Laya.Handler.create(this, this.ShowCompleted));
+	        let t = info.length > 4 ? info[4] : during;
+	        Laya.Tween.to(this._sp, { x: info[3] }, t, Laya.Ease.linearNone, Laya.Handler.create(this, this.ShowCompleted));
 	    }
 	    ShowCompleted() {
 	        this.BackCompleted();
@@ -409,6 +424,9 @@
 	        this._enemyDict["EnemyCL2"] = this.enemyPrefCL2;
 	        this._enemyDict["EnemyZL"] = this.enemyPrefZL;
 	        this._enemyDict["EnemyZR"] = this.enemyPrefZR;
+	        this._enemyDict["Life"] = this.life;
+	        this._hpArr = [this.hp1, this.hp2, this.hp3, this.hp4, this.hp5];
+	        this.SetHp(0);
 	        Laya.loader.load("cfg/cfg.bin", Laya.Handler.create(this, this.OnConfigComplete), null, Laya.Loader.BUFFER);
 	    }
 	    OnConfigComplete(buff) {
@@ -435,7 +453,7 @@
 	        this.explosionSp.scaleY = 2;
 	        this.explosionAni.interval = 100;
 	        this.startBtn.visible = true;
-	        this.mainRole.Init(new Laya.Handler(this, this.Stop), this.explosionSp, this.explosionAni, this.bottomSp, this.bottomSp2);
+	        this.mainRole.Init(new Laya.Handler(this, this.SetHp), new Laya.Handler(this, this.Stop), this.explosionSp, this.explosionAni, this.bottomSp, this.bottomSp2);
 	    }
 	    onUpdate() {
 	        if (this._bRunning) {
@@ -466,6 +484,11 @@
 	            this._iHighestScore = score;
 	            Laya.LocalStorage.setItem("score", score.toString());
 	            this.SetUserCloudStorage(score.toString());
+	        }
+	    }
+	    SetHp(hp) {
+	        for (let i = 0; i < 5; ++i) {
+	            this._hpArr[i].visible = i < hp;
 	        }
 	    }
 	    SetUserCloudStorage(data) {

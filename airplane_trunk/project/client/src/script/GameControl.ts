@@ -48,8 +48,7 @@ export default class GameControl extends Laya.Script
 	/** @prop {name: rankXBtn, type: Node} */
 	private rankXBtn: Laya.Button;
 	
-	//---------------------------------------------------------------
-
+	//--Enemy------------------------------------------------------------
 	/** @prop {name: enemyPrefAL1, type: Prefab} */
 	private enemyPrefAL1: Laya.Prefab;
 	/** @prop {name: enemyPrefAL2, type: Prefab} */
@@ -67,6 +66,21 @@ export default class GameControl extends Laya.Script
 	private enemyPrefZL: Laya.Prefab;
 	/** @prop {name: enemyPrefZR, type: Prefab} */
 	private enemyPrefZR: Laya.Prefab;
+	/** @prop {name: life, type: Prefab} */
+	private life: Laya.Prefab;
+
+	//--HP---------------------------------------------------------------
+	/** @prop {name: hp1, type: Node} */
+	private hp1: Laya.Sprite;
+	/** @prop {name: hp2, type: Node} */
+	private hp2: Laya.Sprite;
+	/** @prop {name: hp3, type: Node} */
+	private hp3: Laya.Sprite;
+	/** @prop {name: hp4, type: Node} */
+	private hp4: Laya.Sprite;
+	/** @prop {name: hp5, type: Node} */
+	private hp5: Laya.Sprite;
+	//-------------------------------------------------------------------
 
 	private mainRole: MainRole;
 	private background: Background;
@@ -78,6 +92,7 @@ export default class GameControl extends Laya.Script
 	private _t: number = 0;
 	private _enmeyTbl: ConfigTable;
 	private _enemyDict: { [key: string]: Laya.Prefab; };
+	private _hpArr: Laya.Sprite[];
 
 	private _iHighestScore: number;
 	private _scoreKey: string;
@@ -101,6 +116,10 @@ export default class GameControl extends Laya.Script
 		this._enemyDict["EnemyCL2"] = this.enemyPrefCL2;
 		this._enemyDict["EnemyZL"] = this.enemyPrefZL;
 		this._enemyDict["EnemyZR"] = this.enemyPrefZR;
+		this._enemyDict["Life"] = this.life;
+
+		this._hpArr = [this.hp1, this.hp2, this.hp3, this.hp4, this.hp5];
+		this.SetHp(0);
 
 		Laya.loader.load("cfg/cfg.bin", Laya.Handler.create(this, this.OnConfigComplete), null, Laya.Loader.BUFFER);
 	}
@@ -136,7 +155,7 @@ export default class GameControl extends Laya.Script
 		this.explosionSp.scaleY = 2;
 		this.explosionAni.interval = 100;
 		this.startBtn.visible = true;
-		this.mainRole.Init(new Laya.Handler(this, this.Stop), this.explosionSp, this.explosionAni, this.bottomSp, this.bottomSp2);
+		this.mainRole.Init(new Laya.Handler(this, this.SetHp), new Laya.Handler(this, this.Stop), this.explosionSp, this.explosionAni, this.bottomSp, this.bottomSp2);
 	}
 
 	onUpdate(): void
@@ -178,6 +197,14 @@ export default class GameControl extends Laya.Script
 			this._iHighestScore = score;
 			Laya.LocalStorage.setItem("score", score.toString());
 			this.SetUserCloudStorage(score.toString());
+		}
+	}
+
+	private SetHp(hp: number): void
+	{
+		for(let i: number = 0; i < 5; ++i)
+		{
+			this._hpArr[i].visible = i < hp;
 		}
 	}
 
