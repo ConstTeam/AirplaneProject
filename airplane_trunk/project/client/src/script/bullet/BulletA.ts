@@ -8,6 +8,16 @@ export default class BulletA extends Bullet
 	public Excute(bulletName: string, fromX: number, fromY: number, direction: number): void
 	{
 		super.Excute(bulletName, fromX, fromY, direction);
-		Laya.Tween.to(this._sp, {x: direction == 1 ? PositionMgr.RightX : PositionMgr.LeftX}, 3000, Laya.Ease.linearNone, Laya.Handler.create(this, this.Stop))
+		this._bRunning = true;
+	}
+	
+	onUpdate(): void
+	{
+		if(this._bRunning)
+		{
+			this._sp.x += this._iSpeed;
+			if(this._sp.x > PositionMgr.RightX || this._sp.x < PositionMgr.LeftX)
+				this.Stop();
+		}
 	}
 }

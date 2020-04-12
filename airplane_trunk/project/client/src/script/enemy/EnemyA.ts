@@ -2,13 +2,9 @@ import Enemy from "./Enemy";
 
 export default class EnemyA extends Enemy
 {
-	protected Back(): void
-	{
-		Laya.Tween.to(this._sp, {x: this._iFromX, y: this._iFromY}, 1500, Laya.Ease.linearNone, Laya.Handler.create(this, this.BackCompleted));
-	}
-
 	protected ShowCompleted(): void
 	{
+		this._iState = 2;
 		this._iBulletCount = 0;
 		this.Shoot();
 	}
@@ -17,6 +13,11 @@ export default class EnemyA extends Enemy
 	{
 		Laya.timer.loop(150, this, this._Shoot, [true]);
 		Laya.timer.once(500, this, this.Back);
+	}
+
+	protected Back(): void
+	{
+		this._iState = 3;
 	}
 
 	protected _Shoot(): void

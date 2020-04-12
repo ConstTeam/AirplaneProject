@@ -5,6 +5,7 @@ export default class EnemyC extends Enemy
 {
 	protected ShowCompleted(): void
 	{
+		this._iState = 2;
 		this.Shoot();
 	}
 
@@ -21,7 +22,21 @@ export default class EnemyC extends Enemy
 
 	protected Back(): void
 	{
-		let toX: number = this._sp.scaleX == 1 ? PositionMgr.RightX : PositionMgr.LeftX;
-		Laya.Tween.to(this._sp, {x: toX, y: this._iFromY}, 1500, Laya.Ease.linearNone, Laya.Handler.create(this, this.BackCompleted));
+		this._iState = 3;
+	}
+
+	protected BackUpdate(): void
+	{
+		this._sp.x += this._iSpeed
+		if(this._iDirection == 1)
+		{
+			if(this._sp.x > PositionMgr.RightX)
+				this.BackCompleted();
+		}	
+		else
+		{
+			if(this._sp.x < PositionMgr.LeftX)
+				this.BackCompleted();
+		}
 	}
 }

@@ -4,6 +4,7 @@ export default class EnemyB extends Enemy
 {
 	protected ShowCompleted(): void
 	{
+		this._iState = 2;
 		this.Shoot();
 	}
 
@@ -20,6 +21,6 @@ export default class EnemyB extends Enemy
 
 	protected Back(): void
 	{
-		Laya.Tween.to(this._sp, {x: this._iFromX, y: this._iFromY}, 1500, Laya.Ease.linearNone, Laya.Handler.create(this, this.BackCompleted));
+		this._iState = 3;
 	}
 }

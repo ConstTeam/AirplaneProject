@@ -18,6 +18,16 @@ export default class BulletB extends Bullet
 
 	private Shoot(): void
 	{
-		Laya.Tween.to(this._sp, {x: this._iDirection == 1 ? PositionMgr.RightX : PositionMgr.LeftX}, 2000, Laya.Ease.linearNone, Laya.Handler.create(this, this.Stop))
+		this._bRunning = true;
+	}
+
+	onUpdate(): void
+	{
+		if(this._bRunning)
+		{
+			this._sp.x += this._iSpeed;
+			if(this._sp.x > PositionMgr.RightX || this._sp.x < PositionMgr.LeftX)
+				this.Stop();
+		}
 	}
 }
