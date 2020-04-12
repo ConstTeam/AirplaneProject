@@ -1,16 +1,16 @@
 D .
 D background
-P 59276197 farground_mountains.png
-P 6AF40F01 foreground_mountains.png
-P 55DF99C8 mid_ground_cloud_1.png
+P 593262B9 farground_mountains.png
+P 1DDA6831 foreground_mountains.png
+P 718BF92D mid_ground_cloud_1.png
 P 7B115B13 sky_color.png
 P 0C711DA0 sky_color_top.png
 D common
 P D171CB5C ButtonNo.png
 P B69CEAA7 ButtonX.png
-P 1322F11B ButtonYellow.png
+P 1FC4A4C5 ButtonYellow.png
 P 817B49A5 ButtonYes.png
-P DD1FD125 Paper.png
+P 2A9CDF8B Paper.png
 D comp
 P 316AD948 btn_close.png
 P 5B258D17 button.png
@@ -76,11 +76,9 @@ P 42AE2B86 plane_1_yellow.png
 P 1628DCA8 plane_2_blue.png
 P ABC997B7 plane_2_green.png
 P 902AA67C plane_2_red.png
-P 1C55B384 plane_2_yellow.png
 P 32912734 plane_3_blue.png
 P 7B258C98 plane_3_green.png
 P 287DBCFD plane_3_red.png
-P ED56238A plane_3_yellow.png
 P 2BAC5383 torpedo.png
 P 4ADD4076 torpedo_1.png
 P 6FED2EB4 torpedo_black.png
@@ -91,4 +89,3 @@ P DDC62AEE torpedo_flame_2.png
 D sound
 R C85ED474 bgm.mp3
 R 982295C9 explosion.wav
-D texture

@@ -64,6 +64,7 @@
 	        if (this._iLife > 0) {
 	            this._setHpHandler.runWith(--this._iLife);
 	            this.SetInvincible();
+	            return;
 	        }
 	        this.RigidBodyEnable(false);
 	        this._stopCbHandler.run();

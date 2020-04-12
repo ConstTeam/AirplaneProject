@@ -1,18 +1,11 @@
 {
-    "deviceOrientation": "landscape",
-    "showStatusBar": false,
-    "networkTimeout": {
-        "request": 10000,
-        "connectSocket": 10000,
-        "uploadFile": 10000,
-        "downloadFile": 10000
-    },
-    "openDataContext": "openDataContext",
-    "plugins": {
-        "layaPlugin": {
-            "version": "2.5.0",
-            "provider": "wx70d8aa25ec591f7a",
-            "path": "laya-libs"
-        }
-    }
+  "deviceOrientation": "landscape",
+  "showStatusBar": false,
+  "networkTimeout": {
+    "request": 10000,
+    "connectSocket": 10000,
+    "uploadFile": 10000,
+    "downloadFile": 10000
+  },
+  "openDataContext":"openDataContext"
 }

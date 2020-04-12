@@ -11,6 +11,8 @@
 	"libVersion": "game",
 	"appid": "wx3e53e81343fef057",
 	"projectname": "Airplane",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,

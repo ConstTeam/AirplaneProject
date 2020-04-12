@@ -47,6 +47,7 @@ export default class MainRole extends Laya.Script
 		{
 			this._setHpHandler.runWith(--this._iLife);
 			this.SetInvincible();
+			return;
 		}	
 
 		this.RigidBodyEnable(false);
