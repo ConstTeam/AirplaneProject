@@ -327,6 +327,7 @@
 
 	class PositionMgr {
 	}
+	PositionMgr.g_iSpeed = 10;
 	PositionMgr.LeftX = -500;
 	PositionMgr.RightX = 2420;
 
@@ -363,7 +364,7 @@
 	        this._iDirection = direction;
 	        this._sp.x = fromX;
 	        this._sp.y = fromY;
-	        this._iSpeed = direction * 10;
+	        this._iSpeed = direction * PositionMgr.g_iSpeed;
 	    }
 	    Stop() {
 	        Laya.Tween.clearAll(this._sp);
@@ -383,6 +384,7 @@
 	        this.enabled = false;
 	    }
 	    Show(info, during) {
+	        this._t = 0;
 	        this.enabled = true;
 	        this._enemyName = info[0];
 	        this._iDirection = info[1];
@@ -393,6 +395,11 @@
 	        this._iState = 1;
 	    }
 	    onUpdate() {
+	        let delta = Laya.timer.delta;
+	        this._t += delta;
+	        if (this._t < 20)
+	            return;
+	        this._t = this._t - 20;
 	        if (this._iState == 1) {
 	            if (this._iDirection == 1) {
 	                if (this._sp.x + this._iSpeed < this._iToX) {
@@ -484,12 +491,12 @@
 	        this.continueBtn.clickHandler = new Laya.Handler(this, this.onContinueBtnClick);
 	        this.rankBtn.clickHandler = new Laya.Handler(this, this.onRankBtnClick);
 	        this.rankXBtn.clickHandler = new Laya.Handler(this, this.onRankXBtnClick);
+	        this.shareBtn.clickHandler = new Laya.Handler(this, this.onShareBtnClick);
 	        this.tapSp.on(Event.MOUSE_DOWN, this, this.tapSpMouseHandler);
 	        this.mainRole = this.mainRoleSp.getComponent(MainRole);
 	        this.background = this.backgroundSp.getComponent(Background);
 	        let score = Laya.LocalStorage.getItem("score");
 	        this._iHighestScore = score == null ? 0 : Number(Laya.LocalStorage.getItem("score"));
-	        Laya.loader.load(["res/atlas/rank.atlas"], Laya.Handler.create(this, () => { Laya.MiniAdpter.sendAtlasToOpenDataContext("res/atlas/rank.atlas"); }));
 	        this.explosionSp.x = -10000;
 	        this.explosionAni = new Laya.Animation();
 	        this.explosionAni.loadAtlas("res/atlas/explosion.atlas", Laya.Handler.create(this, this.ExplosionLoaded));
@@ -504,14 +511,15 @@
 	    }
 	    onUpdate() {
 	        if (this._bRunning) {
-	            this.background.Update();
+	            let delta = Laya.timer.delta;
+	            this._t += delta;
+	            if (this._t < 20)
+	                return;
+	            this._t = this._t - 20;
 	            this._iDistance += this._iSpeed;
-	            this._t += Laya.timer.delta;
-	            if (this._t >= 1) {
-	                this.distanceText.text = (Math.floor(this._iDistance / 100)).toString();
-	                this._t = 0;
-	                this.ShowEnemy();
-	            }
+	            this.distanceText.text = (Math.floor(this._iDistance / 100)).toString();
+	            this.background.Update();
+	            this.ShowEnemy();
 	        }
 	    }
 	    Init() {
@@ -519,6 +527,7 @@
 	        this._iSpeed = 5;
 	        this.mainRole.RigidBodyEnable(true);
 	        this.background.SetSpeed(this._iSpeed);
+	        this._t = 0;
 	        this._bRunning = true;
 	        Laya.SoundManager.playMusic("sound/bgm.mp3", 0);
 	    }
@@ -562,20 +571,26 @@
 	        this.resultPanel.visible = true;
 	        this.curText.text = (this._iDistance / 100).toString();
 	        this.maxText.text = Laya.LocalStorage.getItem("score");
+	        this.continueText.text = this._continueTime.toString();
 	    }
 	    onStartBtnClick() {
 	        this.startBtn.visible = false;
 	        this._iDistance = 0;
+	        this._continueTime = 5;
 	        this.Init();
 	    }
 	    onRestartBtnClick() {
 	        this.resultPanel.visible = false;
 	        this.ShowRankPanel(false);
 	        this._iDistance = 0;
+	        this._continueTime = 5;
 	        this.Init();
 	        this.mainRole.SetInvincible();
 	    }
 	    onContinueBtnClick() {
+	        if (this._continueTime <= 0)
+	            return;
+	        --this._continueTime;
 	        this.resultPanel.visible = false;
 	        this.ShowRankPanel(false);
 	        this.Init();
@@ -586,6 +601,8 @@
 	    }
 	    onRankXBtnClick() {
 	        this.ShowRankPanel(false);
+	    }
+	    onShareBtnClick() {
 	    }
 	    ShowRankPanel(bShow) {
 	        this.rankPanel.visible = bShow;

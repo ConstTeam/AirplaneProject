@@ -18,7 +18,7 @@
             "switchAble":true,
             "searchKey":"BoxCollider",
             "removeAble":true,
-            "props":{"width":50,"presetID":2,"preset":"laya/pages/prefab/Life.prefab","height":49},
+            "props":{"width":50,"presetID":2,"preset":"laya/pages/prefab/Life.prefab","isSensor":true,"height":49},
             "nodeParent":159,
             "label":"BoxCollider(Life)",
             "isDirectory":false,

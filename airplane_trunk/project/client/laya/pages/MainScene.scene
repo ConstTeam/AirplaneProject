@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":42,
-    "selecteID":24,
+    "selectedBox":27,
+    "selecteID":86,
     "searchKey":"Scene",
     "props":{"x":0,"width":1920,"sceneColor":"#000000","height":1080,"enemyPref":"@arr:,,"},
     "nodeParent":-1,
-    "maxID":171,
+    "maxID":244,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -222,7 +222,7 @@
                             "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite,FarCloud2",
-                            "props":{"y":80,"x":960,"width":2198,"texture":"background/mid_ground_cloud_1.png","name":"FarCloud2","height":1024},
+                            "props":{"y":80,"x":958,"width":2198,"texture":"background/mid_ground_cloud_1.png","name":"FarCloud2","height":1024},
                             "nodeParent":27,
                             "label":"FarCloud2",
                             "isDirectory":false,
@@ -236,7 +236,7 @@
                             "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite,FarCloud3",
-                            "props":{"y":80,"x":3158,"width":2198,"texture":"background/mid_ground_cloud_1.png","name":"FarCloud3","height":1024},
+                            "props":{"y":80,"x":3154,"width":2198,"texture":"background/mid_ground_cloud_1.png","name":"FarCloud3","height":1024},
                             "nodeParent":27,
                             "label":"FarCloud3",
                             "isDirectory":false,
@@ -264,7 +264,7 @@
                             "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite,FarMountains2",
-                            "props":{"y":750,"x":960,"width":2048,"texture":"background/farground_mountains.png","name":"FarMountains2","height":330},
+                            "props":{"y":750,"x":958,"width":2048,"texture":"background/farground_mountains.png","name":"FarMountains2","height":330},
                             "nodeParent":27,
                             "label":"FarMountains2",
                             "isDirectory":false,
@@ -278,7 +278,7 @@
                             "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite,FarMountains3",
-                            "props":{"y":750,"x":3008,"width":2048,"texture":"background/farground_mountains.png","name":"FarMountains3","height":330},
+                            "props":{"y":750,"x":3004,"width":2048,"texture":"background/farground_mountains.png","name":"FarMountains3","height":330},
                             "nodeParent":27,
                             "label":"FarMountains3",
                             "isDirectory":false,
@@ -306,7 +306,7 @@
                             "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite,Ground2",
-                            "props":{"y":999,"x":960,"width":1500,"texture":"background/foreground_mountains.png","name":"Ground2","height":81},
+                            "props":{"y":999,"x":958,"width":1500,"texture":"background/foreground_mountains.png","name":"Ground2","height":81},
                             "nodeParent":27,
                             "label":"Ground2",
                             "isDirectory":false,
@@ -320,7 +320,7 @@
                             "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite,Ground3",
-                            "props":{"y":999,"x":2460,"width":1500,"texture":"background/foreground_mountains.png","name":"Ground3","height":81},
+                            "props":{"y":999,"x":2456,"width":1500,"texture":"background/foreground_mountains.png","name":"Ground3","height":81},
                             "nodeParent":27,
                             "label":"Ground3",
                             "isDirectory":false,
@@ -456,7 +456,7 @@
                 {
                     "type":"Text",
                     "searchKey":"Text,DistanceText",
-                    "props":{"y":0,"x":0,"width":300,"valign":"middle","text":"123.456","name":"DistanceText","height":85,"fontSize":60,"color":"#ffffff","bold":true,"align":"center"},
+                    "props":{"y":0,"x":0,"width":300,"valign":"middle","text":"0","name":"DistanceText","height":85,"fontSize":60,"color":"#ffffff","bold":true,"align":"center"},
                     "nodeParent":81,
                     "label":"DistanceText",
                     "isDirectory":false,
@@ -568,7 +568,7 @@
                     "props":{"y":0,"x":0,"width":1920,"name":"ResultPanel","height":1080},
                     "nodeParent":81,
                     "label":"ResultPanel",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
@@ -602,15 +602,41 @@
                                 {
                                     "type":"Button",
                                     "searchKey":"Button,ContinueBtn",
-                                    "props":{"y":401,"x":375,"width":250,"skin":"common/ButtonYes.png","name":"ContinueBtn","labelSize":45,"labelPadding":"5","labelColors":"#ffffff","labelBold":true,"label":"继续","height":90},
+                                    "props":{"y":391,"x":350,"width":300,"skin":"common/ButtonYes.png","name":"ContinueBtn","labelSize":48,"labelPadding":"0,0,8,5","labelColors":"#ffffff","labelBold":true,"label":"继续","height":110},
                                     "nodeParent":151,
                                     "label":"ContinueBtn",
-                                    "isDirectory":false,
+                                    "isOpen":true,
+                                    "isDirectory":true,
                                     "isAniNode":true,
-                                    "hasChild":false,
+                                    "hasChild":true,
                                     "compId":144,
                                     "child":[
-                                        ],
+                                        {
+                                            "type":"Label",
+                                            "searchKey":"Label",
+                                            "props":{"y":65,"x":90,"width":127,"valign":"middle","text":"剩余    次","height":38,"fontSize":25,"color":"#ffffff","align":"center"},
+                                            "nodeParent":144,
+                                            "label":"Label",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":172,
+                                            "child":[
+                                                ]
+                                        },
+                                        {
+                                            "type":"Label",
+                                            "searchKey":"Label",
+                                            "props":{"y":65,"x":140,"width":50,"valign":"middle","text":"5","height":38,"fontSize":25,"color":"#ffffff","align":"center"},
+                                            "nodeParent":144,
+                                            "label":"Label",
+                                            "isDirectory":false,
+                                            "isAniNode":true,
+                                            "hasChild":false,
+                                            "compId":173,
+                                            "child":[
+                                                ]
+                                        }],
                                     "$HIDDEN":false
                                 },
                                 {
@@ -630,7 +656,7 @@
                                 {
                                     "type":"Label",
                                     "searchKey":"Label",
-                                    "props":{"y":131,"x":114,"width":343,"valign":"middle","text":"本次飞行距离：","height":80,"fontSize":50,"color":"#4e2623","bold":true,"align":"center"},
+                                    "props":{"y":131,"x":140,"width":343,"valign":"middle","text":"本次飞行距离：","height":80,"fontSize":50,"color":"#4e2623","bold":true,"align":"center"},
                                     "nodeParent":151,
                                     "label":"Label",
                                     "isDirectory":false,
@@ -643,7 +669,7 @@
                                 {
                                     "type":"Label",
                                     "searchKey":"Label",
-                                    "props":{"y":242,"x":114,"width":343,"valign":"middle","text":"最远飞行距离：","height":80,"fontSize":50,"color":"#4e2623","bold":true,"align":"center"},
+                                    "props":{"y":242,"x":141,"width":343,"valign":"middle","text":"最远飞行距离：","height":80,"fontSize":50,"color":"#4e2623","bold":true,"align":"center"},
                                     "nodeParent":151,
                                     "label":"Label",
                                     "isDirectory":false,
@@ -683,7 +709,7 @@
                         {
                             "type":"Sprite",
                             "searchKey":"Sprite,RankBg",
-                            "props":{"y":190,"x":460,"width":1000,"texture":"common/Paper.png","name":"RankBg","height":700},
+                            "props":{"y":190,"x":410,"width":1100,"name":"RankBg","height":700},
                             "nodeParent":146,
                             "label":"RankBg",
                             "isOpen":true,
@@ -695,7 +721,7 @@
                                 {
                                     "type":"WXOpenDataViewer",
                                     "searchKey":"WXOpenDataViewer",
-                                    "props":{"y":0,"x":0,"width":1000,"visible":false,"iconSign":"wx","height":700},
+                                    "props":{"y":0,"x":0,"width":1100,"visible":false,"iconSign":"wx","height":700},
                                     "nodeParent":153,
                                     "label":"WXOpenDataViewer",
                                     "isDirectory":false,
@@ -709,13 +735,26 @@
                                 {
                                     "type":"Button",
                                     "searchKey":"Button,XBtn",
-                                    "props":{"y":0,"x":896,"skin":"common/ButtonX.png","scaleY":1.2,"scaleX":1.2,"name":"XBtn"},
+                                    "props":{"y":0,"x":1016,"skin":"common/ButtonX.png","scaleY":1.2,"scaleX":1.2,"name":"XBtn"},
                                     "nodeParent":153,
                                     "label":"XBtn",
                                     "isDirectory":false,
                                     "isAniNode":true,
                                     "hasChild":false,
                                     "compId":158,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "type":"Button",
+                                    "searchKey":"Button,ShareBtn",
+                                    "props":{"y":625,"x":250,"width":600,"skin":"common/ButtonYellow.png","name":"ShareBtn","labelSize":45,"labelPadding":"3,0,0,8","labelColors":"#ffffff","labelBold":true,"label":"分享给更多的好友吧！","height":106},
+                                    "nodeParent":153,
+                                    "label":"ShareBtn",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":171,
                                     "child":[
                                         ]
                                 }],
@@ -728,7 +767,7 @@
                     "props":{"y":-460,"x":-540,"width":3000,"name":"StartBtn","labelSize":200,"height":2000},
                     "nodeParent":81,
                     "label":"StartBtn",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
@@ -747,7 +786,8 @@
                             "child":[
                                 ]
                         }]
-                }]
+                }],
+            "$HIDDEN":true
         },
         {
             "x":15,
@@ -756,7 +796,7 @@
             "source":"src/script/GameControl.ts",
             "searchKey":"Script,GameControl",
             "removeAble":true,
-            "props":{"tapSp":"@node:23","startBtn":"@node:38","sceneRoot":"@node:42","resultPanel":"@node:146","restartBtn":"@node:88","resaultPanel":"@node:146","rankXBtn":"@node:158","rankPanel":"@node:153","rankBtn":"@node:149","openDataViewer":"@node:148","maxText":"@node:157","mainRoleSp":"@node:24","life":"@Prefab:prefab/Life.prefab","hp5":"@node:170","hp4":"@node:169","hp3":"@node:168","hp2":"@node:167","hp1":"@node:165","explosionSp":"@node:143","enemyRoot":"@node:49","enemyPrefZR":"@Prefab:prefab/EnemyZR.prefab","enemyPrefZL":"@Prefab:prefab/EnemyZL.prefab","enemyPrefCL2":"@Prefab:prefab/EnemyCL2.prefab","enemyPrefCL1":"@Prefab:prefab/EnemyCL1.prefab","enemyPrefCL":"@Prefab:prefab/EnemyCL.prefab","enemyPrefBL2":"@Prefab:prefab/EnemyBL2.prefab","enemyPrefBL1":"@Prefab:prefab/EnemyBL1.prefab","enemyPrefBL":"@Prefab:prefab/EnemyBL.prefab","enemyPrefAL2":"@Prefab:prefab/EnemyAL2.prefab","enemyPrefAL1":"@Prefab:prefab/EnemyAL1.prefab","enemyPrefAL":"@Prefab:prefab/EnemyAL.prefab","distanceText":"@node:32","curText":"@node:156","continueBtn":"@node:144","bottomSp2":"@node:101","bottomSp":"@node:162","backgroundSp":"@node:27"},
+            "props":{"tapSp":"@node:23","startBtn":"@node:38","shareBtn":"@node:171","sceneRoot":"@node:42","resultPanel":"@node:146","restartBtn":"@node:88","resaultPanel":"@node:146","rankXBtn":"@node:158","rankPanel":"@node:153","rankBtn":"@node:149","openDataViewer":"@node:148","maxText":"@node:157","mainRoleSp":"@node:24","life":"@Prefab:prefab/Life.prefab","hp5":"@node:170","hp4":"@node:169","hp3":"@node:168","hp2":"@node:167","hp1":"@node:165","explosionSp":"@node:143","enemyRoot":"@node:49","enemyPrefZR":"@Prefab:prefab/EnemyZR.prefab","enemyPrefZL":"@Prefab:prefab/EnemyZL.prefab","enemyPrefCL2":"@Prefab:prefab/EnemyCL2.prefab","enemyPrefCL1":"@Prefab:prefab/EnemyCL1.prefab","enemyPrefCL":"@Prefab:prefab/EnemyCL.prefab","enemyPrefBL2":"@Prefab:prefab/EnemyBL2.prefab","enemyPrefBL1":"@Prefab:prefab/EnemyBL1.prefab","enemyPrefBL":"@Prefab:prefab/EnemyBL.prefab","enemyPrefAL2":"@Prefab:prefab/EnemyAL2.prefab","enemyPrefAL1":"@Prefab:prefab/EnemyAL1.prefab","enemyPrefAL":"@Prefab:prefab/EnemyAL.prefab","distanceText":"@node:32","curText":"@node:156","continueText":"@node:173","continueBtn":"@node:144","bottomSp2":"@node:101","bottomSp":"@node:162","backgroundSp":"@node:27"},
             "nodeParent":2,
             "label":"GameControl",
             "isDirectory":false,

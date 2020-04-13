@@ -4,7 +4,7 @@ import bigItem from "./view/bigItem"
 * 游戏初始化配置;
 */
 export default class GameConfig{
-    static width:number=1000;
+    static width:number=1100;
     static height:number=700;
     static scaleMode:string="fixedwidth";
     static screenMode:string="none";

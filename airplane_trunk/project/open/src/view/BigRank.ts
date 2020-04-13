@@ -4,7 +4,9 @@ export default class BigRank extends ui.test.BigUI
 		constructor() { super(); }
 
 		/**获取好友排行榜时的key */
-		private _key:String = 'airplaneScore';
+		private _key: String = 'airplaneScore';
+		private _curPage: number = 0;
+		private _friendArr: any[] = [];
 
 		/**
 		 * 初始化
@@ -16,6 +18,44 @@ export default class BigRank extends ui.test.BigUI
 				wx.onMessage(this.recevieData.bind(this));  //接受来自主域的信息
 			
 			this.setlist([]);
+			this.SetInfo();
+			this._left.clickHandler = new Laya.Handler(this, this.onLeftBtnClick);
+			this._right.clickHandler = new Laya.Handler(this, this.onRightBtnClick);
+		}
+
+		private curArr: any[] = [];
+		private onLeftBtnClick(): void
+		{
+			var _$this = this;
+			--_$this._curPage;
+			_$this.SetInfo();
+		}
+
+		private onRightBtnClick(): void
+		{
+			var _$this = this;
+			++_$this._curPage;
+			_$this.SetInfo();
+		}
+
+		private SetInfo(): void
+		{
+			var _$this = this;
+			_$this.curArr = [];
+			for(let i = 0; i < 4; ++i)
+			{
+				if(_$this._friendArr.length < _$this._curPage * 4 + i + 1)
+					break;
+				_$this.curArr[i] = _$this._friendArr[_$this._curPage * 4 + i]
+			}
+			_$this.setlist(this.curArr);
+
+			_$this._left.visible = false;
+			_$this._right.visible = false;
+			if(_$this._curPage > 0)
+				_$this._left.visible = true;
+			if(_$this._curPage < _$this._friendArr.length / 4 - 1)
+				_$this._right.visible = true;
 		}
  
 		/**
@@ -63,7 +103,10 @@ export default class BigRank extends ui.test.BigUI
 							arr[i].index = i + 1;
 						}
 						//设置数组
-						_$this.setlist(arr);
+						_$this._friendArr = arr;
+
+						_$this._curPage = 0;
+						_$this.SetInfo();
 					}
 				}
 				,fail: (res: any) => {
@@ -85,6 +128,8 @@ export default class BigRank extends ui.test.BigUI
 			{
 				case "RankOpen":
 					_$this.visible = true;
+					_$this._left.visible = false;
+					_$this._right.visible = false;
 					_$this.getFriendData();
 					break;
 				case "RankClose":

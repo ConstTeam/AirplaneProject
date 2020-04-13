@@ -2,11 +2,11 @@
     "x":0,
     "type":"Scene",
     "selectedBox":2,
-    "selecteID":5,
+    "selecteID":8,
     "searchKey":"Scene",
-    "props":{"width":1000,"sceneWidth":610,"sceneHeight":757,"sceneColor":"#000000","height":700},
+    "props":{"width":1100,"sceneWidth":610,"sceneHeight":757,"sceneColor":"#000000","height":700},
     "nodeParent":-1,
-    "maxID":7,
+    "maxID":10,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -16,9 +16,23 @@
     "child":[
         {
             "x":15,
+            "type":"Sprite",
+            "searchKey":"Sprite",
+            "props":{"y":0,"x":0,"width":1100,"texture":"common/Paper.png","height":700},
+            "nodeParent":2,
+            "label":"Sprite",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":7,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
             "type":"List",
             "searchKey":"List,_list",
-            "props":{"y":50,"x":0,"width":1000,"var":"_list","vScrollBarSkin":" ","spaceY":0,"selectEnable":false,"repeatX":1,"height":600},
+            "props":{"y":50,"x":50,"width":1000,"var":"_list","selectEnable":false,"repeatY":4,"repeatX":1,"height":592,"elasticEnabled":false},
             "nodeParent":2,
             "label":"_list",
             "isOpen":true,
@@ -32,7 +46,7 @@
                     "type":"UIView",
                     "source":"test/bigItem.scene",
                     "searchKey":"UIView",
-                    "props":{"sceneColor":"#ffffff","runtime":"view/bigItem.ts","renderType":"render"},
+                    "props":{"y":0,"x":10,"sceneColor":"#ffffff","runtime":"view/bigItem.ts","renderType":"render"},
                     "nodeParent":3,
                     "label":"UIView",
                     "isDirectory":false,
@@ -42,6 +56,34 @@
                     "child":[
                         ]
                 }]
+        },
+        {
+            "x":15,
+            "type":"Button",
+            "searchKey":"Button,_left",
+            "props":{"y":306,"x":80,"var":"_left","skin":"common/ArrowRight.png","skewX":0,"scaleX":-1,"rotation":0},
+            "nodeParent":2,
+            "label":"_left",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":8,
+            "child":[
+                ]
+        },
+        {
+            "x":15,
+            "type":"Button",
+            "searchKey":"Button,_right",
+            "props":{"y":306,"x":1020,"var":"_right","skin":"common/ArrowRight.png"},
+            "nodeParent":2,
+            "label":"_right",
+            "isDirectory":false,
+            "isAniNode":true,
+            "hasChild":false,
+            "compId":9,
+            "child":[
+                ]
         }],
     "animations":[
         {

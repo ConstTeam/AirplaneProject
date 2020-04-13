@@ -27,7 +27,31 @@ export default class Background extends Laya.Script
 	private _iSpeed2: number;
 	private _iSpeed3: number;
 
+	private _arrGround: Sprite[];
+	private _arrMountains: Sprite[];
+	private _arrCloud: Sprite[];
+	private _curGroundIndex: number;
+	private _curMountainsIndex: number;
+	private _curCloudIndex: number;
+	private _curGround: Sprite;
+	private _curMountains: Sprite;
+	private _curCloud: Sprite;
+
 	constructor() { super(); }
+
+	onAwake(): void
+	{
+		var _$this = this;
+		_$this._arrGround = [_$this.ground1, _$this.ground2, _$this.ground3];
+		_$this._arrMountains = [_$this.mountains1, _$this.mountains2, _$this.mountains3];
+		_$this._arrCloud = [_$this.cloud1, _$this.cloud2, _$this.cloud3];
+		_$this._curGroundIndex = 0;
+		_$this._curMountainsIndex = 0;
+		_$this._curCloudIndex = 0;
+		_$this._curGround = _$this._arrGround[0];
+		_$this._curMountains = _$this._arrMountains[0];
+		_$this._curCloud = _$this._arrCloud[0];
+	}
 
 	public SetSpeed(speed: number): void
 	{
@@ -38,34 +62,31 @@ export default class Background extends Laya.Script
 
 	public Update(): void
 	{
-		this.ground1.x -= this._iSpeed;
-		this.ground2.x -= this._iSpeed;
-		this.ground3.x -= this._iSpeed;
-		if(this.ground1.x <= -2040)
-			this.ground1.x = 2460;
-		else if(this.ground2.x <= -2040)
-			this.ground2.x = 2460;
-		else if(this.ground3.x <= -2040)
-			this.ground3.x = 2460;
+		var _$this = this;
+		if(_$this._curGround.x <= -2040)
+		{
+			_$this._curGround.x = 2456;
+			_$this._curGroundIndex = _$this._curGroundIndex = 2 ? 0 : _$this._curGroundIndex + 1;
+			_$this._curGround = _$this._arrGround[_$this._curGroundIndex];
+		}
+		if(_$this._curMountains.x <= -3136)
+		{
+			_$this._curMountains.x = 3004;
+			_$this._curMountainsIndex = _$this._curMountainsIndex = 2 ? 0 : _$this._curMountainsIndex + 1;
+			_$this._curMountains = _$this._curMountains[_$this._curMountainsIndex];
+		}
+		if(_$this._curCloud.x <= -3436)
+		{
+			_$this._curCloud.x = 3154;
+			_$this._curCloudIndex = _$this._curCloudIndex = 2 ? 0 : _$this._curCloudIndex + 1;
+			_$this._curCloud = _$this._arrCloud[_$this._curCloudIndex];
+		}
 
-		this.mountains1.x -= this._iSpeed2;
-		this.mountains2.x -= this._iSpeed2;
-		this.mountains3.x -= this._iSpeed2;
-		if(this.mountains1.x <= -3136)
-			this.mountains1.x = 3008;
-		else if(this.mountains2.x <= -3136)
-			this.mountains2.x = 3008;
-		else if(this.mountains3.x <= -3136)
-			this.mountains3.x = 3008;
-
-		this.cloud1.x -= this._iSpeed3;
-		this.cloud2.x -= this._iSpeed3;
-		this.cloud3.x -= this._iSpeed3;
-		if(this.cloud1.x <= -3436)
-			this.cloud1.x = 3158;
-		else if(this.cloud2.x <= -3436)
-			this.cloud2.x = 3158;
-		else if(this.cloud3.x <= -3436)
-			this.cloud3.x = 3158;
+		for(let i = 0; i < 3; ++i)
+		{
+			_$this._arrGround[i].x		-= this._iSpeed;
+			_$this._arrMountains[i].x	-= this._iSpeed2;
+			_$this._arrCloud[i].x		-= this._iSpeed3;
+		}
 	}
 }

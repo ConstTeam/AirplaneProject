@@ -35,7 +35,7 @@ export default class Enemy extends Laya.Script
 		this._iSpeed = this._iDirection * 10;
 		this._iState = 1;
 	}
-
+	
 	onUpdate(): void
 	{
 		if(this._iState == 1)

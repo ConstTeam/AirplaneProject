@@ -25,7 +25,7 @@ export default class Bullet extends Laya.Script
 		this._iDirection = direction;
 		this._sp.x = fromX;
 		this._sp.y = fromY;
-		this._iSpeed = direction * 10;
+		this._iSpeed = direction * PositionMgr.g_iSpeed;
 	}
 
 	public Stop(): void
