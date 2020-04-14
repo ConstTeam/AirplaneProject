@@ -2,11 +2,13 @@ export default class MainRole extends Laya.Script
 {
 	private _sp: Laya.Sprite;
 	private _rigidbody: Laya.RigidBody;
+	private _setCoinHandler: Laya.Handler;
 	private _setHpHandler: Laya.Handler;
 	private _stopCbHandler: Laya.Handler;
 	private _explosionSP: Laya.Sprite;
 	private _explosionAni: Laya.Animation;
 	private _bInvincible: boolean;
+	private _iCoin: number;
 	private _iLife: number;
 	private _bottomBox: Laya.BoxCollider;
 	private _bottomBox2: Laya.BoxCollider;
@@ -17,12 +19,12 @@ export default class MainRole extends Laya.Script
 	{
 		this._sp = this.owner as Laya.Sprite;
 		this._rigidbody = this.owner.getComponent(Laya.RigidBody);
-		this._Reset();
+		this.Init();
 	}
 
 	onTriggerEnter(other:any, self:any, contact:any): void
 	{
-		return;
+		//return;
 		if(this._sp.x == -10000)
 			return;
 
@@ -31,13 +33,17 @@ export default class MainRole extends Laya.Script
 		if(otherSp.name == "Top")
 			return;
 
+		if(otherSp.name == "Coin")
+		{
+			this._setCoinHandler.runWith(++this._iCoin);
+			otherSp.destroy();
+			return;
+		}
+
 		if(otherSp.name == "Life")
 		{
-			if(this._iLife < 5)
-			{
-				this._setHpHandler.runWith(++this._iLife);
-				otherSp.destroy();
-			}
+			this._setHpHandler.runWith(++this._iLife);
+			otherSp.destroy();
 			return;
 		}
 
@@ -69,8 +75,9 @@ export default class MainRole extends Laya.Script
 		this._explosionSP.x = -10000;
 	}
 
-	public Init(setHpHander: Laya.Handler, stopCbHandler: Laya.Handler, explosionSP: Laya.Sprite, expolsionAni: Laya.Animation, bottom: Laya.Sprite, bottom2: Laya.Sprite): void
+	public SetInfo(setCoinHander: Laya.Handler, setHpHander: Laya.Handler, stopCbHandler: Laya.Handler, explosionSP: Laya.Sprite, expolsionAni: Laya.Animation, bottom: Laya.Sprite, bottom2: Laya.Sprite): void
 	{
+		this._setCoinHandler = setCoinHander;
 		this._setHpHandler = setHpHander;
 		this._stopCbHandler = stopCbHandler;
 		this._explosionSP = explosionSP;
@@ -81,19 +88,29 @@ export default class MainRole extends Laya.Script
 		this._bottomBox2.enabled = false;
 	}
 
-	public Reset(): void
+	private Init(): void
 	{
-		this._Reset();
-		this._bottomBox.enabled = true;
-		this._bottomBox2.enabled = false;
-	}
-
-	private _Reset(): void
-	{
+		this._iCoin = 0;
 		this._iLife = 0;
 		this._sp.x = 959;
 		this._sp.y = 539;
 		this.RigidBodyEnable(false);
+	}
+
+	public Reset(): void
+	{
+		this._iCoin = 0;
+		this._iLife = 0;
+		this.Continue();
+	}
+
+	public Continue(): void
+	{
+		this._sp.x = 959;
+		this._sp.y = 539;
+		this.RigidBodyEnable(false);
+		this._bottomBox.enabled = true;
+		this._bottomBox2.enabled = false;
 	}
 
 	public RigidBodyEnable(bEnable: boolean): void

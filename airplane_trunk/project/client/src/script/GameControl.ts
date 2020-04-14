@@ -21,6 +21,8 @@ export default class GameControl extends Laya.Script
 	private mainRoleSp: Sprite;
 	/** @prop {name: backgroundSp, type: Node} */
 	private backgroundSp: Sprite;
+	/** @prop {name: waveText, type:Node} */
+	private waveText: Laya.Text;
 	/** @prop {name: distanceText, type:Node} */
 	private distanceText: Laya.Text;
 	/** @prop {name: bottomSp, type: Node} */
@@ -70,6 +72,8 @@ export default class GameControl extends Laya.Script
 	private enemyPrefZL: Laya.Prefab;
 	/** @prop {name: enemyPrefZR, type: Prefab} */
 	private enemyPrefZR: Laya.Prefab;
+	/** @prop {name: coin, type: Prefab} */
+	private coin: Laya.Prefab;
 	/** @prop {name: life, type: Prefab} */
 	private life: Laya.Prefab;
 
@@ -80,10 +84,12 @@ export default class GameControl extends Laya.Script
 	private hp2: Laya.Sprite;
 	/** @prop {name: hp3, type: Node} */
 	private hp3: Laya.Sprite;
-	/** @prop {name: hp4, type: Node} */
-	private hp4: Laya.Sprite;
-	/** @prop {name: hp5, type: Node} */
-	private hp5: Laya.Sprite;
+	/** @prop {name: coin1, type: Node} */
+	private coin1: Laya.Sprite;
+	/** @prop {name: coin2, type: Node} */
+	private coin2: Laya.Sprite;
+	/** @prop {name: coin3, type: Node} */
+	private coin3: Laya.Sprite;
 	//-------------------------------------------------------------------
 
 	private mainRole: MainRole;
@@ -92,14 +98,17 @@ export default class GameControl extends Laya.Script
 
 	private _iSpeed: number = 0;
 	private _bRunning: boolean = false;
+	private _iWave: number = 0;
 	private _iDistance: number = 0;
-	private _enmeyTbl: ConfigTable;
+	private _enemyTbl: ConfigTable;
 	private _enemyDict: { [key: string]: Laya.Prefab; };
 	private _hpArr: Laya.Sprite[];
+	private _coinArr: Laya.Sprite[];
 
 	private _iHighestScore: number;
 	private _scoreKey: string;
-	private _continueTime: number;
+	private _iCoin: number = 0;
+	private _iHp: number = 0;
 
 	constructor() { super(); }
 
@@ -110,7 +119,6 @@ export default class GameControl extends Laya.Script
 		this.resultPanel.visible = false;
 		this.rankPanel.visible = false;
 		this.openDataViewer.visible = false;
-		//this.continueBtn.visible = false;
 		this._enemyDict = {};
 		this._enemyDict["EnemyAL1"] = this.enemyPrefAL1;
 		this._enemyDict["EnemyAL2"] = this.enemyPrefAL2;
@@ -120,9 +128,12 @@ export default class GameControl extends Laya.Script
 		this._enemyDict["EnemyCL2"] = this.enemyPrefCL2;
 		this._enemyDict["EnemyZL"] = this.enemyPrefZL;
 		this._enemyDict["EnemyZR"] = this.enemyPrefZR;
+		this._enemyDict["Coin"] = this.coin;
 		this._enemyDict["Life"] = this.life;
 
-		this._hpArr = [this.hp1, this.hp2, this.hp3, this.hp4, this.hp5];
+		this._hpArr = [this.hp1, this.hp2, this.hp3];
+		this._coinArr = [this.coin1, this.coin2, this.coin3];
+		this.SetCoin(0);
 		this.SetHp(0);
 
 		Laya.loader.load("cfg/cfg.bin", Laya.Handler.create(this, this.OnConfigComplete), null, Laya.Loader.BUFFER);
@@ -131,7 +142,7 @@ export default class GameControl extends Laya.Script
 	private OnConfigComplete(buff: ArrayBuffer): void
 	{
 		ConfigData.ParseConfig(buff);
-		this._enmeyTbl = ConfigData.GetTable("Enemy_Client");
+		this._enemyTbl = ConfigData.GetTable("Enemy_Client");
 
 		this.startBtn.clickHandler = new Laya.Handler(this, this.onStartBtnClick);
 		this.restartBtn.clickHandler = new Laya.Handler(this, this.onRestartBtnClick);
@@ -160,7 +171,7 @@ export default class GameControl extends Laya.Script
 		this.explosionSp.scaleY = 2;
 		this.explosionAni.interval = 100;
 		this.startBtn.visible = true;
-		this.mainRole.Init(new Laya.Handler(this, this.SetHp), new Laya.Handler(this, this.Stop), this.explosionSp, this.explosionAni, this.bottomSp, this.bottomSp2);
+		this.mainRole.SetInfo(new Laya.Handler(this, this.SetCoin), new Laya.Handler(this, this.SetHp), new Laya.Handler(this, this.Stop), this.explosionSp, this.explosionAni, this.bottomSp, this.bottomSp2);
 	}
 
 	onUpdate(): void
@@ -174,12 +185,22 @@ export default class GameControl extends Laya.Script
 		}
 	}
 
-	private Init(): void
+	private Start(): void
 	{
-		this.mainRole.Reset();
+		this._iCoin = 0;
+		this._iHp = 0;	
 		this._iSpeed = 5;
+		this.mainRole.Reset();
 		this.mainRole.RigidBodyEnable(true);
 		this.background.SetSpeed(this._iSpeed);
+		this._bRunning = true;
+		Laya.SoundManager.playMusic("sound/bgm.mp3", 0);
+	}
+
+	private Continue(): void
+	{
+		this.mainRole.Continue();
+		this.mainRole.RigidBodyEnable(true);
 		this._bRunning = true;
 		Laya.SoundManager.playMusic("sound/bgm.mp3", 0);
 	}
@@ -199,12 +220,18 @@ export default class GameControl extends Laya.Script
 		}
 	}
 
-	private SetHp(hp: number): void
+	private SetCoin(v: number): void
 	{
-		for(let i: number = 0; i < 5; ++i)
-		{
-			this._hpArr[i].visible = i < hp;
-		}
+		this._iCoin = v
+		for(let i: number = 0; i < 3; ++i)
+			this._coinArr[i].visible = i < v;
+	}
+
+	private SetHp(v: number): void
+	{
+		this._iHp = v;
+		for(let i: number = 0; i < 3; ++i)
+			this._hpArr[i].visible = i < v;
 	}
 
 	private SetUserCloudStorage(data:String): void
@@ -234,35 +261,41 @@ export default class GameControl extends Laya.Script
 		this.resultPanel.visible = true;
 		this.curText.text = (this._iDistance / 100).toString();
 		this.maxText.text = Laya.LocalStorage.getItem("score");
-		this.continueText.text = this._continueTime.toString();
+		this.continueText.text = this.waveText.text;
+		this.continueBtn.gray = this._iCoin <= 0;
 	}
 
 	private onStartBtnClick(): void
 	{
 		this.startBtn.visible = false;
+		this.waveText.text = "0";
 		this._iDistance = 0;
-		this._continueTime = 5;
-		this.Init();
+		this.Start();
 	}
 
 	private onRestartBtnClick(): void
 	{
 		this.resultPanel.visible = false;
 		this.ShowRankPanel(false);
+
+		this.SetCoin(0);
+		this.waveText.text = "0";
 		this._iDistance = 0;
-		this._continueTime = 5;
-		this.Init();
+		this.Start();
 		this.mainRole.SetInvincible();
 	}
 
 	private onContinueBtnClick(): void
 	{
-		if(this._continueTime <= 0)
+		if(this._iCoin <= 0)
 			return;
-		--this._continueTime;
+		
 		this.resultPanel.visible = false;
 		this.ShowRankPanel(false);
-		this.Init();
+
+		this.SetCoin(--this._iCoin);
+		this._iDistance = Number(this._sCurWaveDis);
+		this.Continue();
 		this.mainRole.SetInvincible();
 	}
 
@@ -304,6 +337,7 @@ export default class GameControl extends Laya.Script
 		}
 	}
 
+	private _sCurWaveDis: string = "";
 	private _curGroupDis: number = 0;
 	private _curGroupTbl: ConfigTable = null;
 
@@ -313,9 +347,13 @@ export default class GameControl extends Laya.Script
 			this.ShowEnemyZ();
 
 		let key: string = this._iDistance.toString();
-		if(this._enmeyTbl.HasRow(key))
+		if(this._enemyTbl.HasRow(key))
 		{
-			let group: string = this._enmeyTbl.GetValue(key, "Group");
+			let wave: string = this._enemyTbl.GetValue(key, "Wave");
+			if(wave != "")
+				this.waveText.text = wave;
+			this._sCurWaveDis = key;
+			let group: string = this._enemyTbl.GetValue(key, "Group");
 			this._curGroupTbl = ConfigData.GetTable(group);
 			this._curGroupDis = this._iDistance;
 		}
@@ -333,6 +371,14 @@ export default class GameControl extends Laya.Script
 				for(let i: number = 0; i < arr.length; ++i)
 				{	
 					enemyName = arr[i][0];
+					if(enemyName == "Life")
+					{
+						if(this._iCoin < 3)
+							enemyName = "Coin";
+						else if(this._iHp > 2)
+							continue;
+					}
+
 					sp = Laya.Pool.getItemByCreateFun(enemyName, this._enemyDict[enemyName].create, this._enemyDict[enemyName]);	
 					this.enemyRoot.addChild(sp);
 					enemy = sp.getComponent(Enemy);
