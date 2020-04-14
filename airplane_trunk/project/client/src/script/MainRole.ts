@@ -22,8 +22,7 @@ export default class MainRole extends Laya.Script
 
 	onTriggerEnter(other:any, self:any, contact:any): void
 	{
-		return;
-
+		//return;
 		if(this._sp.x == -10000)
 			return;
 

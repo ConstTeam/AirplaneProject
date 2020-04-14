@@ -65,20 +65,20 @@ export default class Background extends Laya.Script
 		var _$this = this;
 		if(_$this._curGround.x <= -2040)
 		{
-			_$this._curGround.x = 2456;
-			_$this._curGroundIndex = _$this._curGroundIndex = 2 ? 0 : _$this._curGroundIndex + 1;
+			_$this._curGround.x = 2456 + 2040 + _$this._curGround.x;
+			_$this._curGroundIndex = _$this._curGroundIndex == 2 ? 0 : _$this._curGroundIndex + 1;
 			_$this._curGround = _$this._arrGround[_$this._curGroundIndex];
 		}
 		if(_$this._curMountains.x <= -3136)
 		{
-			_$this._curMountains.x = 3004;
-			_$this._curMountainsIndex = _$this._curMountainsIndex = 2 ? 0 : _$this._curMountainsIndex + 1;
-			_$this._curMountains = _$this._curMountains[_$this._curMountainsIndex];
+			_$this._curMountains.x = 3004 + 3136 + _$this._curMountains.x;
+			_$this._curMountainsIndex = _$this._curMountainsIndex == 2 ? 0 : _$this._curMountainsIndex + 1;
+			_$this._curMountains = _$this._arrMountains[_$this._curMountainsIndex];
 		}
 		if(_$this._curCloud.x <= -3436)
 		{
-			_$this._curCloud.x = 3154;
-			_$this._curCloudIndex = _$this._curCloudIndex = 2 ? 0 : _$this._curCloudIndex + 1;
+			_$this._curCloud.x = 3154 + 3436 + _$this._curCloud.x;
+			_$this._curCloudIndex = _$this._curCloudIndex == 2 ? 0 : _$this._curCloudIndex + 1;
 			_$this._curCloud = _$this._arrCloud[_$this._curCloudIndex];
 		}
 

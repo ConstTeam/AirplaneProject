@@ -17,7 +17,7 @@ export default class BulletC extends Bullet
 	{
 		super.Excute(bulletName, fromX, fromY, direction);
 		this._rigidBody.enabled = true;
-		this._rigidBody.setVelocity({x: direction ? 15 : -15, y: 0});
+		this._rigidBody.setVelocity({x: direction ? 12 : -12, y: 0});
 	}
 
 	onTriggerEnter(other:any, self:any, contact:any): void

@@ -93,7 +93,6 @@ export default class GameControl extends Laya.Script
 	private _iSpeed: number = 0;
 	private _bRunning: boolean = false;
 	private _iDistance: number = 0;
-	private _t: number = 0;
 	private _enmeyTbl: ConfigTable;
 	private _enemyDict: { [key: string]: Laya.Prefab; };
 	private _hpArr: Laya.Sprite[];
@@ -181,7 +180,6 @@ export default class GameControl extends Laya.Script
 		this._iSpeed = 5;
 		this.mainRole.RigidBodyEnable(true);
 		this.background.SetSpeed(this._iSpeed);
-		this._t = 0;
 		this._bRunning = true;
 		Laya.SoundManager.playMusic("sound/bgm.mp3", 0);
 	}
@@ -317,7 +315,7 @@ export default class GameControl extends Laya.Script
 		let key: string = this._iDistance.toString();
 		if(this._enmeyTbl.HasRow(key))
 		{
-			let group: string = this._enmeyTbl.GetValue(key, "Group");
+			let group: string = "EZ10";//this._enmeyTbl.GetValue(key, "Group");
 			this._curGroupTbl = ConfigData.GetTable(group);
 			this._curGroupDis = this._iDistance;
 		}

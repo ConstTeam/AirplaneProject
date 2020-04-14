@@ -36,7 +36,7 @@
             "switchAble":true,
             "searchKey":"RigidBody",
             "removeAble":true,
-            "props":{"presetID":3,"preset":"laya/pages/prefab/BulletCL.prefab","gravityScale":2},
+            "props":{"presetID":3,"preset":"laya/pages/prefab/BulletCL.prefab","gravityScale":1.5},
             "nodeParent":123,
             "label":"RigidBody(BulletCL)",
             "isDirectory":false,

@@ -3,39 +3,45 @@
 
 	class Background extends Laya.Script {
 	    constructor() { super(); }
+	    onAwake() {
+	        var _$this = this;
+	        _$this._arrGround = [_$this.ground1, _$this.ground2, _$this.ground3];
+	        _$this._arrMountains = [_$this.mountains1, _$this.mountains2, _$this.mountains3];
+	        _$this._arrCloud = [_$this.cloud1, _$this.cloud2, _$this.cloud3];
+	        _$this._curGroundIndex = 0;
+	        _$this._curMountainsIndex = 0;
+	        _$this._curCloudIndex = 0;
+	        _$this._curGround = _$this._arrGround[0];
+	        _$this._curMountains = _$this._arrMountains[0];
+	        _$this._curCloud = _$this._arrCloud[0];
+	    }
 	    SetSpeed(speed) {
 	        this._iSpeed = speed;
 	        this._iSpeed2 = speed / 5;
 	        this._iSpeed3 = speed / 25;
 	    }
 	    Update() {
-	        this.ground1.x -= this._iSpeed;
-	        this.ground2.x -= this._iSpeed;
-	        this.ground3.x -= this._iSpeed;
-	        if (this.ground1.x <= -2040)
-	            this.ground1.x = 2460;
-	        else if (this.ground2.x <= -2040)
-	            this.ground2.x = 2460;
-	        else if (this.ground3.x <= -2040)
-	            this.ground3.x = 2460;
-	        this.mountains1.x -= this._iSpeed2;
-	        this.mountains2.x -= this._iSpeed2;
-	        this.mountains3.x -= this._iSpeed2;
-	        if (this.mountains1.x <= -3136)
-	            this.mountains1.x = 3008;
-	        else if (this.mountains2.x <= -3136)
-	            this.mountains2.x = 3008;
-	        else if (this.mountains3.x <= -3136)
-	            this.mountains3.x = 3008;
-	        this.cloud1.x -= this._iSpeed3;
-	        this.cloud2.x -= this._iSpeed3;
-	        this.cloud3.x -= this._iSpeed3;
-	        if (this.cloud1.x <= -3436)
-	            this.cloud1.x = 3158;
-	        else if (this.cloud2.x <= -3436)
-	            this.cloud2.x = 3158;
-	        else if (this.cloud3.x <= -3436)
-	            this.cloud3.x = 3158;
+	        var _$this = this;
+	        if (_$this._curGround.x <= -2040) {
+	            _$this._curGround.x = 2456 + 2040 + _$this._curGround.x;
+	            _$this._curGroundIndex = _$this._curGroundIndex == 2 ? 0 : _$this._curGroundIndex + 1;
+	            _$this._curGround = _$this._arrGround[_$this._curGroundIndex];
+	        }
+	        if (_$this._curMountains.x <= -3136) {
+	            _$this._curMountains.x = 3004 + 3136 + _$this._curMountains.x;
+	            _$this._curMountainsIndex = _$this._curMountainsIndex == 2 ? 0 : _$this._curMountainsIndex + 1;
+	            _$this._curMountains = _$this._arrMountains[_$this._curMountainsIndex];
+	        }
+	        if (_$this._curCloud.x <= -3436) {
+	            _$this._curCloud.x = 3154 + 3436 + _$this._curCloud.x;
+	            _$this._curCloudIndex = _$this._curCloudIndex == 2 ? 0 : _$this._curCloudIndex + 1;
+	            _$this._curCloud = _$this._arrCloud[_$this._curCloudIndex];
+	        }
+	        for (let i = 0; i < 3; ++i) {
+	            _$this._arrGround[i].x -= this._iSpeed;
+	            _$this._arrMountains[i].x -= this._iSpeed2;
+	            _$this._arrCloud[i].x -= this._iSpeed3;
+	        }
 	    }
 	}
 
@@ -384,7 +390,6 @@
 	        this.enabled = false;
 	    }
 	    Show(info, during) {
-	        this._t = 0;
 	        this.enabled = true;
 	        this._enemyName = info[0];
 	        this._iDirection = info[1];
@@ -395,11 +400,6 @@
 	        this._iState = 1;
 	    }
 	    onUpdate() {
-	        let delta = Laya.timer.delta;
-	        this._t += delta;
-	        if (this._t < 20)
-	            return;
-	        this._t = this._t - 20;
 	        if (this._iState == 1) {
 	            if (this._iDirection == 1) {
 	                if (this._sp.x + this._iSpeed < this._iToX) {
@@ -457,7 +457,8 @@
 	        this._iSpeed = 0;
 	        this._bRunning = false;
 	        this._iDistance = 0;
-	        this._t = 0;
+	        this._stringEmpty = "";
+	        this._gmGroup = "";
 	        this._curGroupDis = 0;
 	        this._curGroupTbl = null;
 	        this._enemyZName = "EnemyZR";
@@ -497,6 +498,7 @@
 	        this.background = this.backgroundSp.getComponent(Background);
 	        let score = Laya.LocalStorage.getItem("score");
 	        this._iHighestScore = score == null ? 0 : Number(Laya.LocalStorage.getItem("score"));
+	        Laya.loader.load(["res/atlas/common.atlas"], Laya.Handler.create(this, () => { Laya.MiniAdpter.sendAtlasToOpenDataContext("res/atlas/common.atlas"); }));
 	        this.explosionSp.x = -10000;
 	        this.explosionAni = new Laya.Animation();
 	        this.explosionAni.loadAtlas("res/atlas/explosion.atlas", Laya.Handler.create(this, this.ExplosionLoaded));
@@ -511,11 +513,6 @@
 	    }
 	    onUpdate() {
 	        if (this._bRunning) {
-	            let delta = Laya.timer.delta;
-	            this._t += delta;
-	            if (this._t < 20)
-	                return;
-	            this._t = this._t - 20;
 	            this._iDistance += this._iSpeed;
 	            this.distanceText.text = (Math.floor(this._iDistance / 100)).toString();
 	            this.background.Update();
@@ -527,7 +524,6 @@
 	        this._iSpeed = 5;
 	        this.mainRole.RigidBodyEnable(true);
 	        this.background.SetSpeed(this._iSpeed);
-	        this._t = 0;
 	        this._bRunning = true;
 	        Laya.SoundManager.playMusic("sound/bgm.mp3", 0);
 	    }
@@ -626,7 +622,7 @@
 	            this.ShowEnemyZ();
 	        let key = this._iDistance.toString();
 	        if (this._enmeyTbl.HasRow(key)) {
-	            let group = this._enmeyTbl.GetValue(key, "Group");
+	            let group = this._gmGroup == this._stringEmpty ? this._enmeyTbl.GetValue(key, "Group") : this._gmGroup;
 	            this._curGroupTbl = ConfigData.GetTable(group);
 	            this._curGroupDis = this._iDistance;
 	        }
