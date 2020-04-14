@@ -315,7 +315,7 @@ export default class GameControl extends Laya.Script
 		let key: string = this._iDistance.toString();
 		if(this._enmeyTbl.HasRow(key))
 		{
-			let group: string = "EZ10";//this._enmeyTbl.GetValue(key, "Group");
+			let group: string = this._enmeyTbl.GetValue(key, "Group");
 			this._curGroupTbl = ConfigData.GetTable(group);
 			this._curGroupDis = this._iDistance;
 		}
