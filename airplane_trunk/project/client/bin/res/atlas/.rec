@@ -13,6 +13,7 @@ P D0319C93 ButtonYellow.png
 P A6D2B3F0 ButtonYes.png
 P 6EA3C4B6 c1.png
 P 1A0ED974 cube.png
+P 22DD9C7F CubeBlack.png
 P 2A9CDF8B Paper.png
 D comp
 P 316AD948 btn_close.png
@@ -89,3 +90,6 @@ P DDC62AEE torpedo_flame_2.png
 D sound
 R C85ED474 bgm.mp3
 R 982295C9 explosion.wav
+D tap
+P EED32E8B tap.png
+P A218BE11 TapLabel.png
