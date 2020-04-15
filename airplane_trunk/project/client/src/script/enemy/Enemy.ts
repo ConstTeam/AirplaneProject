@@ -32,7 +32,7 @@ export default class Enemy extends Laya.Script
 		this._sp.x = this._iFromX = this._iDirection == 1 ? PositionMgr.LeftX : PositionMgr.RightX;
 		this._sp.y = this._iFromY = info[2];
 		this._iToX = info[3];
-		this._iSpeed = this._iDirection * 10;
+		this._iSpeed = this._iDirection * PositionMgr.g_iSpeed;
 		this._iState = 1;
 	}
 	
@@ -67,7 +67,7 @@ export default class Enemy extends Laya.Script
 
 	protected BackUpdate(): void
 	{
-		this._sp.x -= this._iSpeed
+		this._sp.x -= this._iSpeed;
 		if(this._iDirection == 1)
 		{
 			if(this._sp.x < this._iFromX)

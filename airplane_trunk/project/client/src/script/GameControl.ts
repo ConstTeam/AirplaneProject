@@ -157,7 +157,7 @@ export default class GameControl extends Laya.Script
 		let score: string = Laya.LocalStorage.getItem("score");
 		this._iHighestScore = score == null ? 0 : Number(Laya.LocalStorage.getItem("score"));
 
-		Laya.loader.load(["res/atlas/common.atlas"], Laya.Handler.create(this, () => { Laya.MiniAdpter.sendAtlasToOpenDataContext("res/atlas/common.atlas"); }));
+		//Laya.loader.load(["res/atlas/common.atlas"], Laya.Handler.create(this, () => { Laya.MiniAdpter.sendAtlasToOpenDataContext("res/atlas/common.atlas"); }));
 		
 		this.explosionSp.x = -10000;
 		this.explosionAni = new Laya.Animation();
@@ -178,7 +178,7 @@ export default class GameControl extends Laya.Script
 	{
 		if(this._bRunning)
 		{
-			this._iDistance += this._iSpeed;
+			this._iDistance += Math.floor(this._iSpeed);
 			this.distanceText.text = ((this._iDistance / 1000).toFixed(1)).toString();
 			this.background.Update();
 			this.ShowEnemy();
@@ -189,7 +189,7 @@ export default class GameControl extends Laya.Script
 	{
 		this._iCoin = 0;
 		this._iHp = 0;	
-		this._iSpeed = 5;
+		this._iSpeed = PositionMgr.g_BackgroundSpeed;
 		this.mainRole.Reset();
 		this.mainRole.RigidBodyEnable(true);
 		this.background.SetSpeed(this._iSpeed);
