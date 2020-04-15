@@ -157,7 +157,7 @@ export default class GameControl extends Laya.Script
 		let score: string = Laya.LocalStorage.getItem("score");
 		this._iHighestScore = score == null ? 0 : Number(Laya.LocalStorage.getItem("score"));
 
-		//Laya.loader.load(["res/atlas/common.atlas"], Laya.Handler.create(this, () => { Laya.MiniAdpter.sendAtlasToOpenDataContext("res/atlas/common.atlas"); }));
+		Laya.loader.load(["res/atlas/common.atlas"], Laya.Handler.create(this, () => { Laya.MiniAdpter.sendAtlasToOpenDataContext("res/atlas/common.atlas"); }));
 		
 		this.explosionSp.x = -10000;
 		this.explosionAni = new Laya.Animation();
@@ -179,7 +179,7 @@ export default class GameControl extends Laya.Script
 		if(this._bRunning)
 		{
 			this._iDistance += this._iSpeed;
-			this.distanceText.text = (Math.floor(this._iDistance / 100)).toString();
+			this.distanceText.text = ((this._iDistance / 1000).toFixed(1)).toString();
 			this.background.Update();
 			this.ShowEnemy();
 		}
@@ -211,12 +211,11 @@ export default class GameControl extends Laya.Script
 		this._bRunning = false;
 		Laya.timer.once(2000, this, this.ShowResultPanel);
 
-		let score: number = this._iDistance / 100;
-		if(score > this._iHighestScore)
+		if(this._iDistance > this._iHighestScore)
 		{
-			this._iHighestScore = score;
-			Laya.LocalStorage.setItem("score", score.toString());
-			this.SetUserCloudStorage(score.toString());
+			this._iHighestScore = this._iDistance;
+			Laya.LocalStorage.setItem("score", this._iHighestScore.toString());
+			this.SetUserCloudStorage((this._iHighestScore / 1000).toFixed(1).toString());
 		}
 	}
 
@@ -259,8 +258,8 @@ export default class GameControl extends Laya.Script
 	private ShowResultPanel(): void
 	{
 		this.resultPanel.visible = true;
-		this.curText.text = (this._iDistance / 100).toString();
-		this.maxText.text = Laya.LocalStorage.getItem("score");
+		this.curText.text = (this._iDistance / 1000).toFixed(1).toString();
+		this.maxText.text = (Number(Laya.LocalStorage.getItem("score")) / 1000).toFixed(1).toString();
 		this.continueText.text = this.waveText.text;
 		this.continueBtn.gray = this._iCoin <= 0;
 	}
@@ -351,7 +350,11 @@ export default class GameControl extends Laya.Script
 		{
 			let wave: string = this._enemyTbl.GetValue(key, "Wave");
 			if(wave != "")
+			{
 				this.waveText.text = wave;
+				Laya.Tween.from(this.waveText, {scaleX: 2, scaleY: 2}, 500, Laya.Ease.backOut);
+			}
+				
 			this._sCurWaveDis = key;
 			let group: string = this._enemyTbl.GetValue(key, "Group");
 			this._curGroupTbl = ConfigData.GetTable(group);

@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
-    "selecteID":144,
+    "selectedBox":81,
+    "selecteID":251,
     "searchKey":"Scene",
     "props":{"x":0,"width":1920,"sceneColor":"#000000","height":1080,"enemyPref":"@arr:,,"},
     "nodeParent":-1,
-    "maxID":255,
+    "maxID":257,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -438,7 +438,7 @@
                     "x":30,
                     "type":"Text",
                     "searchKey":"Text,WaveText",
-                    "props":{"y":0,"x":0,"width":168,"valign":"middle","text":"0","name":"WaveText","height":85,"fontSize":70,"color":"#ffffff","bold":true,"align":"center"},
+                    "props":{"y":64,"x":84,"width":168,"valign":"middle","text":"0","pivotY":64,"pivotX":84,"name":"WaveText","height":128,"fontSize":100,"color":"#ffffff","bold":true,"align":"center"},
                     "nodeParent":81,
                     "label":"WaveText",
                     "isOpen":true,
@@ -453,7 +453,7 @@
                     "x":30,
                     "type":"Text",
                     "searchKey":"Text,DistanceText",
-                    "props":{"y":0,"x":168,"width":162,"valign":"middle","text":"0","name":"DistanceText","height":85,"fontSize":60,"color":"#ffffff","align":"left"},
+                    "props":{"y":14,"x":168,"width":176,"valign":"middle","text":"0","name":"DistanceText","italic":true,"height":61,"fontSize":60,"color":"#ffffff","align":"right"},
                     "nodeParent":81,
                     "label":"DistanceText",
                     "isOpen":true,
@@ -466,19 +466,33 @@
                 },
                 {
                     "x":30,
+                    "type":"Text",
+                    "searchKey":"Text,KM",
+                    "props":{"y":1.5,"x":356,"width":87,"valign":"middle","text":"km","name":"KM","italic":true,"height":85,"fontSize":55,"color":"#ffffff","align":"left"},
+                    "nodeParent":81,
+                    "label":"KM",
+                    "isOpen":true,
+                    "isDirectory":false,
+                    "isAniNode":true,
+                    "hasChild":false,
+                    "compId":256,
+                    "child":[
+                        ]
+                },
+                {
+                    "x":30,
                     "type":"Box",
                     "searchKey":"Box,LifeBox",
-                    "props":{"y":17.5,"x":340,"name":"LifeBox"},
+                    "props":{"y":24.5,"x":456,"name":"LifeBox"},
                     "nodeParent":81,
                     "label":"LifeBox",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":250,
                     "child":[
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,Coin1",
                             "props":{"y":0,"x":0,"skin":"role/coin.png","name":"Coin1"},
@@ -493,7 +507,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,Coin2",
                             "props":{"y":0,"x":70,"skin":"role/coin.png","name":"Coin2"},
@@ -508,7 +521,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,Coin3",
                             "props":{"y":0,"x":140,"skin":"role/coin.png","name":"Coin3"},
@@ -522,7 +534,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,Life1",
                             "props":{"y":0,"x":210,"skin":"role/life.png","name":"Life1"},
@@ -537,7 +548,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,Life2",
                             "props":{"y":0,"x":280,"skin":"role/life.png","name":"Life2"},
@@ -552,7 +562,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image,Life3",
                             "props":{"y":0,"x":350,"skin":"role/life.png","name":"Life3"},
@@ -589,14 +598,13 @@
                     "props":{"y":0,"x":0,"width":1920,"name":"ResultPanel","height":1080},
                     "nodeParent":81,
                     "label":"ResultPanel",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":146,
                     "child":[
                         {
-                            "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite,Bg",
                             "props":{"y":294,"x":410,"width":1100,"texture":"common/Paper.png","name":"Bg","height":491},
@@ -609,7 +617,6 @@
                             "compId":151,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Button",
                                     "searchKey":"Button,RestartBtn",
                                     "props":{"y":406,"x":58,"width":250,"stateNum":"1","skin":"common/ButtonNo.png","name":"RestartBtn","labelSize":45,"labelPadding":"5","labelColors":"#ffffff","labelBold":true,"label":"重新开始","height":90},
@@ -623,7 +630,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Button",
                                     "searchKey":"Button,ContinueBtn",
                                     "props":{"y":391,"x":350,"width":400,"stateNum":"1","skin":"common/ButtonYes.png","name":"ContinueBtn","labelSize":50,"labelPadding":"0,0 ,15,0","labelColors":"#ffffff","labelBold":true,"label":"继续","height":120},
@@ -636,7 +642,6 @@
                                     "compId":144,
                                     "child":[
                                         {
-                                            "x":75,
                                             "type":"Image",
                                             "searchKey":"Image",
                                             "props":{"y":73,"x":139,"width":30,"skin":"role/coin.png","height":30},
@@ -651,7 +656,6 @@
                                                 ]
                                         },
                                         {
-                                            "x":75,
                                             "type":"Label",
                                             "searchKey":"Label",
                                             "props":{"y":69,"x":0,"width":400,"valign":"middle","text":"（消耗1个    从第      波开始）","height":42,"fontSize":30,"color":"#ffffff","align":"center"},
@@ -666,7 +670,6 @@
                                                 ]
                                         },
                                         {
-                                            "x":75,
                                             "type":"Label",
                                             "searchKey":"Label",
                                             "props":{"y":69,"x":216,"width":77,"valign":"middle","text":"999","height":42,"fontSize":30,"color":"#ffffff","align":"center"},
@@ -682,7 +685,6 @@
                                     "$HIDDEN":false
                                 },
                                 {
-                                    "x":60,
                                     "type":"Button",
                                     "searchKey":"Button,RankBtn",
                                     "props":{"y":406,"x":791,"width":250,"stateNum":"1","skin":"common/ButtonYellow.png","name":"RankBtn","labelSize":45,"labelPadding":"5","labelColors":"#ffffff","labelBold":true,"label":"好友排行","height":90},
@@ -697,7 +699,6 @@
                                     "$HIDDEN":false
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label",
                                     "props":{"y":135,"x":215,"width":343,"valign":"middle","text":"本次飞行距离：","height":80,"fontSize":50,"color":"#4e2623","bold":true,"align":"center"},
@@ -711,7 +712,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label",
                                     "props":{"y":246,"x":218,"width":343,"valign":"middle","text":"最远飞行距离：","height":80,"fontSize":50,"color":"#4e2623","bold":true,"align":"center"},
@@ -725,7 +725,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,CurText",
                                     "props":{"y":135,"x":548,"width":470,"valign":"middle","text":"123.456","name":"CurText","height":80,"fontSize":50,"color":"#4e2623","bold":true,"align":"center"},
@@ -739,7 +738,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label,MaxText",
                                     "props":{"y":246,"x":548,"width":468,"valign":"middle","text":"456.789","name":"MaxText","height":80,"fontSize":50,"color":"#4e2623","bold":true,"align":"center"},
@@ -754,7 +752,6 @@
                                 }]
                         },
                         {
-                            "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite,RankBg",
                             "props":{"y":190,"x":410,"width":1100,"name":"RankBg","height":700},
@@ -836,7 +833,7 @@
                                 ]
                         }]
                 }],
-            "$HIDDEN":true
+            "$HIDDEN":false
         },
         {
             "x":15,

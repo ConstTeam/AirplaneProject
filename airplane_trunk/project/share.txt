@@ -1,15 +1,5 @@
 ﻿var id = '' // 通过 MP 系统审核的图片编号
 var url = '' // 通过 MP 系统审核的图片地址
-wx.shareAppMessage({
-	title: '和我一起飞跃火线吧！',
-	imageUrlId: 'L2Uh0yHTSHyc1n5nxbbSsg==',
-	imageUrl: 'https://mmocgame.qpic.cn/wechatgame/hW01p7YuN6umLMJYDFlpc3QBFd1qEkpibM47yFy0Tb8fhkrd0bmOHicbAcJjOtKj4k/0'
-})
+wx.shareAppMessage({title:'和我一起蛇皮走位吧！',imageUrlId:'L2Uh0yHTSHyc1n5nxbbSsg==',imageUrl:'https://mmocgame.qpic.cn/wechatgame/hW01p7YuN6umLMJYDFlpc3QBFd1qEkpibM47yFy0Tb8fhkrd0bmOHicbAcJjOtKj4k/0'})
 
-wx.onShareAppMessage(function () {
-  return {
-	title: '和我一起飞跃火线吧！',
-	imageUrlId: 'L2Uh0yHTSHyc1n5nxbbSsg==',
-	imageUrl: 'https://mmocgame.qpic.cn/wechatgame/hW01p7YuN6umLMJYDFlpc3QBFd1qEkpibM47yFy0Tb8fhkrd0bmOHicbAcJjOtKj4k/0'
-  }
-})
+,wx.showShareMenu({success:(res)=>{wx.onShareAppMessage(function(){return{title:'和我一起蛇皮走位吧！',imageUrlId:'L2Uh0yHTSHyc1n5nxbbSsg==',imageUrl:'https://mmocgame.qpic.cn/wechatgame/hW01p7YuN6umLMJYDFlpc3QBFd1qEkpibM47yFy0Tb8fhkrd0bmOHicbAcJjOtKj4k/0'}})}})
