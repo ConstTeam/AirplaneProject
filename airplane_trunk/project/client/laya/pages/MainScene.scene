@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":2,
-    "selecteID":32,
+    "selectedBox":271,
+    "selecteID":274,
     "searchKey":"Scene",
     "props":{"x":0,"width":1920,"sceneColor":"#000000","height":1080,"enemyPref":"@arr:,,"},
     "nodeParent":-1,
-    "maxID":270,
+    "maxID":279,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -21,19 +21,20 @@
             "props":{"y":0,"x":0,"width":1920,"visible":true,"name":"SceneRoot","height":1080},
             "nodeParent":2,
             "label":"SceneRoot",
-            "isOpen":false,
+            "isOpen":true,
             "isDirectory":true,
             "isAniNode":true,
             "hasChild":true,
             "compId":42,
             "child":[
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite,Backgroud",
                     "props":{"y":0,"x":0,"width":1920,"visible":true,"scaleY":1,"scaleX":1,"name":"Backgroud","height":1080},
                     "nodeParent":42,
                     "label":"Backgroud",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
@@ -318,6 +319,7 @@
                     "$HIDDEN":false
                 },
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite,MainRole",
                     "props":{"y":539,"x":959,"width":162,"texture":"role/plane_1_yellow.png","pivotY":48,"pivotX":81,"name":"MainRole","height":96},
@@ -378,6 +380,7 @@
                     "$HIDDEN":false
                 },
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite,EnemyRoot",
                     "props":{"y":0,"x":0,"name":"EnemyRoot","alpha":1},
@@ -392,6 +395,7 @@
                     "$HIDDEN":false
                 },
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite,BulletRoot",
                     "props":{"y":0,"x":0,"name":"BulletRoot","alpha":1},
@@ -407,6 +411,7 @@
                     "$HIDDEN":false
                 },
                 {
+                    "x":30,
                     "type":"Sprite",
                     "searchKey":"Sprite,Explosion",
                     "props":{"y":0,"x":-10000,"width":161,"scaleY":1,"scaleX":1,"pivotY":69,"pivotX":80.5,"name":"Explosion","height":138},
@@ -610,7 +615,7 @@
                             "props":{"y":294,"x":410,"width":1100,"texture":"common/Paper.png","name":"Bg","height":491},
                             "nodeParent":146,
                             "label":"Bg",
-                            "isOpen":false,
+                            "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
@@ -757,7 +762,7 @@
                             "props":{"y":190,"x":410,"width":1100,"name":"RankBg","height":700},
                             "nodeParent":146,
                             "label":"RankBg",
-                            "isOpen":true,
+                            "isOpen":false,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
@@ -929,6 +934,120 @@
                             "child":[
                                 ]
                         }]
+                },
+                {
+                    "x":30,
+                    "type":"Sprite",
+                    "searchKey":"Sprite,MsgBox",
+                    "props":{"y":-460,"x":-540,"width":3000,"name":"MsgBox","height":2000,"alpha":1},
+                    "nodeParent":81,
+                    "label":"MsgBox",
+                    "isOpen":true,
+                    "isDirectory":true,
+                    "isAniNode":true,
+                    "hasChild":true,
+                    "compId":272,
+                    "child":[
+                        {
+                            "x":45,
+                            "type":"Sprite",
+                            "searchKey":"Sprite",
+                            "props":{"y":0,"x":0,"width":3000,"texture":"common/CubeBlack.png","height":2000,"alpha":0.5},
+                            "nodeParent":272,
+                            "label":"Sprite",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":273,
+                            "child":[
+                                ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Image",
+                            "searchKey":"Image",
+                            "props":{"y":750,"x":950,"width":1100,"skin":"common/Paper.png","height":500,"alpha":1},
+                            "nodeParent":272,
+                            "label":"Image",
+                            "isOpen":true,
+                            "isDirectory":true,
+                            "isAniNode":true,
+                            "hasChild":true,
+                            "compId":271,
+                            "child":[
+                                {
+                                    "x":60,
+                                    "type":"Label",
+                                    "searchKey":"Label",
+                                    "props":{"y":211,"x":0,"width":1083,"valign":"middle","text":"确认重新开始？","height":78,"fontSize":50,"color":"#4e2623","bold":true,"align":"center"},
+                                    "nodeParent":271,
+                                    "label":"Label",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":278,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Label",
+                                    "searchKey":"Label",
+                                    "props":{"y":107,"x":0,"width":1083,"valign":"middle","text":"您还有剩余       ， 重新开始将清空","height":104,"fontSize":50,"color":"#4e2623","bold":true,"align":"center"},
+                                    "nodeParent":271,
+                                    "label":"Label",
+                                    "isOpen":true,
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":276,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Image",
+                                    "searchKey":"Image",
+                                    "props":{"y":134,"x":426,"skin":"role/coin.png"},
+                                    "nodeParent":271,
+                                    "label":"Image",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":277,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Button",
+                                    "searchKey":"Button,Yes",
+                                    "props":{"y":334,"x":126,"width":300,"stateNum":"1","skin":"common/ButtonNo.png","name":"Yes","labelSize":50,"labelPadding":"5","labelColors":"#ffffff","labelBold":true,"label":"确认","height":100},
+                                    "nodeParent":271,
+                                    "label":"Yes",
+                                    "isOpen":true,
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":274,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Button",
+                                    "searchKey":"Button,No",
+                                    "props":{"y":334,"x":668,"width":300,"stateNum":"1","skin":"common/ButtonYes.png","name":"No","labelSize":50,"labelPadding":"5","labelColors":"#ffffff","labelBold":true,"label":"取消","height":100},
+                                    "nodeParent":271,
+                                    "label":"No",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":275,
+                                    "child":[
+                                        ]
+                                }]
+                        }]
                 }],
             "$HIDDEN":false
         },
@@ -939,7 +1058,7 @@
             "source":"src/script/GameControl.ts",
             "searchKey":"Script,GameControl",
             "removeAble":true,
-            "props":{"waveText":"@node:251","tapSp":"@node:23","startBtn":"@node:38","shareBtn":"@node:171","sceneRoot":"@node:42","resultPanel":"@node:146","restartBtn":"@node:88","resaultPanel":"@node:146","rankXBtn":"@node:158","rankRightBtn":"@node:268","rankPanel":"@node:153","rankLeftBtn":"@node:269","rankBtn":"@node:149","openDataViewer":"@node:148","maxText":"@node:157","mainRoleSp":"@node:24","life":"@Prefab:prefab/Life.prefab","hp5":"@node:170","hp4":"@node:169","hp3":"@node:168","hp2":"@node:167","hp1":"@node:165","explosionSp":"@node:143","enemyRoot":"@node:49","enemyPrefZR":"@Prefab:prefab/EnemyZR.prefab","enemyPrefZL":"@Prefab:prefab/EnemyZL.prefab","enemyPrefCL2":"@Prefab:prefab/EnemyCL2.prefab","enemyPrefCL1":"@Prefab:prefab/EnemyCL1.prefab","enemyPrefBL2":"@Prefab:prefab/EnemyBL2.prefab","enemyPrefBL1":"@Prefab:prefab/EnemyBL1.prefab","enemyPrefAL2":"@Prefab:prefab/EnemyAL2.prefab","enemyPrefAL1":"@Prefab:prefab/EnemyAL1.prefab","distanceText":"@node:32","curText":"@node:156","continueText":"@node:254","continueBtn":"@node:144","coin3":"@node:249","coin2":"@node:170","coin1":"@node:169","coin":"@Prefab:prefab/Coin.prefab","bottomSp2":"@node:101","bottomSp":"@node:162","backgroundSp":"@node:27"},
+            "props":{"waveText":"@node:251","tapSp":"@node:23","startBtn":"@node:38","shareBtn":"@node:171","sceneRoot":"@node:42","resultPanel":"@node:146","restartBtn":"@node:88","resaultPanel":"@node:146","rankXBtn":"@node:158","rankRightBtn":"@node:268","rankPanel":"@node:153","rankLeftBtn":"@node:269","rankBtn":"@node:149","openDataViewer":"@node:148","msgboxYesBtn":"@node:274","msgboxNoBtn":"@node:275","msgBox":"@node:272","maxText":"@node:157","mainRoleSp":"@node:24","life":"@Prefab:prefab/Life.prefab","hp5":"@node:170","hp4":"@node:169","hp3":"@node:168","hp2":"@node:167","hp1":"@node:165","explosionSp":"@node:143","enemyRoot":"@node:49","enemyPrefZR":"@Prefab:prefab/EnemyZR.prefab","enemyPrefZL":"@Prefab:prefab/EnemyZL.prefab","enemyPrefCL2":"@Prefab:prefab/EnemyCL2.prefab","enemyPrefCL1":"@Prefab:prefab/EnemyCL1.prefab","enemyPrefBL2":"@Prefab:prefab/EnemyBL2.prefab","enemyPrefBL1":"@Prefab:prefab/EnemyBL1.prefab","enemyPrefAL2":"@Prefab:prefab/EnemyAL2.prefab","enemyPrefAL1":"@Prefab:prefab/EnemyAL1.prefab","distanceText":"@node:32","curText":"@node:156","continueText":"@node:254","continueBtn":"@node:144","coin3":"@node:249","coin2":"@node:170","coin1":"@node:169","coin":"@Prefab:prefab/Coin.prefab","bottomSp2":"@node:101","bottomSp":"@node:162","backgroundSp":"@node:27"},
             "nodeParent":2,
             "label":"GameControl",
             "isDirectory":false,

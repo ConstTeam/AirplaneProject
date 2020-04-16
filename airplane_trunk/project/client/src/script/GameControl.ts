@@ -57,6 +57,14 @@ export default class GameControl extends Laya.Script
 	private rankRightBtn: Laya.Button;
 	/** @prop {name: shareBtn, type: Node} */
 	private shareBtn: Laya.Button;
+
+	//--MsgBox--------------------------------------------------
+	/** @prop {name: msgBox, type: Node} */
+	private msgBox: Laya.Panel;
+	/** @prop {name: msgboxYesBtn, type: Node} */
+	private msgboxYesBtn: Laya.Button;
+	/** @prop {name: msgboxNoBtn, type: Node} */
+	private msgboxNoBtn: Laya.Button;
 	
 	//--Enemy------------------------------------------------------------
 	/** @prop {name: enemyPrefAL1, type: Prefab} */
@@ -123,6 +131,7 @@ export default class GameControl extends Laya.Script
 		this.resultPanel.visible = false;
 		this.rankPanel.visible = false;
 		this.openDataViewer.visible = false;
+		this.msgBox.visible = false;
 		this._enemyDict = {};
 		this._enemyDict["EnemyAL1"] = this.enemyPrefAL1;
 		this._enemyDict["EnemyAL2"] = this.enemyPrefAL2;
@@ -156,6 +165,8 @@ export default class GameControl extends Laya.Script
 		this.shareBtn.clickHandler = new Laya.Handler(this, this.onShareBtnClick);
 		this.rankLeftBtn.clickHandler = new Laya.Handler(this, this.onLeftBtnClick);
 		this.rankRightBtn.clickHandler = new Laya.Handler(this, this.onRightBtnClick);
+		this.msgboxYesBtn.clickHandler = new Laya.Handler(this, this.onMsgboxYesBtnClick);
+		this.msgboxNoBtn.clickHandler = new Laya.Handler(this, this.onMsgboxNoBtnClick);
 		this.tapSp.on(Event.MOUSE_DOWN, this, this.tapSpMouseHandler);
 		this.mainRole = this.mainRoleSp.getComponent(MainRole);
 		this.background = this.backgroundSp.getComponent(Background);
@@ -163,7 +174,7 @@ export default class GameControl extends Laya.Script
 		let score: string = Laya.LocalStorage.getItem("score");
 		this._iHighestScore = score == null ? 0 : Number(Laya.LocalStorage.getItem("score"));
 
-		//Laya.loader.load(["res/atlas/common.atlas"], Laya.Handler.create(this, () => { Laya.MiniAdpter.sendAtlasToOpenDataContext("res/atlas/common.atlas"); }));
+		Laya.loader.load(["res/atlas/common.atlas"], Laya.Handler.create(this, () => { Laya.MiniAdpter.sendAtlasToOpenDataContext("res/atlas/common.atlas"); }));
 		
 		this.explosionSp.x = -10000;
 		this.explosionAni = new Laya.Animation();
@@ -287,6 +298,14 @@ export default class GameControl extends Laya.Script
 
 	private onRestartBtnClick(): void
 	{
+		if(this._iCoin > 0)
+			this.msgBox.visible = true;
+		else
+			this.RestartConfirm();
+	}
+
+	private RestartConfirm(): void
+	{
 		this.resultPanel.visible = false;
 		this.ShowRankPanel(false);
 
@@ -347,6 +366,17 @@ export default class GameControl extends Laya.Script
 			this.openDataViewer.postMsg({ type: "RankOpen"});
 		else
 			this.openDataViewer.postMsg({ type: "RankClose"});
+	}
+
+	private onMsgboxYesBtnClick(): void
+	{
+		this.msgBox.visible = false;
+		this.RestartConfirm();
+	}
+
+	private onMsgboxNoBtnClick(): void
+	{
+		this.msgBox.visible = false;
 	}
 
 	private tapSpMouseHandler(e: Event): void
