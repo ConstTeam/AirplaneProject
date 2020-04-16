@@ -163,7 +163,7 @@ export default class GameControl extends Laya.Script
 		let score: string = Laya.LocalStorage.getItem("score");
 		this._iHighestScore = score == null ? 0 : Number(Laya.LocalStorage.getItem("score"));
 
-		Laya.loader.load(["res/atlas/common.atlas"], Laya.Handler.create(this, () => { Laya.MiniAdpter.sendAtlasToOpenDataContext("res/atlas/common.atlas"); }));
+		//Laya.loader.load(["res/atlas/common.atlas"], Laya.Handler.create(this, () => { Laya.MiniAdpter.sendAtlasToOpenDataContext("res/atlas/common.atlas"); }));
 		
 		this.explosionSp.x = -10000;
 		this.explosionAni = new Laya.Animation();
@@ -180,14 +180,20 @@ export default class GameControl extends Laya.Script
 		this.mainRole.SetInfo(new Laya.Handler(this, this.SetCoin), new Laya.Handler(this, this.SetHp), new Laya.Handler(this, this.Stop), this.explosionSp, this.explosionAni, this.bottomSp, this.bottomSp2);
 	}
 
+	private _iframe: number = 0;
 	onUpdate(): void
 	{
 		if(this._bRunning)
 		{
-			this._iDistance += Math.floor(this._iSpeed);
-			this.distanceText.text = ((this._iDistance / 1000).toFixed(1)).toString();
+			if(++this._iframe > 20)
+			{
+				this.distanceText.text = ((this._iDistance / 1000).toFixed(1)).toString();
+				this.ShowEnemy();
+				this._iframe = this._iframe - 20;
+			}
+
+			this._iDistance += this._iSpeed;
 			this.background.Update();
-			this.ShowEnemy();
 		}
 	}
 
@@ -272,6 +278,7 @@ export default class GameControl extends Laya.Script
 
 	private onStartBtnClick(): void
 	{
+		this._iframe = 0;
 		this.startBtn.visible = false;
 		this.waveText.text = "0";
 		this._iDistance = 0;
@@ -283,6 +290,7 @@ export default class GameControl extends Laya.Script
 		this.resultPanel.visible = false;
 		this.ShowRankPanel(false);
 
+		this._iframe = 0;
 		this.SetCoin(0);
 		this.waveText.text = "0";
 		this._iDistance = 0;
@@ -298,9 +306,10 @@ export default class GameControl extends Laya.Script
 		this.resultPanel.visible = false;
 		this.ShowRankPanel(false);
 
+		this._iframe = 0;
 		--this._iCoin;
 		this.SetCoin(this._iCoin);
-		this._iDistance = Number(this._sCurWaveDis);
+		this._iDistance = Number(this._sCurWaveDis) - 100;
 		this.Continue();
 		this.mainRole.SetInvincible();
 	}
@@ -359,10 +368,12 @@ export default class GameControl extends Laya.Script
 
 	private ShowEnemy(): void
 	{
-		if(this._iDistance % 800 == 0)
+		let temp = this._iDistance / 600;
+		if(temp == Math.floor(temp))
 			this.ShowEnemyZ();
 
 		let key: string = this._iDistance.toString();
+		console.log(key);
 		if(this._enemyTbl.HasRow(key))
 		{
 			let wave: string = this._enemyTbl.GetValue(key, "Wave");
@@ -380,7 +391,8 @@ export default class GameControl extends Laya.Script
 
 		if(this._curGroupDis != 0)
 		{
-			let groupKey: string = (this._iDistance - this._curGroupDis).toString(); 
+			let groupKey: string = (this._iDistance - this._curGroupDis).toString();
+			console.log("groupKey:" + groupKey);
 			if(this._curGroupTbl.HasRow(groupKey))
 			{
 				let jsonStr: string = this._curGroupTbl.GetValue(groupKey, "Enemy");
