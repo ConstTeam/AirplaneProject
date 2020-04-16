@@ -99,13 +99,13 @@ export default class MainRole extends Laya.Script
 
 	public Reset(): void
 	{
-		this._iCoin = 0;
 		this._iLife = 0;
-		this.Continue();
+		this.Continue(0);
 	}
 
-	public Continue(): void
+	public Continue(coin: number): void
 	{
+		this._iCoin = coin;
 		this._sp.x = 959;
 		this._sp.y = 539;
 		this.RigidBodyEnable(false);

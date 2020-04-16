@@ -51,6 +51,10 @@ export default class GameControl extends Laya.Script
 	private continueText: Laya.Label;
 	/** @prop {name: rankXBtn, type: Node} */
 	private rankXBtn: Laya.Button;
+	/** @prop {name: rankLeftBtn, type: Node} */
+	private rankLeftBtn: Laya.Button;
+	/** @prop {name: rankRightBtn, type: Node} */
+	private rankRightBtn: Laya.Button;
 	/** @prop {name: shareBtn, type: Node} */
 	private shareBtn: Laya.Button;
 	
@@ -150,6 +154,8 @@ export default class GameControl extends Laya.Script
 		this.rankBtn.clickHandler = new Laya.Handler(this, this.onRankBtnClick);
 		this.rankXBtn.clickHandler = new Laya.Handler(this, this.onRankXBtnClick);
 		this.shareBtn.clickHandler = new Laya.Handler(this, this.onShareBtnClick);
+		this.rankLeftBtn.clickHandler = new Laya.Handler(this, this.onLeftBtnClick);
+		this.rankRightBtn.clickHandler = new Laya.Handler(this, this.onRightBtnClick);
 		this.tapSp.on(Event.MOUSE_DOWN, this, this.tapSpMouseHandler);
 		this.mainRole = this.mainRoleSp.getComponent(MainRole);
 		this.background = this.backgroundSp.getComponent(Background);
@@ -157,7 +163,7 @@ export default class GameControl extends Laya.Script
 		let score: string = Laya.LocalStorage.getItem("score");
 		this._iHighestScore = score == null ? 0 : Number(Laya.LocalStorage.getItem("score"));
 
-		//Laya.loader.load(["res/atlas/common.atlas"], Laya.Handler.create(this, () => { Laya.MiniAdpter.sendAtlasToOpenDataContext("res/atlas/common.atlas"); }));
+		Laya.loader.load(["res/atlas/common.atlas"], Laya.Handler.create(this, () => { Laya.MiniAdpter.sendAtlasToOpenDataContext("res/atlas/common.atlas"); }));
 		
 		this.explosionSp.x = -10000;
 		this.explosionAni = new Laya.Animation();
@@ -199,7 +205,7 @@ export default class GameControl extends Laya.Script
 
 	private Continue(): void
 	{
-		this.mainRole.Continue();
+		this.mainRole.Continue(this._iCoin);
 		this.mainRole.RigidBodyEnable(true);
 		this._bRunning = true;
 		Laya.SoundManager.playMusic("sound/bgm.mp3", 0);
@@ -292,7 +298,8 @@ export default class GameControl extends Laya.Script
 		this.resultPanel.visible = false;
 		this.ShowRankPanel(false);
 
-		this.SetCoin(--this._iCoin);
+		--this._iCoin;
+		this.SetCoin(this._iCoin);
 		this._iDistance = Number(this._sCurWaveDis);
 		this.Continue();
 		this.mainRole.SetInvincible();
@@ -301,6 +308,16 @@ export default class GameControl extends Laya.Script
 	private onRankBtnClick(): void
 	{
 		this.ShowRankPanel(true);
+	}
+
+	private onLeftBtnClick(): void
+	{
+		this.openDataViewer.postMsg({type: "Left"});
+	}
+
+	private onRightBtnClick(): void
+	{
+		this.openDataViewer.postMsg({type: "Right"});
 	}
 
 	private onRankXBtnClick(): void

@@ -6,10 +6,10 @@ import bigItem from "./view/bigItem"
 export default class GameConfig{
     static width:number=1100;
     static height:number=700;
-    static scaleMode:string="fixedwidth";
-    static screenMode:string="none";
-    static alignV:string="top";
-    static alignH:string="left";
+    static scaleMode:string="fixedheight";
+    static screenMode:string="horizontal";
+    static alignV:string="middle";
+    static alignH:string="center";
     static startScene:any="test/Big.scene";
     static sceneRoot:string="";
     static debug:boolean=false;

@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":38,
-    "selecteID":263,
+    "selectedBox":2,
+    "selecteID":268,
     "searchKey":"Scene",
     "props":{"x":0,"width":1920,"sceneColor":"#000000","height":1080,"enemyPref":"@arr:,,"},
     "nodeParent":-1,
-    "maxID":265,
+    "maxID":270,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -33,7 +33,7 @@
                     "props":{"y":0,"x":0,"width":1920,"visible":true,"scaleY":1,"scaleX":1,"name":"Backgroud","height":1080},
                     "nodeParent":42,
                     "label":"Backgroud",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
@@ -253,7 +253,7 @@
                         {
                             "type":"Sprite",
                             "searchKey":"Sprite,FarMountains2",
-                            "props":{"y":750,"x":958,"width":2048,"texture":"background/farground_mountains.png","name":"FarMountains2","height":330},
+                            "props":{"y":750,"x":956,"width":2048,"texture":"background/farground_mountains.png","name":"FarMountains2","height":330},
                             "nodeParent":27,
                             "label":"FarMountains2",
                             "isDirectory":false,
@@ -266,7 +266,7 @@
                         {
                             "type":"Sprite",
                             "searchKey":"Sprite,FarMountains3",
-                            "props":{"y":750,"x":3004,"width":2048,"texture":"background/farground_mountains.png","name":"FarMountains3","height":330},
+                            "props":{"y":750,"x":3000,"width":2048,"texture":"background/farground_mountains.png","name":"FarMountains3","height":330},
                             "nodeParent":27,
                             "label":"FarMountains3",
                             "isDirectory":false,
@@ -423,9 +423,9 @@
         },
         {
             "x":15,
-            "type":"Panel",
-            "searchKey":"Panel,UIRoot",
-            "props":{"top":0,"right":0,"name":"UIRoot","left":0,"bottom":0},
+            "type":"Sprite",
+            "searchKey":"Sprite,UIRoot",
+            "props":{"y":556,"x":960,"width":1920,"pivotY":556,"pivotX":960,"name":"UIRoot","height":1080},
             "nodeParent":2,
             "label":"UIRoot",
             "isOpen":true,
@@ -598,19 +598,20 @@
                     "props":{"y":0,"x":0,"width":1920,"name":"ResultPanel","height":1080},
                     "nodeParent":81,
                     "label":"ResultPanel",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":146,
                     "child":[
                         {
+                            "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite,Bg",
                             "props":{"y":294,"x":410,"width":1100,"texture":"common/Paper.png","name":"Bg","height":491},
                             "nodeParent":146,
                             "label":"Bg",
-                            "isOpen":true,
+                            "isOpen":false,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
@@ -752,18 +753,20 @@
                                 }]
                         },
                         {
+                            "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite,RankBg",
                             "props":{"y":190,"x":410,"width":1100,"name":"RankBg","height":700},
                             "nodeParent":146,
                             "label":"RankBg",
-                            "isOpen":false,
+                            "isOpen":true,
                             "isDirectory":true,
                             "isAniNode":true,
                             "hasChild":true,
                             "compId":153,
                             "child":[
                                 {
+                                    "x":60,
                                     "type":"WXOpenDataViewer",
                                     "searchKey":"WXOpenDataViewer",
                                     "props":{"y":0,"x":0,"width":1100,"visible":false,"iconSign":"wx","height":700},
@@ -778,6 +781,7 @@
                                     "$HIDDEN":true
                                 },
                                 {
+                                    "x":60,
                                     "type":"Button",
                                     "searchKey":"Button,XBtn",
                                     "props":{"y":0,"x":1016,"stateNum":"1","skin":"common/ButtonX.png","scaleY":1.2,"scaleX":1.2,"name":"XBtn"},
@@ -791,6 +795,7 @@
                                         ]
                                 },
                                 {
+                                    "x":60,
                                     "type":"Button",
                                     "searchKey":"Button,ShareBtn",
                                     "props":{"y":625,"x":250,"width":600,"stateNum":"1","skin":"common/ButtonYellow.png","name":"ShareBtn","labelSize":45,"labelPadding":"3,0,0,8","labelColors":"#ffffff","labelBold":true,"label":"分享给更多的好友吧！","height":106},
@@ -802,10 +807,39 @@
                                     "compId":171,
                                     "child":[
                                         ]
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Button",
+                                    "searchKey":"Button,Left",
+                                    "props":{"y":312,"x":0,"width":70,"stateNum":"1","skin":"common/ArrowRight.png","scaleX":-1,"pivotX":70,"name":"Left","height":76},
+                                    "nodeParent":153,
+                                    "label":"Left",
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":269,
+                                    "child":[
+                                        ]
+                                },
+                                {
+                                    "x":60,
+                                    "type":"Button",
+                                    "searchKey":"Button,Right",
+                                    "props":{"y":312,"x":1030,"stateNum":"1","skin":"common/ArrowRight.png","name":"Right"},
+                                    "nodeParent":153,
+                                    "label":"Right",
+                                    "isOpen":true,
+                                    "isDirectory":false,
+                                    "isAniNode":true,
+                                    "hasChild":false,
+                                    "compId":268,
+                                    "child":[
+                                        ]
                                 }],
-                            "$HIDDEN":true
+                            "$HIDDEN":false
                         }],
-                    "$HIDDEN":true
+                    "$HIDDEN":false
                 },
                 {
                     "x":30,
@@ -814,29 +848,26 @@
                     "props":{"y":-460,"x":-540,"width":3000,"name":"StartBtn","labelSize":200,"height":2000,"alpha":1},
                     "nodeParent":81,
                     "label":"StartBtn",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":38,
                     "child":[
                         {
-                            "x":45,
-                            "type":"Text",
-                            "searchKey":"Text",
-                            "props":{"y":1200,"x":1100,"valign":"middle","text":"点击任意位置开始游戏","fontSize":80,"color":"#4e2623","align":"center"},
+                            "type":"Sprite",
+                            "searchKey":"Sprite",
+                            "props":{"y":0,"x":0,"width":3000,"texture":"common/CubeBlack.png","height":2000,"alpha":0.5},
                             "nodeParent":38,
-                            "label":"Text",
+                            "label":"Sprite",
                             "isDirectory":false,
                             "isAniNode":true,
                             "hasChild":false,
-                            "compId":39,
+                            "compId":265,
                             "child":[
-                                ],
-                            "$HIDDEN":true
+                                ]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image",
                             "props":{"y":1215,"x":1413,"skin":"tap/TapLabel.png","scaleY":1,"scaleX":-1},
@@ -851,7 +882,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image",
                             "props":{"y":1215,"x":1587,"skin":"tap/TapLabel.png"},
@@ -866,7 +896,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image",
                             "props":{"y":1180,"x":1462,"skin":"tap/tap.png"},
@@ -881,10 +910,9 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Label",
                             "searchKey":"Label",
-                            "props":{"y":1215,"x":1241,"width":162,"valign":"middle","text":"点击","height":65,"fontSize":35,"color":"#ffffff","align":"center"},
+                            "props":{"y":1221,"x":1241,"width":162,"valign":"middle","text":"点击","height":59,"fontSize":35,"color":"#ffffff","align":"center"},
                             "nodeParent":38,
                             "label":"Label",
                             "isOpen":true,
@@ -896,10 +924,9 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Label",
                             "searchKey":"Label",
-                            "props":{"y":1215,"x":1599,"width":162,"valign":"middle","text":"点击","height":65,"fontSize":35,"color":"#ffffff","align":"center"},
+                            "props":{"y":1221,"x":1599,"width":162,"valign":"middle","text":"点击","height":59,"fontSize":35,"color":"#ffffff","align":"center"},
                             "nodeParent":38,
                             "label":"Label",
                             "isDirectory":false,
@@ -919,7 +946,7 @@
             "source":"src/script/GameControl.ts",
             "searchKey":"Script,GameControl",
             "removeAble":true,
-            "props":{"waveText":"@node:251","tapSp":"@node:23","startBtn":"@node:38","shareBtn":"@node:171","sceneRoot":"@node:42","resultPanel":"@node:146","restartBtn":"@node:88","resaultPanel":"@node:146","rankXBtn":"@node:158","rankPanel":"@node:153","rankBtn":"@node:149","openDataViewer":"@node:148","maxText":"@node:157","mainRoleSp":"@node:24","life":"@Prefab:prefab/Life.prefab","hp5":"@node:170","hp4":"@node:169","hp3":"@node:168","hp2":"@node:167","hp1":"@node:165","explosionSp":"@node:143","enemyRoot":"@node:49","enemyPrefZR":"@Prefab:prefab/EnemyZR.prefab","enemyPrefZL":"@Prefab:prefab/EnemyZL.prefab","enemyPrefCL2":"@Prefab:prefab/EnemyCL2.prefab","enemyPrefCL1":"@Prefab:prefab/EnemyCL1.prefab","enemyPrefBL2":"@Prefab:prefab/EnemyBL2.prefab","enemyPrefBL1":"@Prefab:prefab/EnemyBL1.prefab","enemyPrefAL2":"@Prefab:prefab/EnemyAL2.prefab","enemyPrefAL1":"@Prefab:prefab/EnemyAL1.prefab","distanceText":"@node:32","curText":"@node:156","continueText":"@node:254","continueBtn":"@node:144","coin3":"@node:249","coin2":"@node:170","coin1":"@node:169","coin":"@Prefab:prefab/Coin.prefab","bottomSp2":"@node:101","bottomSp":"@node:162","backgroundSp":"@node:27"},
+            "props":{"waveText":"@node:251","tapSp":"@node:23","startBtn":"@node:38","shareBtn":"@node:171","sceneRoot":"@node:42","resultPanel":"@node:146","restartBtn":"@node:88","resaultPanel":"@node:146","rankXBtn":"@node:158","rankRightBtn":"@node:268","rankPanel":"@node:153","rankLeftBtn":"@node:269","rankBtn":"@node:149","openDataViewer":"@node:148","maxText":"@node:157","mainRoleSp":"@node:24","life":"@Prefab:prefab/Life.prefab","hp5":"@node:170","hp4":"@node:169","hp3":"@node:168","hp2":"@node:167","hp1":"@node:165","explosionSp":"@node:143","enemyRoot":"@node:49","enemyPrefZR":"@Prefab:prefab/EnemyZR.prefab","enemyPrefZL":"@Prefab:prefab/EnemyZL.prefab","enemyPrefCL2":"@Prefab:prefab/EnemyCL2.prefab","enemyPrefCL1":"@Prefab:prefab/EnemyCL1.prefab","enemyPrefBL2":"@Prefab:prefab/EnemyBL2.prefab","enemyPrefBL1":"@Prefab:prefab/EnemyBL1.prefab","enemyPrefAL2":"@Prefab:prefab/EnemyAL2.prefab","enemyPrefAL1":"@Prefab:prefab/EnemyAL1.prefab","distanceText":"@node:32","curText":"@node:156","continueText":"@node:254","continueBtn":"@node:144","coin3":"@node:249","coin2":"@node:170","coin1":"@node:169","coin":"@Prefab:prefab/Coin.prefab","bottomSp2":"@node:101","bottomSp":"@node:162","backgroundSp":"@node:27"},
             "nodeParent":2,
             "label":"GameControl",
             "isDirectory":false,

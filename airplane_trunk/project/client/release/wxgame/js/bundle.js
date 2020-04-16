@@ -1,1 +1,948 @@
-!function(){"use strict";class t extends Laya.Script{constructor(){super()}onAwake(){this._arrGround=[this.ground1,this.ground2,this.ground3],this._arrMountains=[this.mountains1,this.mountains2,this.mountains3],this._arrCloud=[this.cloud1,this.cloud2,this.cloud3],this._curGroundIndex=0,this._curMountainsIndex=0,this._curCloudIndex=0,this._curGround=this._arrGround[0],this._curMountains=this._arrMountains[0],this._curCloud=this._arrCloud[0]}SetSpeed(t){this._iSpeed=t,this._iSpeed2=t/5,this._iSpeed3=t/25}Update(){this._curGround.x<=-2040&&(this._curGround.x=4496+this._curGround.x,this._curGroundIndex=2==this._curGroundIndex?0:this._curGroundIndex+1,this._curGround=this._arrGround[this._curGroundIndex]),this._curMountains.x<=-3136&&(this._curMountains.x=6140+this._curMountains.x,this._curMountainsIndex=2==this._curMountainsIndex?0:this._curMountainsIndex+1,this._curMountains=this._arrMountains[this._curMountainsIndex]),this._curCloud.x<=-3436&&(this._curCloud.x=6590+this._curCloud.x,this._curCloudIndex=2==this._curCloudIndex?0:this._curCloudIndex+1,this._curCloud=this._arrCloud[this._curCloudIndex]);for(let t=0;t<3;++t)this._arrGround[t].x-=this._iSpeed,this._arrMountains[t].x-=this._iSpeed2,this._arrCloud[t].x-=this._iSpeed3}}class e extends Laya.Script{constructor(){super()}onAwake(){this._sp=this.owner,this._rigidbody=this.owner.getComponent(Laya.RigidBody),this.Init()}onTriggerEnter(t,e,i){if(-1e4==this._sp.x)return;let s=t.owner;if("Top"!=s.name){if("Coin"==s.name)return this._setCoinHandler.runWith(++this._iCoin),void s.destroy();if("Life"==s.name)return this._setHpHandler.runWith(++this._iLife),void s.destroy();if(!this._bInvincible){if(this._iLife>0)return this._setHpHandler.runWith(--this._iLife),void this.SetInvincible();this.RigidBodyEnable(!1),this._stopCbHandler.run(),this._explosionSP.x=this._sp.x,this._explosionSP.y=this._sp.y,this._explosionAni.play(0,!1),Laya.SoundManager.playSound("sound/explosion.wav"),Laya.timer.once(1e3,this,this.HideExplosion),this._sp.x=-1e4,"Bottom"!=s.name&&s.destroy()}}}HideExplosion(){this._explosionSP.x=-1e4}SetInfo(t,e,i,s,n,a,o){this._setCoinHandler=t,this._setHpHandler=e,this._stopCbHandler=i,this._explosionSP=s,this._explosionAni=n,this._bottomBox=a.getComponent(Laya.BoxCollider),this._bottomBox2=o.getComponent(Laya.BoxCollider),this._bottomBox.enabled=!0,this._bottomBox2.enabled=!1}Init(){this._iCoin=0,this._iLife=0,this._sp.x=959,this._sp.y=539,this.RigidBodyEnable(!1)}Reset(){this._iCoin=0,this._iLife=0,this.Continue()}Continue(){this._sp.x=959,this._sp.y=539,this.RigidBodyEnable(!1),this._bottomBox.enabled=!0,this._bottomBox2.enabled=!1}RigidBodyEnable(t){this._rigidbody.enabled=t}SetInvincible(){this._bInvincible=!0,this._bottomBox.enabled=!1,this._bottomBox2.enabled=!0,Laya.timer.loop(100,this,this.InvincibleEffect),Laya.timer.once(3e3,this,this.ClearInvincible)}InvincibleEffect(){this._sp.visible=!this._sp.visible}ClearInvincible(){Laya.timer.clear(this,this.InvincibleEffect),this._sp.visible=!0,this._bInvincible=!1,this._bottomBox.enabled=!0,this._bottomBox2.enabled=!1}Up(){this._rigidbody.setVelocity({x:0,y:-12})}}class i{constructor(){this._rowData=new Array}SetColKeys(t){this._colKeys=t}AddValue(t){this._rowData.push(t)}GetValue(t){var e;return null==(e=this._colKeys[t])?null:this._rowData[e]}}class s{constructor(){this.m_Data={},this.m_dicColKeys={},this._iColLength=0}AddRow(t,e){e.SetColKeys(this.m_dicColKeys),this.m_Data[t]=e}AddColKey(t){this.m_dicColKeys[t]=this._iColLength++}GetValue(t,e){var i=this.m_Data[t];return null==i?null:i.GetValue(e)}GetRow(t){return this.m_Data[t]}HasRow(t){return null!=this.m_Data[t]}}class n{static Utf8ArrayToStr(t){var e,i,s,n,a,o;for(e="",s=t.length,i=0;i<s;)switch((n=t[i++])>>4){case 0:case 1:case 2:case 3:case 4:case 5:case 6:case 7:e+=String.fromCharCode(n);break;case 12:case 13:a=t[i++],e+=String.fromCharCode((31&n)<<6|63&a);break;case 14:a=t[i++],o=t[i++],e+=String.fromCharCode((15&n)<<12|(63&a)<<6|(63&o)<<0)}return e}}class a{static Decrypt(t,e,i=0){var s=t.length;if(!(s<i+2)){var n=s>2*e?e:(s-i)/2,a=i,o=s-n;for(let e=0;e<2;++e){for(let e=0;e<n;++e)t[o++]^=t[a++];a-=n;for(let e=0;e<n;++e)t[a++]^=t[--o];a-=n}}}}class o{static ParseConfig(t){this._configData={};var e=new Uint8Array(t);a.Decrypt(e,20);var h=new Zlib.Gunzip(e).decompress(),r=n.Utf8ArrayToStr(h);for(this._valuePos=0,this._pos=0;this._pos=r.indexOf("------@",this._valuePos),-1!=this._pos;){this._pos+=7;let t=r.indexOf("\n",this._pos),e=r.substring(this._pos,t);try{let n=new s;for(o._configData[e]=n,this._pos=t+1,t=r.indexOf("\n",this._pos),this._bFlag=!0;this._bFlag;)try{n.AddColKey(this.GetNextValue(t,r))}catch(t){console.error(e)}for(t=r.indexOf("\n",this._pos),this._bFlag=!0,this._valuePos=t+1;this._bFlag;){let e=this.GetNextValue(t,r),s=r.indexOf("\n",this._valuePos),a=0,o=new i;for(o.AddValue(e),this._bFlagEx=!0;this._bFlagEx;){let t=this.GetNextValueEx(s,r);t=t.replace("#r","\r\n"),o.AddValue(t),++a}n.AddRow(e,o)}}catch(t){console.error(e)}}}static GetNextValue(t,e){var i=e.indexOf("\t",this._pos);(i>t||-1==i)&&(i=t,this._bFlag=!1);var s=e.substring(this._pos,i);return this._pos=i+1,s}static GetNextValueEx(t,e){var i=e.indexOf("\t",this._valuePos);(i>t||-1==i)&&(i=t,this._bFlagEx=!1);var s=e.substring(this._valuePos,i);return this._valuePos=i+1,s}static GetColKeys(t){return this._configData[t].m_dicColKeys}static GetTable(t){return this._configData[t]}static GetRow(t,e){return this.GetTable(t).GetRow(e)}static GetValue(t,e,i){return this.GetRow(t,e).GetValue(i)}static GetStaticText(t){return this.GetValue("Lan_StaticText_Client",t,"Text")}}class h{}h.g_iSpeed=10,h.LeftX=-500,h.RightX=2420;class r extends Laya.Script{constructor(){super()}static GetInst(){return r._inst}onAwake(){r._inst=this,this._bulletDict={},this._bulletDict.BulletAL=this.bulletPrefabAL,this._bulletDict.BulletBL=this.bulletPrefabBL,this._bulletDict.BulletCL=this.bulletPrefabCL}PopBullet(t){let e=Laya.Pool.getItemByCreateFun(t,this._bulletDict[t].create,this._bulletDict[t]);return this.bulletRoot.addChild(e),e}}class l extends Laya.Script{constructor(){super()}onAwake(){this._sp=this.owner,this._bRunning=!1,this.enabled=!1}Excute(t,e,i,s){this.enabled=!0,this._bRunning=!1,this._bulletName=t,this._iDirection=s,this._sp.x=e,this._sp.y=i,this._iSpeed=s*h.g_iSpeed}Stop(){Laya.Tween.clearAll(this._sp),this._bRunning=!1,this.enabled=!1,this._sp.x=-1e4,this._sp.y=0,Laya.Pool.recover(this._bulletName,this._sp)}}class c extends Laya.Script{constructor(){super()}onAwake(){this._sp=this.owner,this._iState=0,this.enabled=!1}Show(t,e){this.enabled=!0,this._enemyName=t[0],this._iDirection=t[1],this._sp.x=this._iFromX=1==this._iDirection?h.LeftX:h.RightX,this._sp.y=this._iFromY=t[2],this._iToX=t[3],this._iSpeed=10*this._iDirection,this._iState=1}onUpdate(){if(1==this._iState){if(1==this._iDirection){if(this._sp.x+this._iSpeed<this._iToX)return void(this._sp.x+=this._iSpeed)}else if(this._sp.x+this._iSpeed>this._iToX)return void(this._sp.x+=this._iSpeed);this._sp.x=this._iToX,this.ShowCompleted()}else 3==this._iState&&this.BackUpdate()}BackUpdate(){this._sp.x-=this._iSpeed,1==this._iDirection?this._sp.x<this._iFromX&&this.BackCompleted():this._sp.x>this._iFromX&&this.BackCompleted()}ShowCompleted(){this._iState=2,this.BackCompleted()}BackCompleted(){this.enabled=!1,this._iState=0,Laya.Tween.clearAll(this._sp),this._sp.x=-1e4,this._sp.y=0,Laya.Pool.recover(this._enemyName,this._sp)}BulletExcute(t){r.GetInst().PopBullet(t).getComponent(l).Excute(t,this._sp.x,this._sp.y,this._iDirection)}}var _=Laya.Event;class u extends Laya.Script{constructor(){super(),this._iSpeed=0,this._bRunning=!1,this._iWave=0,this._iDistance=0,this._iCoin=0,this._iHp=0,this._sCurWaveDis="",this._curGroupDis=0,this._curGroupTbl=null,this._enemyZName="EnemyZR",this._enemyZInfo=[this._enemyZName,-1,0,h.LeftX]}onAwake(){this._scoreKey="airplaneScore",this.startBtn.visible=!1,this.resultPanel.visible=!1,this.rankPanel.visible=!1,this.openDataViewer.visible=!1,this._enemyDict={},this._enemyDict.EnemyAL1=this.enemyPrefAL1,this._enemyDict.EnemyAL2=this.enemyPrefAL2,this._enemyDict.EnemyBL1=this.enemyPrefBL1,this._enemyDict.EnemyBL2=this.enemyPrefBL2,this._enemyDict.EnemyCL1=this.enemyPrefCL1,this._enemyDict.EnemyCL2=this.enemyPrefCL2,this._enemyDict.EnemyZL=this.enemyPrefZL,this._enemyDict.EnemyZR=this.enemyPrefZR,this._enemyDict.Coin=this.coin,this._enemyDict.Life=this.life,this._hpArr=[this.hp1,this.hp2,this.hp3],this._coinArr=[this.coin1,this.coin2,this.coin3],this.SetCoin(0),this.SetHp(0),Laya.loader.load("cfg/cfg.bin",Laya.Handler.create(this,this.OnConfigComplete),null,Laya.Loader.BUFFER)}OnConfigComplete(i){o.ParseConfig(i),this._enemyTbl=o.GetTable("Enemy_Client"),this.startBtn.clickHandler=new Laya.Handler(this,this.onStartBtnClick),this.restartBtn.clickHandler=new Laya.Handler(this,this.onRestartBtnClick),this.continueBtn.clickHandler=new Laya.Handler(this,this.onContinueBtnClick),this.rankBtn.clickHandler=new Laya.Handler(this,this.onRankBtnClick),this.rankXBtn.clickHandler=new Laya.Handler(this,this.onRankXBtnClick),this.shareBtn.clickHandler=new Laya.Handler(this,this.onShareBtnClick),this.tapSp.on(_.MOUSE_DOWN,this,this.tapSpMouseHandler),this.mainRole=this.mainRoleSp.getComponent(e),this.background=this.backgroundSp.getComponent(t);let s=Laya.LocalStorage.getItem("score");this._iHighestScore=null==s?0:Number(Laya.LocalStorage.getItem("score")),Laya.loader.load(["res/atlas/common.atlas"],Laya.Handler.create(this,()=>{Laya.MiniAdpter.sendAtlasToOpenDataContext("res/atlas/common.atlas")})),this.explosionSp.x=-1e4,this.explosionAni=new Laya.Animation,this.explosionAni.loadAtlas("res/atlas/explosion.atlas",Laya.Handler.create(this,this.ExplosionLoaded)),wx.showShareMenu({success:(res)=>{wx.onShareAppMessage(function(){return{title:'和我一起蛇皮走位吧！',imageUrlId:'L2Uh0yHTSHyc1n5nxbbSsg==',imageUrl:'https://mmocgame.qpic.cn/wechatgame/hW01p7YuN6umLMJYDFlpc3QBFd1qEkpibM47yFy0Tb8fhkrd0bmOHicbAcJjOtKj4k/0'}})}})}ExplosionLoaded(){this.explosionSp.addChild(this.explosionAni),this.explosionSp.scaleX=2,this.explosionSp.scaleY=2,this.explosionAni.interval=100,this.startBtn.visible=!0,this.mainRole.SetInfo(new Laya.Handler(this,this.SetCoin),new Laya.Handler(this,this.SetHp),new Laya.Handler(this,this.Stop),this.explosionSp,this.explosionAni,this.bottomSp,this.bottomSp2)}onUpdate(){this._bRunning&&(this._iDistance+=this._iSpeed,this.distanceText.text=(this._iDistance/1e3).toFixed(1).toString(),this.background.Update(),this.ShowEnemy())}Start(){this._iCoin=0,this._iHp=0,this._iSpeed=5,this.mainRole.Reset(),this.mainRole.RigidBodyEnable(!0),this.background.SetSpeed(this._iSpeed),this._bRunning=!0,Laya.SoundManager.playMusic("sound/bgm.mp3",0)}Continue(){this.mainRole.Continue(),this.mainRole.RigidBodyEnable(!0),this._bRunning=!0,Laya.SoundManager.playMusic("sound/bgm.mp3",0)}Stop(){Laya.SoundManager.stopMusic(),this._bRunning=!1,Laya.timer.once(2e3,this,this.ShowResultPanel),this._iDistance>this._iHighestScore&&(this._iHighestScore=this._iDistance,Laya.LocalStorage.setItem("score",this._iHighestScore.toString()),this.SetUserCloudStorage((this._iHighestScore/1e3).toFixed(1).toString()))}SetCoin(t){this._iCoin=t;for(let e=0;e<3;++e)this._coinArr[e].visible=e<t}SetHp(t){this._iHp=t;for(let e=0;e<3;++e)this._hpArr[e].visible=e<t}SetUserCloudStorage(t){var e=[],i={wxgame:{}};i.wxgame.score=t,i.wxgame.update_time=Laya.Browser.now(),e.push({key:this._scoreKey,value:JSON.stringify(i)}),wx.setUserCloudStorage({KVDataList:e,success:function(t){console.log("-----success:"+JSON.stringify(t))},fail:function(t){console.log("-----fail:"+JSON.stringify(t))},complete:function(t){console.log("-----complete:"+JSON.stringify(t))}})}ShowResultPanel(){this.resultPanel.visible=!0,this.curText.text=(this._iDistance/1e3).toFixed(1).toString(),this.maxText.text=(Number(Laya.LocalStorage.getItem("score"))/1e3).toFixed(1).toString(),this.continueText.text=this.waveText.text,this.continueBtn.gray=this._iCoin<=0}onStartBtnClick(){this.startBtn.visible=!1,this.waveText.text="0",this._iDistance=0,this.Start()}onRestartBtnClick(){this.resultPanel.visible=!1,this.ShowRankPanel(!1),this.SetCoin(0),this.waveText.text="0",this._iDistance=0,this.Start(),this.mainRole.SetInvincible()}onContinueBtnClick(){this._iCoin<=0||(this.resultPanel.visible=!1,this.ShowRankPanel(!1),this.SetCoin(--this._iCoin),this._iDistance=Number(this._sCurWaveDis),this.Continue(),this.mainRole.SetInvincible())}onRankBtnClick(){this.ShowRankPanel(!0)}onRankXBtnClick(){this.ShowRankPanel(!1)}onShareBtnClick(){wx.shareAppMessage({title:'和我一起蛇皮走位吧！',imageUrlId:'L2Uh0yHTSHyc1n5nxbbSsg==',imageUrl:'https://mmocgame.qpic.cn/wechatgame/hW01p7YuN6umLMJYDFlpc3QBFd1qEkpibM47yFy0Tb8fhkrd0bmOHicbAcJjOtKj4k/0'})}ShowRankPanel(t){this.rankPanel.visible=t,this.openDataViewer.visible=t,t?this.openDataViewer.postMsg({type:"RankOpen"}):this.openDataViewer.postMsg({type:"RankClose"})}tapSpMouseHandler(t){if(this._bRunning)switch(t.type){case _.MOUSE_DOWN:this.mainRole.Up()}}ShowEnemy(){this._iDistance%800==0&&this.ShowEnemyZ();let t=this._iDistance.toString();if(this._enemyTbl.HasRow(t)){let e=this._enemyTbl.GetValue(t,"Wave");""!=e&&(this.waveText.text=e,Laya.Tween.from(this.waveText,{scaleX:2,scaleY:2},500,Laya.Ease.backOut)),this._sCurWaveDis=t;let i=this._enemyTbl.GetValue(t,"Group");this._curGroupTbl=o.GetTable(i),this._curGroupDis=this._iDistance}if(0!=this._curGroupDis){let t=(this._iDistance-this._curGroupDis).toString();if(this._curGroupTbl.HasRow(t)){let e,i,s,n=this._curGroupTbl.GetValue(t,"Enemy"),a=JSON.parse(n);for(let t=0;t<a.length;++t){if("Life"==(i=a[t][0]))if(this._iCoin<3)i="Coin";else if(this._iHp>2)continue;e=Laya.Pool.getItemByCreateFun(i,this._enemyDict[i].create,this._enemyDict[i]),this.enemyRoot.addChild(e),(s=e.getComponent(c)).Show(a[t],1e3)}}}}ShowEnemyZ(){let t=Laya.Pool.getItemByCreateFun(this._enemyZName,this._enemyDict[this._enemyZName].create,this._enemyDict[this._enemyZName]);this.enemyRoot.addChild(t),t.getComponent(c).Show(this._enemyZInfo,3e3)}}class d extends l{constructor(){super()}Excute(t,e,i,s){super.Excute(t,e,i,s),this._bRunning=!0}onUpdate(){this._bRunning&&(this._sp.x+=this._iSpeed,(this._sp.x>h.RightX||this._sp.x<h.LeftX)&&this.Stop())}}class p extends l{constructor(){super()}Excute(t,e,i,s){super.Excute(t,e,i,s),Laya.Tween.to(this._sp,{y:i+100},500,Laya.Ease.linearNone,Laya.Handler.create(this,this.DropCompleted))}DropCompleted(){Laya.timer.once(1e3,this,this.Shoot)}Shoot(){this._bRunning=!0}onUpdate(){this._bRunning&&(this._sp.x+=this._iSpeed,(this._sp.x>h.RightX||this._sp.x<h.LeftX)&&this.Stop())}}class y extends l{constructor(){super()}onAwake(){super.onAwake(),this._rigidBody=this.owner.getComponent(Laya.RigidBody),this._rigidBody.enabled=!1}Excute(t,e,i,s){super.Excute(t,e,i,s),this._rigidBody.enabled=!0,this._rigidBody.setVelocity({x:s?12:-12,y:0})}onTriggerEnter(t,e,i){"Bottom"==t.owner.name&&(this._rigidBody.enabled=!1,this.Stop())}}class m extends c{ShowCompleted(){this._iState=2,this._iBulletCount=0,this.Shoot()}Shoot(){Laya.timer.loop(150,this,this._Shoot,[!0]),Laya.timer.once(500,this,this.Back)}Back(){this._iState=3}_Shoot(){super.BulletExcute(1==this._iDirection?"BulletAL":"BulletAR"),++this._iBulletCount>2&&(Laya.timer.clear(this,this._Shoot),this._iBulletCount=0)}}class S extends m{Shoot(){this.__Shoot(),Laya.timer.once(700,this,this.__Shoot),Laya.timer.once(1200,this,this.Back)}__Shoot(){Laya.timer.loop(150,this,this._Shoot)}}class x extends c{ShowCompleted(){this._iState=2,this.Shoot()}Shoot(){this._Shoot(),Laya.timer.once(2e3,this,this.Back)}_Shoot(){super.BulletExcute(1==this._iDirection?"BulletBL":"BulletBR")}Back(){this._iState=3}}class g extends x{Shoot(){this._Shoot(),Laya.timer.once(700,this,this._Shoot),Laya.timer.once(2700,this,this.Back)}}class b extends c{ShowCompleted(){this._iState=2,this.Shoot()}Shoot(){this._Shoot(),this.Back()}_Shoot(){super.BulletExcute(1==this._iDirection?"BulletCL":"BulletCR")}Back(){this._iState=3}BackUpdate(){this._sp.x+=this._iSpeed,1==this._iDirection?this._sp.x>h.RightX&&this.BackCompleted():this._sp.x<h.LeftX&&this.BackCompleted()}}class L extends b{Shoot(){this._Shoot(),Laya.timer.once(500,this,this._Shoot),this.Back()}}class C{constructor(){}static init(){var i=Laya.ClassUtils.regClass;i("script/Background.ts",t),i("script/MainRole.ts",e),i("script/GameControl.ts",u),i("script/BulletControl.ts",r),i("script/bullet/BulletA.ts",d),i("script/bullet/BulletB.ts",p),i("script/bullet/BulletC.ts",y),i("script/enemy/Enemy.ts",c),i("script/enemy/EnemyA.ts",m),i("script/enemy/EnemyA2.ts",S),i("script/enemy/EnemyB.ts",x),i("script/enemy/EnemyB2.ts",g),i("script/enemy/EnemyC.ts",b),i("script/enemy/EnemyC2.ts",L)}}C.width=1920,C.height=1080,C.scaleMode="fixedheight",C.screenMode="horizontal",C.alignV="middle",C.alignH="center",C.startScene="MainScene.scene",C.sceneRoot="",C.debug=!1,C.stat=!1,C.physicsDebug=!1,C.exportSceneToJson=!0,C.init();new class{constructor(){window.Laya3D?Laya3D.init(C.width,C.height):Laya.init(C.width,C.height,Laya.WebGL),Laya.Physics&&Laya.Physics.enable(),Laya.DebugPanel&&Laya.DebugPanel.enable(),Laya.stage.scaleMode=C.scaleMode,Laya.stage.screenMode=C.screenMode,Laya.stage.alignV=C.alignV,Laya.stage.alignH=C.alignH,Laya.URL.exportSceneToJson=C.exportSceneToJson,(C.debug||"true"==Laya.Utils.getQueryString("debug"))&&Laya.enableDebugPanel(),C.physicsDebug&&Laya.PhysicsDebugDraw&&Laya.PhysicsDebugDraw.enable(),C.stat&&Laya.Stat.show(),Laya.alertGlobalError=!0,Laya.ResourceVersion.enable("version.json",Laya.Handler.create(this,this.onVersionLoaded),Laya.ResourceVersion.FILENAME_VERSION)}onVersionLoaded(){Laya.AtlasInfoManager.enable("fileconfig.json",Laya.Handler.create(this,this.onConfigLoaded))}onConfigLoaded(){C.startScene&&Laya.Scene.open(C.startScene,!0,null,Laya.Handler.create(this,t=>{this.resize()})),Laya.stage.on(Laya.Event.RESIZE,this,this.resize)}resize(){let t=C.width,e=C.height;switch(C.scaleMode){case"fixedwidth":let i=Laya.Browser.width/Laya.Browser.height;e=C.width/i;break;case"fixedheight":let s=Laya.Browser.height/Laya.Browser.width;t=C.height/s,Laya.Scene.unDestroyedScenes.forEach(e=>{e.x=(t-C.width)/2})}}}}();
+(function () {
+	'use strict';
+
+	class Background extends Laya.Script {
+	    constructor() { super(); }
+	    onAwake() {
+	        var _$this = this;
+	        _$this._arrGround = [_$this.ground1, _$this.ground2, _$this.ground3];
+	        _$this._arrMountains = [_$this.mountains1, _$this.mountains2, _$this.mountains3];
+	        _$this._arrCloud = [_$this.cloud1, _$this.cloud2, _$this.cloud3];
+	        _$this._curGroundIndex = 0;
+	        _$this._curMountainsIndex = 0;
+	        _$this._curCloudIndex = 0;
+	        _$this._curGround = _$this._arrGround[0];
+	        _$this._curMountains = _$this._arrMountains[0];
+	        _$this._curCloud = _$this._arrCloud[0];
+	    }
+	    SetSpeed(speed) {
+	        this._iSpeed = speed;
+	        this._iSpeed2 = speed / 5;
+	        this._iSpeed3 = speed / 25;
+	    }
+	    Update() {
+	        var _$this = this;
+	        if (_$this._curGround.x <= -2040) {
+	            _$this._curGround.x = 2456 + 2040 + _$this._curGround.x;
+	            _$this._curGroundIndex = _$this._curGroundIndex == 2 ? 0 : _$this._curGroundIndex + 1;
+	            _$this._curGround = _$this._arrGround[_$this._curGroundIndex];
+	        }
+	        if (_$this._curMountains.x <= -3136) {
+	            _$this._curMountains.x = 3000 + 3136 + _$this._curMountains.x;
+	            _$this._curMountainsIndex = _$this._curMountainsIndex == 2 ? 0 : _$this._curMountainsIndex + 1;
+	            _$this._curMountains = _$this._arrMountains[_$this._curMountainsIndex];
+	        }
+	        if (_$this._curCloud.x <= -3436) {
+	            _$this._curCloud.x = 3154 + 3436 + _$this._curCloud.x;
+	            _$this._curCloudIndex = _$this._curCloudIndex == 2 ? 0 : _$this._curCloudIndex + 1;
+	            _$this._curCloud = _$this._arrCloud[_$this._curCloudIndex];
+	        }
+	        for (let i = 0; i < 3; ++i) {
+	            _$this._arrGround[i].x -= this._iSpeed;
+	            _$this._arrMountains[i].x -= this._iSpeed2;
+	            _$this._arrCloud[i].x -= this._iSpeed3;
+	        }
+	    }
+	}
+
+	class MainRole extends Laya.Script {
+	    constructor() { super(); }
+	    onAwake() {
+	        this._sp = this.owner;
+	        this._rigidbody = this.owner.getComponent(Laya.RigidBody);
+	        this.Init();
+	    }
+	    onTriggerEnter(other, self, contact) {
+	        if (this._sp.x == -10000)
+	            return;
+	        let otherSp = other.owner;
+	        if (otherSp.name == "Top")
+	            return;
+	        if (otherSp.name == "Coin") {
+	            this._setCoinHandler.runWith(++this._iCoin);
+	            otherSp.destroy();
+	            return;
+	        }
+	        if (otherSp.name == "Life") {
+	            this._setHpHandler.runWith(++this._iLife);
+	            otherSp.destroy();
+	            return;
+	        }
+	        if (this._bInvincible)
+	            return;
+	        if (this._iLife > 0) {
+	            this._setHpHandler.runWith(--this._iLife);
+	            this.SetInvincible();
+	            return;
+	        }
+	        this.RigidBodyEnable(false);
+	        this._stopCbHandler.run();
+	        this._explosionSP.x = this._sp.x;
+	        this._explosionSP.y = this._sp.y;
+	        this._explosionAni.play(0, false);
+	        Laya.SoundManager.playSound("sound/explosion.wav");
+	        Laya.timer.once(1000, this, this.HideExplosion);
+	        this._sp.x = -10000;
+	        if (otherSp.name != "Bottom")
+	            otherSp.destroy();
+	    }
+	    HideExplosion() {
+	        this._explosionSP.x = -10000;
+	    }
+	    SetInfo(setCoinHander, setHpHander, stopCbHandler, explosionSP, expolsionAni, bottom, bottom2) {
+	        this._setCoinHandler = setCoinHander;
+	        this._setHpHandler = setHpHander;
+	        this._stopCbHandler = stopCbHandler;
+	        this._explosionSP = explosionSP;
+	        this._explosionAni = expolsionAni;
+	        this._bottomBox = bottom.getComponent(Laya.BoxCollider);
+	        this._bottomBox2 = bottom2.getComponent(Laya.BoxCollider);
+	        this._bottomBox.enabled = true;
+	        this._bottomBox2.enabled = false;
+	    }
+	    Init() {
+	        this._iCoin = 0;
+	        this._iLife = 0;
+	        this._sp.x = 959;
+	        this._sp.y = 539;
+	        this.RigidBodyEnable(false);
+	    }
+	    Reset() {
+	        this._iLife = 0;
+	        this.Continue(0);
+	    }
+	    Continue(coin) {
+	        this._iCoin = coin;
+	        this._sp.x = 959;
+	        this._sp.y = 539;
+	        this.RigidBodyEnable(false);
+	        this._bottomBox.enabled = true;
+	        this._bottomBox2.enabled = false;
+	    }
+	    RigidBodyEnable(bEnable) {
+	        this._rigidbody.enabled = bEnable;
+	    }
+	    SetInvincible() {
+	        this._bInvincible = true;
+	        this._bottomBox.enabled = false;
+	        this._bottomBox2.enabled = true;
+	        Laya.timer.loop(100, this, this.InvincibleEffect);
+	        Laya.timer.once(3000, this, this.ClearInvincible);
+	    }
+	    InvincibleEffect() {
+	        this._sp.visible = !this._sp.visible;
+	    }
+	    ClearInvincible() {
+	        Laya.timer.clear(this, this.InvincibleEffect);
+	        this._sp.visible = true;
+	        this._bInvincible = false;
+	        this._bottomBox.enabled = true;
+	        this._bottomBox2.enabled = false;
+	    }
+	    Up() {
+	        this._rigidbody.setVelocity({ x: 0, y: -12 });
+	    }
+	}
+
+	class ConfigRow {
+	    constructor() {
+	        this._rowData = new Array();
+	    }
+	    SetColKeys(colKeys) {
+	        this._colKeys = colKeys;
+	    }
+	    AddValue(value) {
+	        this._rowData.push(value);
+	    }
+	    GetValue(colKey) {
+	        var iVal;
+	        iVal = this._colKeys[colKey];
+	        if (iVal == null)
+	            return null;
+	        return this._rowData[iVal];
+	    }
+	}
+
+	class ConfigTable {
+	    constructor() {
+	        this.m_Data = {};
+	        this.m_dicColKeys = {};
+	        this._iColLength = 0;
+	    }
+	    AddRow(rowKey, rowData) {
+	        rowData.SetColKeys(this.m_dicColKeys);
+	        this.m_Data[rowKey] = rowData;
+	    }
+	    AddColKey(colKey) {
+	        this.m_dicColKeys[colKey] = this._iColLength++;
+	    }
+	    GetValue(rowKey, colKey) {
+	        var row = this.m_Data[rowKey];
+	        if (row == null)
+	            return null;
+	        return row.GetValue(colKey);
+	    }
+	    GetRow(rowKey) {
+	        return this.m_Data[rowKey];
+	    }
+	    HasRow(rowKey) {
+	        return this.m_Data[rowKey] != null;
+	    }
+	}
+
+	class Util {
+	    static Utf8ArrayToStr(array) {
+	        var out;
+	        var i, len;
+	        var c;
+	        var char2, char3;
+	        out = "";
+	        len = array.length;
+	        i = 0;
+	        while (i < len) {
+	            c = array[i++];
+	            switch (c >> 4) {
+	                case 0:
+	                case 1:
+	                case 2:
+	                case 3:
+	                case 4:
+	                case 5:
+	                case 6:
+	                case 7:
+	                    out += String.fromCharCode(c);
+	                    break;
+	                case 12:
+	                case 13:
+	                    char2 = array[i++];
+	                    out += String.fromCharCode(((c & 0x1F) << 6) | (char2 & 0x3F));
+	                    break;
+	                case 14:
+	                    char2 = array[i++];
+	                    char3 = array[i++];
+	                    out += String.fromCharCode(((c & 0x0F) << 12) |
+	                        ((char2 & 0x3F) << 6) |
+	                        ((char3 & 0x3F) << 0));
+	                    break;
+	            }
+	        }
+	        return out;
+	    }
+	}
+
+	class EncryptTool {
+	    static Decrypt(data, encryptLen, beginPos = 0) {
+	        var dataLen = data.length;
+	        if (dataLen < beginPos + 2)
+	            return;
+	        var encodeLen = dataLen > encryptLen * 2 ? encryptLen : (dataLen - beginPos) / 2;
+	        var f = beginPos;
+	        var b = dataLen - encodeLen;
+	        for (let i = 0; i < 2; ++i) {
+	            for (let j = 0; j < encodeLen; ++j) {
+	                data[b++] ^= data[f++];
+	            }
+	            f -= encodeLen;
+	            for (let j = 0; j < encodeLen; ++j) {
+	                data[f++] ^= data[--b];
+	            }
+	            f -= encodeLen;
+	        }
+	    }
+	}
+
+	class ConfigData {
+	    static ParseConfig(buff) {
+	        this._configData = {};
+	        var data = new Uint8Array(buff);
+	        EncryptTool.Decrypt(data, 20);
+	        var gunzip = new Zlib.Gunzip(data);
+	        var plain = gunzip.decompress();
+	        var sConfig = Util.Utf8ArrayToStr(plain);
+	        this._valuePos = 0;
+	        this._pos = 0;
+	        while (true) {
+	            this._pos = sConfig.indexOf("------@", this._valuePos);
+	            if (-1 == this._pos)
+	                break;
+	            this._pos += 7;
+	            let nPos = sConfig.indexOf('\n', this._pos);
+	            let cfgName = sConfig.substring(this._pos, nPos);
+	            try {
+	                let cfgTbl = new ConfigTable();
+	                ConfigData._configData[cfgName] = cfgTbl;
+	                this._pos = nPos + 1;
+	                nPos = sConfig.indexOf('\n', this._pos);
+	                this._bFlag = true;
+	                while (this._bFlag) {
+	                    try {
+	                        cfgTbl.AddColKey(this.GetNextValue(nPos, sConfig));
+	                    }
+	                    catch (err) {
+	                        console.error(cfgName);
+	                    }
+	                }
+	                nPos = sConfig.indexOf('\n', this._pos);
+	                this._bFlag = true;
+	                this._valuePos = nPos + 1;
+	                while (this._bFlag) {
+	                    let rowName = this.GetNextValue(nPos, sConfig);
+	                    let valueNPos = sConfig.indexOf('\n', this._valuePos);
+	                    let a = 0;
+	                    let rowData = new ConfigRow();
+	                    rowData.AddValue(rowName);
+	                    this._bFlagEx = true;
+	                    while (this._bFlagEx) {
+	                        let value = this.GetNextValueEx(valueNPos, sConfig);
+	                        value = value.replace("#r", "\r\n");
+	                        rowData.AddValue(value);
+	                        ++a;
+	                    }
+	                    cfgTbl.AddRow(rowName, rowData);
+	                }
+	            }
+	            catch (err) {
+	                console.error(cfgName);
+	            }
+	        }
+	    }
+	    static GetNextValue(nPos, sConfig) {
+	        var tPos = sConfig.indexOf('\t', this._pos);
+	        if (tPos > nPos || tPos == -1) {
+	            tPos = nPos;
+	            this._bFlag = false;
+	        }
+	        var value = sConfig.substring(this._pos, tPos);
+	        this._pos = tPos + 1;
+	        return value;
+	    }
+	    static GetNextValueEx(nPos, sConfig) {
+	        var tPos = sConfig.indexOf('\t', this._valuePos);
+	        if (tPos > nPos || tPos == -1) {
+	            tPos = nPos;
+	            this._bFlagEx = false;
+	        }
+	        var value = sConfig.substring(this._valuePos, tPos);
+	        this._valuePos = tPos + 1;
+	        return value;
+	    }
+	    static GetColKeys(sKey) {
+	        return this._configData[sKey].m_dicColKeys;
+	    }
+	    static GetTable(sKey) {
+	        return this._configData[sKey];
+	    }
+	    static GetRow(sKey1, sKey2) {
+	        return this.GetTable(sKey1).GetRow(sKey2);
+	    }
+	    static GetValue(sKey1, sKey2, sKey3) {
+	        return this.GetRow(sKey1, sKey2).GetValue(sKey3);
+	    }
+	    static GetStaticText(sKey) {
+	        return this.GetValue("Lan_StaticText_Client", sKey, "Text");
+	    }
+	}
+
+	class PositionMgr {
+	}
+	PositionMgr.g_BackgroundSpeed = 5;
+	PositionMgr.g_iSpeed = 10;
+	PositionMgr.LeftX = -500;
+	PositionMgr.RightX = 2420;
+
+	class BulletControl extends Laya.Script {
+	    constructor() { super(); }
+	    static GetInst() {
+	        return BulletControl._inst;
+	    }
+	    onAwake() {
+	        BulletControl._inst = this;
+	        this._bulletDict = {};
+	        this._bulletDict["BulletAL"] = this.bulletPrefabAL;
+	        this._bulletDict["BulletBL"] = this.bulletPrefabBL;
+	        this._bulletDict["BulletCL"] = this.bulletPrefabCL;
+	    }
+	    PopBullet(bulletName) {
+	        let bullet = Laya.Pool.getItemByCreateFun(bulletName, this._bulletDict[bulletName].create, this._bulletDict[bulletName]);
+	        this.bulletRoot.addChild(bullet);
+	        return bullet;
+	    }
+	}
+
+	class Bullet extends Laya.Script {
+	    constructor() { super(); }
+	    onAwake() {
+	        this._sp = this.owner;
+	        this._bRunning = false;
+	        this.enabled = false;
+	    }
+	    Excute(bulletName, fromX, fromY, direction) {
+	        this.enabled = true;
+	        this._bRunning = false;
+	        this._bulletName = bulletName;
+	        this._iDirection = direction;
+	        this._sp.x = fromX;
+	        this._sp.y = fromY;
+	        this._iSpeed = direction * PositionMgr.g_iSpeed;
+	    }
+	    Stop() {
+	        Laya.Tween.clearAll(this._sp);
+	        this._bRunning = false;
+	        this.enabled = false;
+	        this._sp.x = -10000;
+	        this._sp.y = 0;
+	        Laya.Pool.recover(this._bulletName, this._sp);
+	    }
+	}
+
+	class Enemy extends Laya.Script {
+	    constructor() { super(); }
+	    onAwake() {
+	        this._sp = this.owner;
+	        this._iState = 0;
+	        this.enabled = false;
+	    }
+	    Show(info, during) {
+	        this.enabled = true;
+	        this._enemyName = info[0];
+	        this._iDirection = info[1];
+	        this._sp.x = this._iFromX = this._iDirection == 1 ? PositionMgr.LeftX : PositionMgr.RightX;
+	        this._sp.y = this._iFromY = info[2];
+	        this._iToX = info[3];
+	        this._iSpeed = this._iDirection * PositionMgr.g_iSpeed;
+	        this._iState = 1;
+	    }
+	    onUpdate() {
+	        if (this._iState == 1) {
+	            if (this._iDirection == 1) {
+	                if (this._sp.x + this._iSpeed < this._iToX) {
+	                    this._sp.x += this._iSpeed;
+	                    return;
+	                }
+	            }
+	            else {
+	                if (this._sp.x + this._iSpeed > this._iToX) {
+	                    this._sp.x += this._iSpeed;
+	                    return;
+	                }
+	            }
+	            this._sp.x = this._iToX;
+	            this.ShowCompleted();
+	        }
+	        else if (this._iState == 3) {
+	            this.BackUpdate();
+	        }
+	    }
+	    BackUpdate() {
+	        this._sp.x -= this._iSpeed;
+	        if (this._iDirection == 1) {
+	            if (this._sp.x < this._iFromX)
+	                this.BackCompleted();
+	        }
+	        else {
+	            if (this._sp.x > this._iFromX)
+	                this.BackCompleted();
+	        }
+	    }
+	    ShowCompleted() {
+	        this._iState = 2;
+	        this.BackCompleted();
+	    }
+	    BackCompleted() {
+	        this.enabled = false;
+	        this._iState = 0;
+	        Laya.Tween.clearAll(this._sp);
+	        this._sp.x = -10000;
+	        this._sp.y = 0;
+	        Laya.Pool.recover(this._enemyName, this._sp);
+	    }
+	    BulletExcute(bulletName) {
+	        let bulletSp = BulletControl.GetInst().PopBullet(bulletName);
+	        let bullet = bulletSp.getComponent(Bullet);
+	        bullet.Excute(bulletName, this._sp.x, this._sp.y, this._iDirection);
+	    }
+	}
+
+	var Event = Laya.Event;
+	class GameControl extends Laya.Script {
+	    constructor() {
+	        super();
+	        this._iSpeed = 0;
+	        this._bRunning = false;
+	        this._iWave = 0;
+	        this._iDistance = 0;
+	        this._iCoin = 0;
+	        this._iHp = 0;
+	        this._sCurWaveDis = "";
+	        this._curGroupDis = 0;
+	        this._curGroupTbl = null;
+	        this._enemyZName = "EnemyZR";
+	        this._enemyZInfo = [this._enemyZName, -1, 0, PositionMgr.LeftX];
+	    }
+	    onAwake() {
+	        this._scoreKey = "airplaneScore";
+	        this.startBtn.visible = false;
+	        this.resultPanel.visible = false;
+	        this.rankPanel.visible = false;
+	        this.openDataViewer.visible = false;
+	        this._enemyDict = {};
+	        this._enemyDict["EnemyAL1"] = this.enemyPrefAL1;
+	        this._enemyDict["EnemyAL2"] = this.enemyPrefAL2;
+	        this._enemyDict["EnemyBL1"] = this.enemyPrefBL1;
+	        this._enemyDict["EnemyBL2"] = this.enemyPrefBL2;
+	        this._enemyDict["EnemyCL1"] = this.enemyPrefCL1;
+	        this._enemyDict["EnemyCL2"] = this.enemyPrefCL2;
+	        this._enemyDict["EnemyZL"] = this.enemyPrefZL;
+	        this._enemyDict["EnemyZR"] = this.enemyPrefZR;
+	        this._enemyDict["Coin"] = this.coin;
+	        this._enemyDict["Life"] = this.life;
+	        this._hpArr = [this.hp1, this.hp2, this.hp3];
+	        this._coinArr = [this.coin1, this.coin2, this.coin3];
+	        this.SetCoin(0);
+	        this.SetHp(0);
+	        Laya.loader.load("cfg/cfg.bin", Laya.Handler.create(this, this.OnConfigComplete), null, Laya.Loader.BUFFER);
+	    }
+	    OnConfigComplete(buff) {
+	        ConfigData.ParseConfig(buff);
+	        this._enemyTbl = ConfigData.GetTable("Enemy_Client");
+	        this.startBtn.clickHandler = new Laya.Handler(this, this.onStartBtnClick);
+	        this.restartBtn.clickHandler = new Laya.Handler(this, this.onRestartBtnClick);
+	        this.continueBtn.clickHandler = new Laya.Handler(this, this.onContinueBtnClick);
+	        this.rankBtn.clickHandler = new Laya.Handler(this, this.onRankBtnClick);
+	        this.rankXBtn.clickHandler = new Laya.Handler(this, this.onRankXBtnClick);
+	        this.shareBtn.clickHandler = new Laya.Handler(this, this.onShareBtnClick);
+	        this.rankLeftBtn.clickHandler = new Laya.Handler(this, this.onLeftBtnClick);
+	        this.rankRightBtn.clickHandler = new Laya.Handler(this, this.onRightBtnClick);
+	        this.tapSp.on(Event.MOUSE_DOWN, this, this.tapSpMouseHandler);
+	        this.mainRole = this.mainRoleSp.getComponent(MainRole);
+	        this.background = this.backgroundSp.getComponent(Background);
+	        let score = Laya.LocalStorage.getItem("score");
+	        this._iHighestScore = score == null ? 0 : Number(Laya.LocalStorage.getItem("score"));
+	        Laya.loader.load(["res/atlas/common.atlas"], Laya.Handler.create(this, () => { Laya.MiniAdpter.sendAtlasToOpenDataContext("res/atlas/common.atlas"); }));
+	        this.explosionSp.x = -10000;
+	        this.explosionAni = new Laya.Animation();
+	        this.explosionAni.loadAtlas("res/atlas/explosion.atlas", Laya.Handler.create(this, this.ExplosionLoaded));
+	    }
+	    ExplosionLoaded() {
+	        this.explosionSp.addChild(this.explosionAni);
+	        this.explosionSp.scaleX = 2;
+	        this.explosionSp.scaleY = 2;
+	        this.explosionAni.interval = 100;
+	        this.startBtn.visible = true;
+	        this.mainRole.SetInfo(new Laya.Handler(this, this.SetCoin), new Laya.Handler(this, this.SetHp), new Laya.Handler(this, this.Stop), this.explosionSp, this.explosionAni, this.bottomSp, this.bottomSp2);
+	    }
+	    onUpdate() {
+	        if (this._bRunning) {
+	            this._iDistance += Math.floor(this._iSpeed);
+	            this.distanceText.text = ((this._iDistance / 1000).toFixed(1)).toString();
+	            this.background.Update();
+	            this.ShowEnemy();
+	        }
+	    }
+	    Start() {
+	        this._iCoin = 0;
+	        this._iHp = 0;
+	        this._iSpeed = PositionMgr.g_BackgroundSpeed;
+	        this.mainRole.Reset();
+	        this.mainRole.RigidBodyEnable(true);
+	        this.background.SetSpeed(this._iSpeed);
+	        this._bRunning = true;
+	        Laya.SoundManager.playMusic("sound/bgm.mp3", 0);
+	    }
+	    Continue() {
+	        this.mainRole.Continue(this._iCoin);
+	        this.mainRole.RigidBodyEnable(true);
+	        this._bRunning = true;
+	        Laya.SoundManager.playMusic("sound/bgm.mp3", 0);
+	    }
+	    Stop() {
+	        Laya.SoundManager.stopMusic();
+	        this._bRunning = false;
+	        Laya.timer.once(2000, this, this.ShowResultPanel);
+	        if (this._iDistance > this._iHighestScore) {
+	            this._iHighestScore = this._iDistance;
+	            Laya.LocalStorage.setItem("score", this._iHighestScore.toString());
+	            this.SetUserCloudStorage((this._iHighestScore / 1000).toFixed(1).toString());
+	        }
+	    }
+	    SetCoin(v) {
+	        this._iCoin = v;
+	        for (let i = 0; i < 3; ++i)
+	            this._coinArr[i].visible = i < v;
+	    }
+	    SetHp(v) {
+	        this._iHp = v;
+	        for (let i = 0; i < 3; ++i)
+	            this._hpArr[i].visible = i < v;
+	    }
+	    SetUserCloudStorage(data) {
+	        var kvDataList = [];
+	        var obj = {};
+	        obj.wxgame = {};
+	        obj.wxgame.score = data;
+	        obj.wxgame.update_time = Laya.Browser.now();
+	        kvDataList.push({ "key": this._scoreKey, "value": JSON.stringify(obj) });
+	        wx.setUserCloudStorage({
+	            KVDataList: kvDataList,
+	            success: function (e) {
+	                console.log('-----success:' + JSON.stringify(e));
+	            },
+	            fail: function (e) {
+	                console.log('-----fail:' + JSON.stringify(e));
+	            },
+	            complete: function (e) {
+	                console.log('-----complete:' + JSON.stringify(e));
+	            }
+	        });
+	    }
+	    ShowResultPanel() {
+	        this.resultPanel.visible = true;
+	        this.curText.text = (this._iDistance / 1000).toFixed(1).toString();
+	        this.maxText.text = (Number(Laya.LocalStorage.getItem("score")) / 1000).toFixed(1).toString();
+	        this.continueText.text = this.waveText.text;
+	        this.continueBtn.gray = this._iCoin <= 0;
+	    }
+	    onStartBtnClick() {
+	        this.startBtn.visible = false;
+	        this.waveText.text = "0";
+	        this._iDistance = 0;
+	        this.Start();
+	    }
+	    onRestartBtnClick() {
+	        this.resultPanel.visible = false;
+	        this.ShowRankPanel(false);
+	        this.SetCoin(0);
+	        this.waveText.text = "0";
+	        this._iDistance = 0;
+	        this.Start();
+	        this.mainRole.SetInvincible();
+	    }
+	    onContinueBtnClick() {
+	        if (this._iCoin <= 0)
+	            return;
+	        this.resultPanel.visible = false;
+	        this.ShowRankPanel(false);
+	        --this._iCoin;
+	        this.SetCoin(this._iCoin);
+	        this._iDistance = Number(this._sCurWaveDis);
+	        this.Continue();
+	        this.mainRole.SetInvincible();
+	    }
+	    onRankBtnClick() {
+	        this.ShowRankPanel(true);
+	    }
+	    onLeftBtnClick() {
+	        this.openDataViewer.postMsg({ type: "Left" });
+	    }
+	    onRightBtnClick() {
+	        this.openDataViewer.postMsg({ type: "Right" });
+	    }
+	    onRankXBtnClick() {
+	        this.ShowRankPanel(false);
+	    }
+	    onShareBtnClick() {
+	    }
+	    ShowRankPanel(bShow) {
+	        this.rankPanel.visible = bShow;
+	        this.openDataViewer.visible = bShow;
+	        if (bShow)
+	            this.openDataViewer.postMsg({ type: "RankOpen" });
+	        else
+	            this.openDataViewer.postMsg({ type: "RankClose" });
+	    }
+	    tapSpMouseHandler(e) {
+	        if (!this._bRunning)
+	            return;
+	        switch (e.type) {
+	            case Event.MOUSE_DOWN:
+	                this.mainRole.Up();
+	                break;
+	        }
+	    }
+	    ShowEnemy() {
+	        if (this._iDistance % 800 == 0)
+	            this.ShowEnemyZ();
+	        let key = this._iDistance.toString();
+	        if (this._enemyTbl.HasRow(key)) {
+	            let wave = this._enemyTbl.GetValue(key, "Wave");
+	            if (wave != "") {
+	                this.waveText.text = wave;
+	                Laya.Tween.from(this.waveText, { scaleX: 2, scaleY: 2 }, 500, Laya.Ease.backOut);
+	            }
+	            this._sCurWaveDis = key;
+	            let group = this._enemyTbl.GetValue(key, "Group");
+	            this._curGroupTbl = ConfigData.GetTable(group);
+	            this._curGroupDis = this._iDistance;
+	        }
+	        if (this._curGroupDis != 0) {
+	            let groupKey = (this._iDistance - this._curGroupDis).toString();
+	            if (this._curGroupTbl.HasRow(groupKey)) {
+	                let jsonStr = this._curGroupTbl.GetValue(groupKey, "Enemy");
+	                let arr = JSON.parse(jsonStr);
+	                let sp;
+	                let enemyName;
+	                let enemy;
+	                for (let i = 0; i < arr.length; ++i) {
+	                    enemyName = arr[i][0];
+	                    if (enemyName == "Life") {
+	                        if (this._iCoin < 3)
+	                            enemyName = "Coin";
+	                        else if (this._iHp > 2)
+	                            continue;
+	                    }
+	                    sp = Laya.Pool.getItemByCreateFun(enemyName, this._enemyDict[enemyName].create, this._enemyDict[enemyName]);
+	                    this.enemyRoot.addChild(sp);
+	                    enemy = sp.getComponent(Enemy);
+	                    enemy.Show(arr[i], 1000);
+	                }
+	            }
+	        }
+	    }
+	    ShowEnemyZ() {
+	        let sp = Laya.Pool.getItemByCreateFun(this._enemyZName, this._enemyDict[this._enemyZName].create, this._enemyDict[this._enemyZName]);
+	        this.enemyRoot.addChild(sp);
+	        let enemy = sp.getComponent(Enemy);
+	        enemy.Show(this._enemyZInfo, 3000);
+	    }
+	}
+
+	class BulletA extends Bullet {
+	    constructor() { super(); }
+	    Excute(bulletName, fromX, fromY, direction) {
+	        super.Excute(bulletName, fromX, fromY, direction);
+	        this._bRunning = true;
+	    }
+	    onUpdate() {
+	        if (this._bRunning) {
+	            this._sp.x += this._iSpeed;
+	            if (this._sp.x > PositionMgr.RightX || this._sp.x < PositionMgr.LeftX)
+	                this.Stop();
+	        }
+	    }
+	}
+
+	class BulletB extends Bullet {
+	    constructor() { super(); }
+	    Excute(bulletName, fromX, fromY, direction) {
+	        super.Excute(bulletName, fromX, fromY, direction);
+	        Laya.Tween.to(this._sp, { y: fromY + 100 }, 500, Laya.Ease.linearNone, Laya.Handler.create(this, this.DropCompleted));
+	    }
+	    DropCompleted() {
+	        Laya.timer.once(1000, this, this.Shoot);
+	    }
+	    Shoot() {
+	        this._bRunning = true;
+	    }
+	    onUpdate() {
+	        if (this._bRunning) {
+	            this._sp.x += this._iSpeed;
+	            if (this._sp.x > PositionMgr.RightX || this._sp.x < PositionMgr.LeftX)
+	                this.Stop();
+	        }
+	    }
+	}
+
+	class BulletC extends Bullet {
+	    constructor() { super(); }
+	    onAwake() {
+	        super.onAwake();
+	        this._rigidBody = this.owner.getComponent(Laya.RigidBody);
+	        this._rigidBody.enabled = false;
+	    }
+	    Excute(bulletName, fromX, fromY, direction) {
+	        super.Excute(bulletName, fromX, fromY, direction);
+	        this._rigidBody.enabled = true;
+	        this._rigidBody.setVelocity({ x: direction ? 12 : -12, y: 0 });
+	    }
+	    onTriggerEnter(other, self, contact) {
+	        let sp = other.owner;
+	        if (sp.name == "Bottom") {
+	            this._rigidBody.enabled = false;
+	            this.Stop();
+	        }
+	    }
+	}
+
+	class EnemyA extends Enemy {
+	    ShowCompleted() {
+	        this._iState = 2;
+	        this._iBulletCount = 0;
+	        this.Shoot();
+	    }
+	    Shoot() {
+	        Laya.timer.loop(150, this, this._Shoot, [true]);
+	        Laya.timer.once(500, this, this.Back);
+	    }
+	    Back() {
+	        this._iState = 3;
+	    }
+	    _Shoot() {
+	        super.BulletExcute(this._iDirection == 1 ? "BulletAL" : "BulletAR");
+	        if (++this._iBulletCount > 2) {
+	            Laya.timer.clear(this, this._Shoot);
+	            this._iBulletCount = 0;
+	        }
+	    }
+	}
+
+	class EnemyA2 extends EnemyA {
+	    Shoot() {
+	        this.__Shoot();
+	        Laya.timer.once(700, this, this.__Shoot);
+	        Laya.timer.once(1200, this, this.Back);
+	    }
+	    __Shoot() {
+	        Laya.timer.loop(150, this, this._Shoot);
+	    }
+	}
+
+	class EnemyB extends Enemy {
+	    ShowCompleted() {
+	        this._iState = 2;
+	        this.Shoot();
+	    }
+	    Shoot() {
+	        this._Shoot();
+	        Laya.timer.once(2000, this, this.Back);
+	    }
+	    _Shoot() {
+	        super.BulletExcute(this._iDirection == 1 ? "BulletBL" : "BulletBR");
+	    }
+	    Back() {
+	        this._iState = 3;
+	    }
+	}
+
+	class EnemyB2 extends EnemyB {
+	    Shoot() {
+	        this._Shoot();
+	        Laya.timer.once(700, this, this._Shoot);
+	        Laya.timer.once(2700, this, this.Back);
+	    }
+	}
+
+	class EnemyC extends Enemy {
+	    ShowCompleted() {
+	        this._iState = 2;
+	        this.Shoot();
+	    }
+	    Shoot() {
+	        this._Shoot();
+	        this.Back();
+	    }
+	    _Shoot() {
+	        super.BulletExcute(this._iDirection == 1 ? "BulletCL" : "BulletCR");
+	    }
+	    Back() {
+	        this._iState = 3;
+	    }
+	    BackUpdate() {
+	        this._sp.x += this._iSpeed;
+	        if (this._iDirection == 1) {
+	            if (this._sp.x > PositionMgr.RightX)
+	                this.BackCompleted();
+	        }
+	        else {
+	            if (this._sp.x < PositionMgr.LeftX)
+	                this.BackCompleted();
+	        }
+	    }
+	}
+
+	class EnemyC2 extends EnemyC {
+	    Shoot() {
+	        this._Shoot();
+	        Laya.timer.once(500, this, this._Shoot);
+	        this.Back();
+	    }
+	}
+
+	class GameConfig {
+	    constructor() {
+	    }
+	    static init() {
+	        var reg = Laya.ClassUtils.regClass;
+	        reg("script/Background.ts", Background);
+	        reg("script/MainRole.ts", MainRole);
+	        reg("script/GameControl.ts", GameControl);
+	        reg("script/BulletControl.ts", BulletControl);
+	        reg("script/bullet/BulletA.ts", BulletA);
+	        reg("script/bullet/BulletB.ts", BulletB);
+	        reg("script/bullet/BulletC.ts", BulletC);
+	        reg("script/enemy/Enemy.ts", Enemy);
+	        reg("script/enemy/EnemyA.ts", EnemyA);
+	        reg("script/enemy/EnemyA2.ts", EnemyA2);
+	        reg("script/enemy/EnemyB.ts", EnemyB);
+	        reg("script/enemy/EnemyB2.ts", EnemyB2);
+	        reg("script/enemy/EnemyC.ts", EnemyC);
+	        reg("script/enemy/EnemyC2.ts", EnemyC2);
+	    }
+	}
+	GameConfig.width = 1920;
+	GameConfig.height = 1080;
+	GameConfig.scaleMode = "fixedheight";
+	GameConfig.screenMode = "horizontal";
+	GameConfig.alignV = "middle";
+	GameConfig.alignH = "center";
+	GameConfig.startScene = "MainScene.scene";
+	GameConfig.sceneRoot = "";
+	GameConfig.debug = false;
+	GameConfig.stat = false;
+	GameConfig.physicsDebug = false;
+	GameConfig.exportSceneToJson = true;
+	GameConfig.init();
+
+	class Main {
+	    constructor() {
+	        if (window["Laya3D"])
+	            Laya3D.init(GameConfig.width, GameConfig.height);
+	        else
+	            Laya.init(GameConfig.width, GameConfig.height, Laya["WebGL"]);
+	        Laya["Physics"] && Laya["Physics"].enable();
+	        Laya["DebugPanel"] && Laya["DebugPanel"].enable();
+	        Laya.stage.scaleMode = GameConfig.scaleMode;
+	        Laya.stage.screenMode = GameConfig.screenMode;
+	        Laya.stage.alignV = GameConfig.alignV;
+	        Laya.stage.alignH = GameConfig.alignH;
+	        Laya.URL.exportSceneToJson = GameConfig.exportSceneToJson;
+	        if (GameConfig.debug || Laya.Utils.getQueryString("debug") == "true")
+	            Laya.enableDebugPanel();
+	        if (GameConfig.physicsDebug && Laya["PhysicsDebugDraw"])
+	            Laya["PhysicsDebugDraw"].enable();
+	        if (GameConfig.stat)
+	            Laya.Stat.show();
+	        Laya.alertGlobalError = true;
+	        Laya.ResourceVersion.enable("version.json", Laya.Handler.create(this, this.onVersionLoaded), Laya.ResourceVersion.FILENAME_VERSION);
+	    }
+	    onVersionLoaded() {
+	        Laya.AtlasInfoManager.enable("fileconfig.json", Laya.Handler.create(this, this.onConfigLoaded));
+	    }
+	    onConfigLoaded() {
+	        GameConfig.startScene && Laya.Scene.open(GameConfig.startScene, true, null, Laya.Handler.create(this, (s) => {
+	            this.resize();
+	        }));
+	        Laya.stage.on(Laya.Event.RESIZE, this, this.resize);
+	    }
+	    resize() {
+	        let w = GameConfig.width;
+	        let h = GameConfig.height;
+	        switch (GameConfig.scaleMode) {
+	            case "fixedwidth":
+	                let screen_wh_scale = Laya.Browser.width / Laya.Browser.height;
+	                h = GameConfig.width / screen_wh_scale;
+	                break;
+	            case "fixedheight":
+	                let screen_hw_scale = Laya.Browser.height / Laya.Browser.width;
+	                w = GameConfig.height / screen_hw_scale;
+	                Laya.Scene.unDestroyedScenes.forEach(element => {
+	                    let s = element;
+	                    s.x = (w - GameConfig.width) / 2;
+	                });
+	                break;
+	        }
+	    }
+	}
+	new Main();
+
+}());
+//# sourceMappingURL=bundle.js.map

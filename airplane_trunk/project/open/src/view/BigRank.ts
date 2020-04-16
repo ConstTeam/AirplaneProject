@@ -7,6 +7,8 @@ export default class BigRank extends ui.test.BigUI
 		private _key: String = 'airplaneScore';
 		private _curPage: number = 0;
 		private _friendArr: any[] = [];
+		private _firstPage: string = "已经是第一页了";
+		private _lastPage: string = "已经是最后一页了";
 
 		/**
 		 * 初始化
@@ -19,23 +21,39 @@ export default class BigRank extends ui.test.BigUI
 			
 			this.setlist([]);
 			this.SetInfo();
-			this._left.clickHandler = new Laya.Handler(this, this.onLeftBtnClick);
-			this._right.clickHandler = new Laya.Handler(this, this.onRightBtnClick);
 		}
 
 		private curArr: any[] = [];
 		private onLeftBtnClick(): void
 		{
 			var _$this = this;
-			--_$this._curPage;
-			_$this.SetInfo();
+			if(_$this._curPage > 0)
+			{
+				--_$this._curPage;
+				_$this.SetInfo();
+			}
+			else
+			{
+				_$this._msgbox.alpha = 0;
+				_$this._msgboxTest.text = _$this._firstPage;
+				Laya.Tween.from(this._msgbox, {alpha: 1}, 3000);
+			}	
 		}
 
 		private onRightBtnClick(): void
 		{
 			var _$this = this;
-			++_$this._curPage;
-			_$this.SetInfo();
+			if(_$this._curPage < _$this._friendArr.length / 4 - 1)
+			{
+				++_$this._curPage;
+				_$this.SetInfo();
+			}
+			else
+			{
+				_$this._msgbox.alpha = 0;
+				_$this._msgboxTest.text = _$this._lastPage;
+				Laya.Tween.from(this._msgbox, {alpha: 1}, 3000);
+			}
 		}
 
 		private SetInfo(): void
@@ -49,13 +67,6 @@ export default class BigRank extends ui.test.BigUI
 				_$this.curArr[i] = _$this._friendArr[_$this._curPage * 4 + i]
 			}
 			_$this.setlist(this.curArr);
-
-			_$this._left.visible = false;
-			_$this._right.visible = false;
-			if(_$this._curPage > 0)
-				_$this._left.visible = true;
-			if(_$this._curPage < _$this._friendArr.length / 4 - 1)
-				_$this._right.visible = true;
 		}
  
 		/**
@@ -107,7 +118,7 @@ export default class BigRank extends ui.test.BigUI
 
 						_$this._curPage = 0;
 						_$this.SetInfo();
-					}
+					}	
 				}
 				,fail: (res: any) => {
 					console.log('------------------获取托管数据失败--------------------');
@@ -128,12 +139,16 @@ export default class BigRank extends ui.test.BigUI
 			{
 				case "RankOpen":
 					_$this.visible = true;
-					_$this._left.visible = false;
-					_$this._right.visible = false;
 					_$this.getFriendData();
 					break;
 				case "RankClose":
 					_$this.visible = false;
+					break;
+				case "Left":
+					this.onLeftBtnClick();
+					break;
+				case "Right":
+					this.onRightBtnClick();
 					break;
 				default:
 					break;

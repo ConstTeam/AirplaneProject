@@ -71,7 +71,7 @@ export default class Background extends Laya.Script
 		}
 		if(_$this._curMountains.x <= -3136)
 		{
-			_$this._curMountains.x = 3004 + 3136 + _$this._curMountains.x;
+			_$this._curMountains.x = 3000 + 3136 + _$this._curMountains.x;
 			_$this._curMountainsIndex = _$this._curMountainsIndex == 2 ? 0 : _$this._curMountainsIndex + 1;
 			_$this._curMountains = _$this._arrMountains[_$this._curMountainsIndex];
 		}

@@ -6,9 +6,9 @@ var REG: Function = Laya.ClassUtils.regClass;
 export module ui.test {
     export class BigUI extends Laya.Scene {
 		public _list:Laya.List;
-		public _left:Laya.Button;
-		public _right:Laya.Button;
-        public static  uiView:any ={"type":"Scene","props":{"width":1100,"height":700},"compId":2,"child":[{"type":"Sprite","props":{"y":0,"x":0,"width":1100,"texture":"common/Paper.png","height":700},"compId":7},{"type":"List","props":{"y":50,"x":50,"width":1000,"var":"_list","selectEnable":false,"repeatY":4,"repeatX":1,"height":592,"elasticEnabled":false},"compId":3,"child":[{"type":"bigItem","props":{"y":0,"x":10,"runtime":"view/bigItem.ts","renderType":"render"},"compId":5}]},{"type":"Button","props":{"y":306,"x":80,"var":"_left","stateNum":1,"skin":"common/ArrowRight.png","skewX":0,"scaleX":-1,"rotation":0},"compId":8},{"type":"Button","props":{"y":306,"x":1020,"var":"_right","stateNum":1,"skin":"common/ArrowRight.png"},"compId":9}],"loadList":["common/Paper.png","common/ArrowRight.png"],"loadList3D":[]};
+		public _msgbox:Laya.Panel;
+		public _msgboxTest:Laya.Label;
+        public static  uiView:any ={"type":"Scene","props":{"width":1100,"height":700},"compId":2,"child":[{"type":"Sprite","props":{"y":0,"x":0,"width":1100,"texture":"common/Paper.png","height":700},"compId":7},{"type":"List","props":{"y":54,"x":50,"width":1000,"var":"_list","selectEnable":false,"repeatY":4,"repeatX":1,"height":592,"elasticEnabled":false},"compId":3,"child":[{"type":"bigItem","props":{"y":0,"x":10,"runtime":"view/bigItem.ts","renderType":"render"},"compId":5}]},{"type":"Panel","props":{"y":300,"x":250,"width":600,"var":"_msgbox","height":100,"alpha":0},"compId":11,"child":[{"type":"Image","props":{"top":0,"skin":"common/CubeBlack.png","right":0,"left":0,"bottom":0,"alpha":0.3},"compId":10},{"type":"Label","props":{"var":"_msgboxTest","valign":"middle","top":8,"text":"已经是最后一页了","styleSkin":"common/ArrowRight.png","stateNum":1,"skewX":0,"rotation":0,"right":0,"left":0,"fontSize":70,"color":"#ffffff","bottom":0,"alpha":1,"align":"center"},"compId":8}]}],"loadList":["common/Paper.png","common/CubeBlack.png","common/ArrowRight.png"],"loadList3D":[]};
         constructor(){ super()}
         createChildren():void {
             super.createChildren();
