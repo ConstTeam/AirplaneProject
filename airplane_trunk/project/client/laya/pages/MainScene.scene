@@ -1,12 +1,12 @@
 {
     "x":0,
     "type":"Scene",
-    "selectedBox":271,
-    "selecteID":274,
+    "selectedBox":38,
+    "selecteID":279,
     "searchKey":"Scene",
     "props":{"x":0,"width":1920,"sceneColor":"#000000","height":1080,"enemyPref":"@arr:,,"},
     "nodeParent":-1,
-    "maxID":279,
+    "maxID":280,
     "label":"Scene",
     "isOpen":true,
     "isDirectory":true,
@@ -846,13 +846,14 @@
                     "props":{"y":-460,"x":-540,"width":3000,"name":"StartBtn","labelSize":200,"height":2000,"alpha":1},
                     "nodeParent":81,
                     "label":"StartBtn",
-                    "isOpen":false,
+                    "isOpen":true,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":38,
                     "child":[
                         {
+                            "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite",
                             "props":{"y":0,"x":0,"width":3000,"texture":"common/CubeBlack.png","height":2000,"alpha":0.5},
@@ -866,6 +867,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image",
                             "props":{"y":1215,"x":1413,"skin":"tap/TapLabel.png","scaleY":1,"scaleX":-1},
@@ -880,6 +882,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image",
                             "props":{"y":1215,"x":1587,"skin":"tap/TapLabel.png"},
@@ -894,6 +897,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Image",
                             "searchKey":"Image",
                             "props":{"y":1180,"x":1462,"skin":"tap/tap.png"},
@@ -908,6 +912,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label",
                             "props":{"y":1221,"x":1241,"width":162,"valign":"middle","text":"点击","height":59,"fontSize":35,"color":"#ffffff","align":"center"},
@@ -922,6 +927,7 @@
                                 ]
                         },
                         {
+                            "x":45,
                             "type":"Label",
                             "searchKey":"Label",
                             "props":{"y":1221,"x":1599,"width":162,"valign":"middle","text":"点击","height":59,"fontSize":35,"color":"#ffffff","align":"center"},
@@ -933,6 +939,20 @@
                             "compId":264,
                             "child":[
                                 ]
+                        },
+                        {
+                            "x":45,
+                            "type":"Label",
+                            "searchKey":"Label",
+                            "props":{"y":1487,"x":540,"width":1920,"valign":"middle","text":"抵制不良游戏，拒绝盗版游戏。注意自我保护，谨防受骗上当。适度游戏益脑，沉迷游戏伤身。合理安排时间，享受健康生活","height":50,"fontSize":30,"color":"#ffffff","align":"center"},
+                            "nodeParent":38,
+                            "label":"Label",
+                            "isDirectory":false,
+                            "isAniNode":true,
+                            "hasChild":false,
+                            "compId":279,
+                            "child":[
+                                ]
                         }]
                 },
                 {
@@ -942,14 +962,13 @@
                     "props":{"y":-460,"x":-540,"width":3000,"name":"MsgBox","height":2000,"alpha":1},
                     "nodeParent":81,
                     "label":"MsgBox",
-                    "isOpen":true,
+                    "isOpen":false,
                     "isDirectory":true,
                     "isAniNode":true,
                     "hasChild":true,
                     "compId":272,
                     "child":[
                         {
-                            "x":45,
                             "type":"Sprite",
                             "searchKey":"Sprite",
                             "props":{"y":0,"x":0,"width":3000,"texture":"common/CubeBlack.png","height":2000,"alpha":0.5},
@@ -963,7 +982,6 @@
                                 ]
                         },
                         {
-                            "x":45,
                             "type":"Image",
                             "searchKey":"Image",
                             "props":{"y":750,"x":950,"width":1100,"skin":"common/Paper.png","height":500,"alpha":1},
@@ -976,7 +994,6 @@
                             "compId":271,
                             "child":[
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label",
                                     "props":{"y":211,"x":0,"width":1083,"valign":"middle","text":"确认重新开始？","height":78,"fontSize":50,"color":"#4e2623","bold":true,"align":"center"},
@@ -990,7 +1007,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Label",
                                     "searchKey":"Label",
                                     "props":{"y":107,"x":0,"width":1083,"valign":"middle","text":"您还有剩余       ， 重新开始将清空","height":104,"fontSize":50,"color":"#4e2623","bold":true,"align":"center"},
@@ -1005,7 +1021,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Image",
                                     "searchKey":"Image",
                                     "props":{"y":134,"x":426,"skin":"role/coin.png"},
@@ -1019,7 +1034,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Button",
                                     "searchKey":"Button,Yes",
                                     "props":{"y":334,"x":126,"width":300,"stateNum":"1","skin":"common/ButtonNo.png","name":"Yes","labelSize":50,"labelPadding":"5","labelColors":"#ffffff","labelBold":true,"label":"确认","height":100},
@@ -1034,7 +1048,6 @@
                                         ]
                                 },
                                 {
-                                    "x":60,
                                     "type":"Button",
                                     "searchKey":"Button,No",
                                     "props":{"y":334,"x":668,"width":300,"stateNum":"1","skin":"common/ButtonYes.png","name":"No","labelSize":50,"labelPadding":"5","labelColors":"#ffffff","labelBold":true,"label":"取消","height":100},
