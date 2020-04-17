@@ -24,7 +24,7 @@ export default class Enemy extends Laya.Script
 		this.enabled = false;
 	}
 
-	public Show(info: any[], during: number): void
+	public Show(info: any[]): void
 	{
 		this.enabled = true;
 		this._enemyName = info[0];
@@ -32,7 +32,8 @@ export default class Enemy extends Laya.Script
 		this._sp.x = this._iFromX = this._iDirection == 1 ? PositionMgr.LeftX : PositionMgr.RightX;
 		this._sp.y = this._iFromY = info[2];
 		this._iToX = info[3];
-		this._iSpeed = this._iDirection * PositionMgr.g_iSpeed;
+		let speed = info.length > 4 ? info[4] : PositionMgr.g_iSpeed
+		this._iSpeed = this._iDirection * speed;
 		this._iState = 1;
 	}
 	

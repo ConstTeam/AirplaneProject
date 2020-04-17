@@ -152,10 +152,15 @@ export default class GameControl extends Laya.Script
 		Laya.loader.load("cfg/cfg.bin", Laya.Handler.create(this, this.OnConfigComplete), null, Laya.Loader.BUFFER);
 	}
 
+	private _disArr: number[];
 	private OnConfigComplete(buff: ArrayBuffer): void
 	{
 		ConfigData.ParseConfig(buff);
 		this._enemyTbl = ConfigData.GetTable("Enemy_Client");
+
+		this._disArr = [];
+		for (let key in this._enemyTbl.m_Data)
+			this._disArr.push(Number(key));
 
 		this.startBtn.clickHandler = new Laya.Handler(this, this.onStartBtnClick);
 		this.restartBtn.clickHandler = new Laya.Handler(this, this.onRestartBtnClick);
@@ -290,6 +295,8 @@ export default class GameControl extends Laya.Script
 	private onStartBtnClick(): void
 	{
 		this._iframe = 0;
+		this._iIndex = 0;
+		this._iLoopTimes = 0;
 		this.startBtn.visible = false;
 		this.waveText.text = "0";
 		this._iDistance = 0;
@@ -310,6 +317,8 @@ export default class GameControl extends Laya.Script
 		this.ShowRankPanel(false);
 
 		this._iframe = 0;
+		this._iIndex = 0;
+		this._iLoopTimes = 0;
 		this.SetCoin(0);
 		this.waveText.text = "0";
 		this._iDistance = 0;
@@ -395,34 +404,41 @@ export default class GameControl extends Laya.Script
 	private _sCurWaveDis: string = "";
 	private _curGroupDis: number = 0;
 	private _curGroupTbl: ConfigTable = null;
+	private _iIndex: number = 0;
+	private _iLoopTimes: number = 0;
 
 	private ShowEnemy(): void
 	{
 		let temp = this._iDistance / 600;
 		if(temp == Math.floor(temp))
 			this.ShowEnemyZ();
-
-		let key: string = this._iDistance.toString();
-		console.log(key);
-		if(this._enemyTbl.HasRow(key))
+		
+		let iKey: number = this._disArr[this._iIndex];
+		if(this._iDistance - 43000 * this._iLoopTimes >= iKey)
 		{
-			let wave: string = this._enemyTbl.GetValue(key, "Wave");
+			let sKey: string = iKey.toString();
+			let wave: string = this._enemyTbl.GetValue(sKey, "Wave");
 			if(wave != "")
 			{
-				this.waveText.text = wave;
+				this.waveText.text = (Number(wave) + this._iLoopTimes * 12).toString();
 				Laya.Tween.from(this.waveText, {scaleX: 2, scaleY: 2}, 500, Laya.Ease.backOut);
 			}
 				
-			this._sCurWaveDis = key;
-			let group: string = this._enemyTbl.GetValue(key, "Group");
+			this._sCurWaveDis = sKey;
+			let group: string = this._enemyTbl.GetValue(sKey, "Group");
 			this._curGroupTbl = ConfigData.GetTable(group);
 			this._curGroupDis = this._iDistance;
+
+			if(++this._iIndex > this._disArr.length - 1)
+			{
+				this._iIndex = 0;
+				++this._iLoopTimes;
+			}	
 		}
 
 		if(this._curGroupDis != 0)
 		{
 			let groupKey: string = (this._iDistance - this._curGroupDis).toString();
-			console.log("groupKey:" + groupKey);
 			if(this._curGroupTbl.HasRow(groupKey))
 			{
 				let jsonStr: string = this._curGroupTbl.GetValue(groupKey, "Enemy");
@@ -444,7 +460,7 @@ export default class GameControl extends Laya.Script
 					sp = Laya.Pool.getItemByCreateFun(enemyName, this._enemyDict[enemyName].create, this._enemyDict[enemyName]);	
 					this.enemyRoot.addChild(sp);
 					enemy = sp.getComponent(Enemy);
-					enemy.Show(arr[i], 1000);
+					enemy.Show(arr[i]);
 				}
 			}
 		}
@@ -457,6 +473,6 @@ export default class GameControl extends Laya.Script
 		let sp = Laya.Pool.getItemByCreateFun(this._enemyZName, this._enemyDict[this._enemyZName].create, this._enemyDict[this._enemyZName]);	
 		this.enemyRoot.addChild(sp);
 		let enemy: Enemy = sp.getComponent(Enemy);
-		enemy.Show(this._enemyZInfo, 3000);
+		enemy.Show(this._enemyZInfo);
 	}
 }
